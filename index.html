@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The E-Value — Game-Theoretic Evidence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+–bg:#060504;–bg-warm:#0d0a07;–gold:#c9a84c;–gold-dim:#8a7a52;
+–gold-bright:#e8c95a;–gold-pale:#d4c49a;–red:#a03c28;–red-soft:#8a4a3a;
+–parchment:#d4c5a0;–ink:#28200f;–teal:#4a9a8a;–teal-dim:#3a7a6a;
+–blue:#5a8ab4;–blue-dim:#4a6a8a;–violet:#8a6aaa;–violet-dim:#6a5a7a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(–bg);color:var(–gold);font-family:‘Cormorant Garamond’,serif;overflow-x:hidden;min-height:100vh;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(180deg,rgba(6,5,4,.97)0%,rgba(6,5,4,.88)80%,transparent);padding:10px 0 18px;backdrop-filter:blur(8px);}
+.nav-inner{display:flex;align-items:center;justify-content:center;gap:clamp(4px,1.8vw,24px);padding:0 12px;flex-wrap:wrap;}
+.nav-brand{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.2vw,14px);letter-spacing:.2em;color:var(–gold-dim);margin-right:clamp(2px,1vw,16px);white-space:nowrap;}
+.nav-tab{font-family:‘EB Garamond’,serif;font-size:clamp(10px,1.15vw,14px);color:var(–gold-dim);background:none;border:none;cursor:pointer;padding:3px 7px;letter-spacing:.05em;transition:color .4s;position:relative;white-space:nowrap;}
+.nav-tab::after{content:’’;position:absolute;bottom:0;left:50%;width:0;height:1px;background:var(–gold);transition:width .4s,left .4s;}
+.nav-tab:hover{color:var(–gold-pale);}
+.nav-tab.active{color:var(–gold);text-shadow:0 0 20px rgba(201,168,76,.2);}
+.nav-tab.active::after{width:100%;left:0;}
+.nav-num{font-family:‘Cinzel’,serif;font-size:.7em;margin-right:3px;opacity:.5;}
+
+/* ── PAGE ── */
+.page{display:none;min-height:100vh;padding-top:60px;opacity:0;transition:opacity .8s;}
+.page.active{display:block;opacity:1;}
+.page-hdr{text-align:center;padding:clamp(24px,5vh,60px) 16px clamp(8px,2vh,20px);}
+.page-ttl{font-family:‘Cinzel’,serif;font-size:clamp(20px,3.5vw,44px);font-weight:600;letter-spacing:.12em;color:var(–gold);text-shadow:0 0 40px rgba(201,168,76,.12);}
+.page-sub{font-family:‘EB Garamond’,serif;font-size:clamp(12px,1.6vw,18px);font-style:italic;color:var(–gold-dim);margin-top:6px;letter-spacing:.04em;}
+.page-ln{width:clamp(50px,12vw,140px);height:1px;background:linear-gradient(90deg,transparent,var(–gold-dim),transparent);margin:12px auto;opacity:.4;}
+
+/* ── CONTENT ── */
+.cb{max-width:700px;margin:0 auto;padding:0 20px;}
+.prose{font-family:‘EB Garamond’,serif;font-size:clamp(14px,1.55vw,18px);line-height:1.75;color:var(–gold-dim);margin-bottom:20px;}
+.prose em{color:var(–gold-pale);font-style:italic;} .prose strong{color:var(–gold);font-weight:500;}
+.qb{border-left:2px solid rgba(201,168,76,.2);padding:14px 20px;margin:24px 0;background:rgba(201,168,76,.02);border-radius:0 4px 4px 0;}
+.qt{font-family:‘EB Garamond’,serif;font-size:clamp(15px,1.7vw,20px);font-style:italic;color:var(–gold);line-height:1.7;}
+.qa{font-family:‘Cormorant Garamond’,serif;font-size:clamp(10px,1.1vw,13px);color:var(–gold-dim);margin-top:6px;opacity:.6;}
+.md{text-align:center;padding:20px 14px;margin:22px 0;font-family:‘EB Garamond’,serif;font-size:clamp(15px,2vw,24px);color:var(–gold);letter-spacing:.03em;text-shadow:0 0 20px rgba(201,168,76,.08);background:rgba(201,168,76,.012);border-radius:4px;border:1px solid rgba(201,168,76,.05);}
+.md-l{font-size:.6em;color:var(–gold-dim);font-style:italic;display:block;margin-top:5px;}
+
+/* ── CANVAS ── */
+.cc{position:relative;width:100%;max-width:900px;margin:20px auto;border-radius:5px;overflow:hidden;background:var(–bg);border:1px solid rgba(201,168,76,.07);}
+.cc canvas{width:100%;height:100%;display:block;}
+.cc-vig{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(6,5,4,.45)100%);}
+.cc-label{position:absolute;top:8px;left:12px;font-family:‘Cinzel’,serif;font-size:clamp(9px,1vw,12px);letter-spacing:.12em;color:var(–gold-dim);opacity:.6;pointer-events:none;}
+
+/* aspect ratios */
+.ar169{aspect-ratio:16/9;}
+.ar2{aspect-ratio:2/1;}
+.ar32{aspect-ratio:3/2;}
+
+/* ── CONTROLS ── */
+.ctrls{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;padding:12px 16px;max-width:900px;margin:0 auto;}
+.cg{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.cl{font-family:‘EB Garamond’,serif;font-size:clamp(9px,1vw,12px);color:var(–gold-dim);font-style:italic;}
+.cv{font-family:‘EB Garamond’,serif;font-size:clamp(12px,1.3vw,15px);color:var(–gold);min-width:36px;text-align:center;}
+input[type=“range”]{-webkit-appearance:none;width:clamp(70px,10vw,140px);height:2px;background:rgba(201,168,76,.2);border-radius:2px;outline:none;}
+input[type=“range”]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(–gold);cursor:pointer;box-shadow:0 0 6px rgba(201,168,76,.3);}
+.btn{font-family:‘Cinzel’,serif;font-size:clamp(8px,.9vw,11px);letter-spacing:.16em;text-transform:uppercase;color:var(–gold-dim);background:none;border:1px solid rgba(201,168,76,.18);padding:7px 18px;cursor:pointer;transition:all .3s;border-radius:2px;}
+.btn:hover{color:var(–gold);border-color:var(–gold);box-shadow:0 0 14px rgba(201,168,76,.08);}
+
+/* ── COMPARISON GRID ── */
+.comp{display:grid;grid-template-columns:1fr 1fr;gap:1px;max-width:780px;margin:24px auto;border-radius:5px;overflow:hidden;border:1px solid rgba(201,168,76,.07);}
+.comp-h{font-family:‘Cinzel’,serif;font-size:clamp(11px,1.2vw,14px);letter-spacing:.1em;padding:11px 16px;text-align:center;}
+.comp-h.es{background:rgba(201,168,76,.05);color:var(–gold);} .comp-h.ps{background:rgba(80,65,40,.05);color:var(–gold-dim);}
+.comp-c{font-family:‘EB Garamond’,serif;font-size:clamp(11px,1.2vw,14px);padding:10px 14px;line-height:1.5;border-top:1px solid rgba(201,168,76,.03);}
+.comp-c.es{background:rgba(201,168,76,.015);color:var(–gold-pale);} .comp-c.ps{background:rgba(6,5,4,.3);color:var(–gold-dim);}
+
+/* ── PROTOCOL BOX ── */
+.pb{max-width:580px;margin:24px auto;border:1px solid rgba(201,168,76,.1);border-radius:5px;overflow:hidden;background:rgba(201,168,76,.012);}
+.pb-t{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.1vw,13px);letter-spacing:.14em;padding:10px 16px;background:rgba(201,168,76,.03);border-bottom:1px solid rgba(201,168,76,.06);text-align:center;}
+.pb-s{display:flex;gap:12px;padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.02);align-items:flex-start;transition:background .5s;}
+.pb-s.hl{background:rgba(201,168,76,.05);}
+.pb-n{font-family:‘Cinzel’,serif;font-size:clamp(9px,.9vw,12px);color:var(–gold);opacity:.45;flex-shrink:0;padding-top:1px;}
+.pb-x{font-family:‘EB Garamond’,serif;font-size:clamp(12px,1.3vw,15px);color:var(–gold-dim);line-height:1.55;} .pb-x em{color:var(–gold-pale);}
+
+/* ── LEGEND ── */
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;padding:8px 16px;max-width:900px;margin:0 auto;}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:‘EB Garamond’,serif;font-size:clamp(11px,1.1vw,13px);color:var(–gold-dim);}
+.legend-dot{width:10px;height:3px;border-radius:1px;}
+
+/* ── E-PROCESS OVERLAYS ── */
+.ep-overlay{position:absolute;pointer-events:none;z-index:4;opacity:0;transition:opacity 2.2s ease;}
+.ep-overlay.vis{opacity:1;} .ep-overlay.out{opacity:0;transition:opacity 1.4s ease;}
+.ep-narr{font-family:‘Cormorant Garamond’,serif;font-size:clamp(13px,1.5vw,18px);font-weight:300;color:var(–gold-dim);font-style:italic;line-height:1.65;max-width:clamp(180px,22vw,280px);}
+.ep-narr em{color:var(–gold-pale);font-style:italic;}
+.ep-narr-l{top:14%;left:4%;text-align:left;}
+.ep-narr-r{top:26%;right:4%;text-align:right;}
+.ep-verdict{top:6%;bottom:auto;left:50%;transform:translateX(-50%);text-align:center;max-width:clamp(260px,45vw,480px);}
+.ep-verdict .v-main{font-family:‘EB Garamond’,serif;font-size:clamp(15px,1.8vw,22px);color:var(–gold);font-style:italic;}
+.ep-verdict .v-sub{font-family:‘EB Garamond’,serif;font-size:clamp(11px,1.2vw,15px);color:var(–gold-dim);margin-top:4px;}
+.ep-verdict .v-note{font-family:‘Cormorant Garamond’,serif;font-size:clamp(10px,1vw,13px);color:rgba(138,122,82,.5);margin-top:6px;}
+.ep-eq{bottom:6%;top:auto;left:50%;transform:translateX(-50%);text-align:center;}
+.ep-eq .eq-desc{font-family:‘EB Garamond’,serif;font-size:clamp(12px,1.4vw,17px);color:var(–gold-dim);font-style:italic;}
+.ep-eq .eq-math{font-family:‘EB Garamond’,serif;font-size:clamp(15px,1.8vw,22px);color:var(–gold);margin:5px 0;letter-spacing:.03em;text-shadow:0 0 16px rgba(201,168,76,.1);}
+
+.section-spacer{height:clamp(16px,3vh,36px);}
+.pf{text-align:center;padding:32px 16px 24px;}
+.pf-t{font-family:‘EB Garamond’,serif;font-size:clamp(10px,1vw,12px);color:rgba(138,122,82,.35);font-style:italic;}
+
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(–bg);} ::-webkit-scrollbar-thumb{background:rgba(201,168,76,.12);border-radius:2px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;margin:16px auto;padding:0 16px;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+</style>
+
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <div class="nav-brand">EVIDENCE</div>
+  <button class="nav-tab active" data-page="intro"><span class="nav-num">I.</span>Prologue</button>
+  <button class="nav-tab" data-page="evalue"><span class="nav-num">II.</span>E-Value</button>
+  <button class="nav-tab" data-page="game"><span class="nav-num">III.</span>The Game</button>
+  <button class="nav-tab" data-page="eprocess"><span class="nav-num">IV.</span>E-Process</button>
+  <button class="nav-tab" data-page="betting"><span class="nav-num">V.</span>Betting</button>
+  <button class="nav-tab" data-page="comparison"><span class="nav-num">VI.</span>E vs P</button>
+  <button class="nav-tab" data-page="confseq"><span class="nav-num">VII.</span>Conf. Seq.</button>
+</div></nav>
+
+<!-- ═══ I. PROLOGUE ═══ -->
+
+<section class="page active" id="page-intro">
+  <div class="page-hdr"><div class="page-ttl">PROLOGUE</div><div class="page-ln"></div><div class="page-sub">On the nature of evidence</div></div>
+  <div class="cb">
+    <div class="qb"><div class="qt">Probabilities should not be assumed a priori.<br>A game should be assumed a priori.<br>The game forces you to play probabilistically.</div><div class="qa">— The foundational principle of game-theoretic probability</div></div>
+    <p class="prose">For nearly a century, statistical inference has rested on <em>assumed probability measures</em>. We postulate that data comes from some distribution P, then derive tests and decisions from that assumption.</p>
+    <p class="prose">But what if the <em>structure of the decision problem itself</em> — a game between a Skeptic who seeks truth and a Nature that reveals data — were enough to give rise to all of probability?</p>
+    <p class="prose">This is the insight behind <strong>e-values</strong> and <strong>game-theoretic probability</strong>. An e-value is not a probability. It is a <em>bet</em>. It is the wealth of a gambler who wagered against the null hypothesis. When that wealth grows large, the evidence is strong — not because we computed a probability, but because the game would not allow it otherwise.</p>
+  </div>
+  <div class="cc ar169" id="prologue-wrap"><canvas id="c-prologue"></canvas><div class="cc-vig"></div></div>
+  <div class="pf"><div class="pf-t">Based on "Hypothesis Testing with E-values" — Ramdas &amp; Wang (2025)</div></div>
+</section>
+
+<!-- ═══ II. E-VALUE ═══ -->
+
+<section class="page" id="page-evalue">
+  <div class="page-hdr"><div class="page-ttl">THE E-VALUE</div><div class="page-ln"></div><div class="page-sub">Evidence as a wager</div></div>
+  <div class="cb">
+    <p class="prose">Imagine <strong>Forecaster</strong> claims hypothesis P is true. <strong>Skeptic</strong> pays $1 and specifies a bet E. If outcome ω is observed, Skeptic gets E(ω) back. The contract is fair to Forecaster when:</p>
+    <div class="md">𝔼<sub>P</sub>[ E ] ≤ 1<span class="md-l">Under the null, Skeptic cannot expect to profit.</span></div>
+  </div>
+
+  <div class="cc ar2" id="evalue-wrap"><canvas id="c-evalue"></canvas><div class="cc-vig"></div></div>
+  <div class="ctrls">
+    <div class="cg"><div class="cl">Observed e-value</div><input type="range" id="ev-sl" min="0" max="50" step=".5" value="1"><div class="cv" id="ev-disp">1.0</div></div>
+  </div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose">Below: the <em>distribution</em> of e-values under two worlds. Under the null (left), e-values scatter around 1 — Skeptic breaks even on average. Under the alternative (right), e-values shift upward — Skeptic profits because truth is on her side.</p>
+  </div>
+  <div class="cc ar2" id="evdist-wrap"><canvas id="c-evdist"></canvas><div class="cc-vig"></div><div class="cc-label">E-VALUE DISTRIBUTION: NULL vs ALTERNATIVE</div></div>
+  <div class="ctrls"><button class="btn" onclick="runEVDist()">Sample 500 E-values</button></div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose">The simplest e-variable is the <strong>likelihood ratio</strong> — the log-optimal bet, which maximizes expected wealth growth:</p>
+    <div class="md">E = exp(μ · x − μ²/2)<span class="md-l">The Kelly-optimal wager for testing N(0,1) vs N(μ,1).</span></div>
+  </div>
+  <div class="pf"><div class="pf-t">Section 1.5 — Betting interpretation of e-values</div></div>
+</section>
+
+<!-- ═══ III. THE GAME ═══ -->
+
+<section class="page" id="page-game">
+  <div class="page-hdr"><div class="page-ttl">THE GAME</div><div class="page-ln"></div><div class="page-sub">A protocol between Skeptic and Nature</div></div>
+  <div class="cb"><p class="prose">Testing a hypothesis is a sequential game. At each round, Skeptic declares a bet <em>before</em> seeing the data. Nature reveals the outcome. Wealth grows or shrinks.</p></div>
+
+  <div class="pb">
+    <div class="pb-t">ALGORITHM · TESTING BY BETTING</div>
+    <div class="pb-s" id="gs0"><div class="pb-n">0.</div><div class="pb-x"><em>Skeptic's initial wealth is W₀ = 1</em></div></div>
+    <div class="pb-s" id="gs1"><div class="pb-n">1.</div><div class="pb-x">for t = 1, 2, 3, … do:</div></div>
+    <div class="pb-s" id="gs2"><div class="pb-n">2.</div><div class="pb-x">Skeptic declares bet S<sub>t</sub> such that <em>𝔼<sub>P</sub>[S<sub>t</sub> | past] ≤ 1</em></div></div>
+    <div class="pb-s" id="gs3"><div class="pb-n">3.</div><div class="pb-x">Nature reveals X<sub>t</sub></div></div>
+    <div class="pb-s" id="gs4"><div class="pb-n">4.</div><div class="pb-x">W<sub>t</sub> = W<sub>t−1</sub> · S<sub>t</sub>(X<sub>t</sub>)</div></div>
+  </div>
+
+  <div class="cc ar169" id="game-wrap"><canvas id="c-game"></canvas><div class="cc-vig"></div><div class="cc-label">ABSTRACT GAME</div></div>
+  <div class="ctrls">
+    <button class="btn" onclick="runGame('abstract')">Play</button>
+    <div class="cg"><div class="cl">True mean</div><input type="range" id="gm-mu" min="-.5" max="1.5" step=".05" value=".5"><div class="cv" id="gm-mu-d">0.50</div></div>
+  </div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose">The same protocol applies in every domain. Here are two real-world applications of the testing-by-betting game:</p>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="cc ar32" id="neuro-wrap"><canvas id="c-neuro"></canvas><div class="cc-vig"></div><div class="cc-label">NEUROIMAGING · VOXEL ACTIVATION</div></div>
+      <div class="ctrls"><button class="btn" onclick="runGame('neuro')">Test Voxel</button></div>
+      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential monitoring of BOLD signal in a single brain voxel. Each fMRI volume provides one observation. The e-process accumulates evidence of activation <em>without</em> pre-specifying how many scans to collect.</p></div>
+    </div>
+    <div>
+      <div class="cc ar32" id="ab-wrap"><canvas id="c-ab"></canvas><div class="cc-vig"></div><div class="cc-label">A/B TESTING · CONVERSION RATE</div></div>
+      <div class="ctrls"><button class="btn" onclick="runGame('ab')">Run Test</button></div>
+      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential comparison of two conversion rates. Each visitor provides a Bernoulli observation. Peek at the result after every user — the e-process remains valid. <em>No need to wait for a fixed sample size.</em></p></div>
+    </div>
+  </div>
+  <div class="pf"><div class="pf-t">Section 7.6 — Testing by betting · Algorithm 7.16</div></div>
+</section>
+
+<!-- ═══ IV. E-PROCESS ═══ -->
+
+<section class="page" id="page-eprocess">
+  <div class="page-hdr"><div class="page-ttl">THE E-PROCESS</div><div class="page-ln"></div><div class="page-sub">Evidence accumulating through time</div></div>
+  <div class="cb">
+    <p class="prose">An e-process remains valid at <em>any stopping time</em>. You may peek whenever you wish and the conclusion holds. This is the gift of Ville's inequality.</p>
+    <div class="md">P( sup<sub>t</sub> M<sub>t</sub> ≥ 1/α ) ≤ α<span class="md-l">For any nonnegative supermartingale — valid at all times simultaneously.</span></div>
+  </div>
+  <div class="cc ar169" id="ep-wrap" style="position:relative;">
+    <canvas id="c-ep"></canvas><div class="cc-vig"></div>
+    <div class="ep-overlay ep-narr ep-narr-l" id="ep-nl">Each observation is a round<br>in a game against Nature.<br><br><em>Skeptic places a bet — constrained<br>so that under the null, no strategy<br>can systematically profit.</em></div>
+    <div class="ep-overlay ep-narr ep-narr-r" id="ep-nr">But if the alternative is true,<br>wealth grows — evidence accumulates<br>like light gathering in a lens.<br><br><em>No probability was assumed.<br>The game was assumed.<br>The game forced the probability.</em></div>
+    <div class="ep-overlay ep-eq" id="ep-eq">
+      <div class="eq-desc">The wealth of Skeptic, who bets against Nature</div>
+      <div class="eq-math">W₀ = 1 &nbsp;·&nbsp; Wₜ = Wₜ₋₁ · Sₜ(Xₜ)</div>
+      <div class="eq-desc">grows only when truth is on her side.</div>
+    </div>
+    <div class="ep-overlay ep-verdict" id="ep-vd">
+      <div class="v-main">The evidence has spoken.</div>
+      <div class="v-sub">Skeptic's wealth crosses 1/α — the null is rejected.</div>
+      <div class="v-note">By Ville's inequality, this could not happen by chance alone.</div>
+    </div>
+  </div>
+  <div class="ctrls"><button class="btn" onclick="initEP()">Witness Again</button></div>
+  <div class="pf"><div class="pf-t">Chapter 7 — Sequential e-values and e-processes</div></div>
+</section>
+
+<!-- ═══ V. BETTING STRATEGIES ═══ -->
+
+<section class="page" id="page-betting">
+  <div class="page-hdr"><div class="page-ttl">BETTING STRATEGIES</div><div class="page-ln"></div><div class="page-sub">How to wager against the null</div></div>
+  <div class="cb">
+    <p class="prose">The e-process framework offers freedom: <em>how much</em> of your wealth to bet on each round. The betting fraction λ<sub>t</sub> can be chosen differently, yielding different growth-risk profiles. Four canonical strategies:</p>
+    <p class="prose"><strong>All-In</strong> (λ=1): Bet everything every round. Maximum growth when right, maximum volatility. The product of raw e-values.</p>
+    <p class="prose"><strong>Conservative</strong> (λ fixed, small): Steady, predictable growth. Lower variance, slower accumulation. Good when you need robustness.</p>
+    <p class="prose"><strong>Empirically Adaptive</strong>: Start cautious (λ₁=0), then learn the optimal fraction from past e-values. Asymptotically log-optimal without knowing the alternative.</p>
+    <p class="prose"><strong>Log-Optimal</strong>: If you know the alternative Q, bet the Kelly fraction. Maximizes 𝔼<sub>Q</sub>[log W<sub>t</sub>]. The gold standard, rarely achievable in practice.</p>
+  </div>
+  <div class="cc ar169" id="bet-wrap"><canvas id="c-bet"></canvas><div class="cc-vig"></div></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#e8c95a;"></div>All-In</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4a9a8a;"></div>Conservative (λ=0.3)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5a8ab4;"></div>Empirically Adaptive</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8a6aaa;"></div>Log-Optimal (oracle)</div>
+  </div>
+  <div class="ctrls">
+    <button class="btn" onclick="initBetting()">Race Again</button>
+    <div class="cg"><div class="cl">True effect size</div><input type="range" id="bt-mu" min="0" max="1" step=".05" value=".4"><div class="cv" id="bt-mu-d">0.40</div></div>
+  </div>
+  <div class="pf"><div class="pf-t">Definition 7.21 — Betting strategies for e-processes</div></div>
+</section>
+
+<!-- ═══ VI. E vs P ═══ -->
+
+<section class="page" id="page-comparison">
+  <div class="page-hdr"><div class="page-ttl">E VERSUS P</div><div class="page-ln"></div><div class="page-sub">Two philosophies of evidence</div></div>
+  <div class="comp">
+    <div class="comp-h es">E-VALUE</div><div class="comp-h ps">P-VALUE</div>
+    <div class="comp-c es">A bet — Skeptic's realized wealth</div><div class="comp-c ps">A tail probability under the null</div>
+    <div class="comp-c es">Valid at <em>any</em> stopping time</div><div class="comp-c ps">Valid only at pre-specified n</div>
+    <div class="comp-c es">Multiply to combine independent evidence</div><div class="comp-c ps">Cannot be multiplied directly</div>
+    <div class="comp-c es">Average under <em>arbitrary dependence</em></div><div class="comp-c ps">Combining requires extra assumptions</div>
+    <div class="comp-c es">Markov: P(E ≥ 1/α) ≤ α. Always.</div><div class="comp-c ps">Requires distributional assumptions</div>
+  </div>
+  <div class="cc ar169" id="cmp-wrap"><canvas id="c-cmp"></canvas><div class="cc-vig"></div></div>
+  <div class="ctrls">
+    <button class="btn" onclick="initCmp()">Run Comparison</button>
+    <div class="cg"><div class="cl">True effect</div><input type="range" id="cm-ef" min="0" max="1" step=".05" value=".3"><div class="cv" id="cm-ef-d">0.30</div></div>
+  </div>
+  <div class="cb"><div class="section-spacer"></div>
+    <div class="qb"><div class="qt">An e-variable is genuinely a valid bet, but one over a p-variable is not — the latter is effectively "double dipping."</div><div class="qa">— Ramdas &amp; Wang, Section 1.5</div></div>
+  </div>
+  <div class="pf"><div class="pf-t">Section 2.3 — Calibrators · Section 1.5 — Betting interpretation</div></div>
+</section>
+
+<!-- ═══ VII. CONFIDENCE SEQUENCES ═══ -->
+
+<section class="page" id="page-confseq">
+  <div class="page-hdr"><div class="page-ttl">CONFIDENCE SEQUENCES</div><div class="page-ln"></div><div class="page-sub">The dual face of the e-process</div></div>
+  <div class="cb">
+    <p class="prose">Every e-process has a dual: a <strong>confidence sequence</strong> — an interval containing the true parameter at <em>every time step simultaneously</em>.</p>
+    <div class="md">P( ∀ t ≥ 1 : μ ∈ C<sub>t</sub> ) ≥ 1 − α<span class="md-l">A confidence interval is a photograph. A confidence sequence is a film.</span></div>
+    <p class="prose">It starts wide (little data, much uncertainty), then tightens as evidence accumulates, but <em>never loses its guarantee</em>. Stop collecting data whenever the interval is narrow enough for your purpose.</p>
+  </div>
+  <div class="cc ar169" id="cs-wrap"><canvas id="c-cs"></canvas><div class="cc-vig"></div></div>
+  <div class="ctrls">
+    <button class="btn" onclick="initCS()">Run Sequence</button>
+    <div class="cg"><div class="cl">True mean μ</div><input type="range" id="cs-mu" min="-1" max="2" step=".1" value=".5"><div class="cv" id="cs-mu-d">0.50</div></div>
+    <div class="cg"><div class="cl">Level (1−α)</div><input type="range" id="cs-al" min=".01" max=".2" step=".01" value=".05"><div class="cv" id="cs-al-d">95%</div></div>
+  </div>
+  <div class="pf"><div class="pf-t">Howard, Ramdas, McAuliffe &amp; Sekhon (2021) — Time-uniform confidence sequences</div></div>
+</section>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+
+<script>
+// ── UTILS ──
+const G=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+const R=(r,g,b,a)=>`rgba(${r},${g},${b},${a})`;
+const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const eO=t=>1-(1-t)*(1-t);
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const GOLD=[201,168,76],GD=[138,122,82],GB=[232,201,90],RED=[160,60,40],
+      TEAL=[74,154,138],BLUE=[90,138,180],VIOL=[138,106,170],PARCH=[212,197,160],BG=[6,5,4];
+
+function sCanvas(c){const d=window.devicePixelRatio||1,r=c.parentElement.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,w:r.width,h:r.height};}
+function glow(x,cx,cy,r,c,a){const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,R(c[0],c[1],c[2],a));g.addColorStop(.5,R(c[0],c[1],c[2],a*.3));g.addColorStop(1,R(c[0],c[1],c[2],0));x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();}
+function nCDF(x){const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;const s=x<0?-1:1;x=Math.abs(x)/Math.sqrt(2);const t=1/(1+p*x);return .5*(1+s*(1-((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x)));}
+
+const AF={};
+function stopAF(k){if(AF[k]){cancelAnimationFrame(AF[k]);AF[k]=null;}}
+
+// ── NAV ──
+document.querySelectorAll('.nav-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    const pg=t.dataset.page;
+    Object.keys(AF).forEach(k=>stopAF(k));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+    document.getElementById('page-'+pg).classList.add('active');
+    t.classList.add('active');
+    window.scrollTo(0,0);
+    setTimeout(()=>initPage(pg),80);
+  });
+});
+
+function initPage(pg){
+  if(pg==='intro')initPrologue();
+  if(pg==='evalue')initEValue();
+  if(pg==='game')initGamePage();
+  if(pg==='eprocess')initEP();
+  if(pg==='betting')initBetting();
+  if(pg==='comparison')initCmp();
+  if(pg==='confseq')initCS();
+}
+
+// ── I. PROLOGUE ──
+function initPrologue(){
+  const c=document.getElementById('c-prologue');const{x,w,h}=sCanvas(c);
+  let dust=Array.from({length:35},()=>({x:Math.random()*w,y:Math.random()*h,s:Math.random()*1.1+.3,sp:Math.random()*.08+.02,a:Math.random()*.18+.04,ph:Math.random()*Math.PI*2}));
+  function d(t){
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    glow(x,w*.5,h*.45,w*.35,[25,18,10],.25);
+    dust.forEach(p=>{p.y-=p.sp;p.x+=Math.sin(t*.0003+p.ph)*.04;if(p.y<-5){p.y=h+5;p.x=Math.random()*w;}x.fillStyle=R(PARCH[0],PARCH[1],PARCH[2],p.a*(.6+.4*Math.sin(t*.002+p.ph)));x.beginPath();x.arc(p.x,p.y,p.s,0,Math.PI*2);x.fill();});
+    const pulse=.7+.3*Math.sin(t*.001);
+    glow(x,w*.5,h*.5,55*pulse,GOLD,.06);
+    x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.12*pulse);x.lineWidth=.5;
+    for(let i=0;i<6;i++){x.save();x.translate(w*.5,h*.5);x.rotate(i*Math.PI/3+t*.0002);x.beginPath();x.moveTo(0,-25*pulse);x.lineTo(0,-60*pulse);x.stroke();x.restore();}
+    x.font=`italic ${Math.max(12,w*.03)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.3*pulse);x.textAlign='center';x.fillText('𝔼ₚ[ E ] ≤ 1',w*.5,h*.5+4);
+    AF.intro=requestAnimationFrame(d);
+  }
+  stopAF('intro');AF.intro=requestAnimationFrame(d);
+}
+
+// ── II. E-VALUE ──
+function initEValue(){
+  const c=document.getElementById('c-evalue');const{x,w,h}=sCanvas(c);
+  const sl=document.getElementById('ev-sl'),dp=document.getElementById('ev-disp');
+  function d(t){
+    const ev=parseFloat(sl.value);dp.textContent=ev.toFixed(1);
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    const bY=h*.5,maxE=50,lx=w*.08,rx=w*.92,bW=rx-lx;
+    // bar
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.18);x.lineWidth=1;x.beginPath();x.moveTo(lx,bY);x.lineTo(rx,bY);x.stroke();
+    [0,1,5,10,20,50].forEach(v=>{const px=lx+(v/maxE)*bW;x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.beginPath();x.moveTo(px,bY-5);x.lineTo(px,bY+5);x.stroke();x.font=`${Math.max(9,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(v.toString(),px,bY+18);});
+    // e=1 ref
+    const x1=lx+(1/maxE)*bW;
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.setLineDash([2,4]);x.beginPath();x.moveTo(x1,bY-h*.25);x.lineTo(x1,bY+24);x.stroke();x.setLineDash([]);
+    x.font=`italic ${Math.max(9,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.fillText('Break even',x1,bY-h*.25+12);
+    // 1/alpha ref
+    const x20=lx+(20/maxE)*bW;
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.08);x.setLineDash([2,4]);x.beginPath();x.moveTo(x20,bY-h*.2);x.lineTo(x20,bY+24);x.stroke();x.setLineDash([]);
+    x.font=`italic ${Math.max(9,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.fillText('1/α = 20',x20,bY-h*.2+12);
+    // marker
+    const xE=lx+(clamp(ev,0,maxE)/maxE)*bW;
+    const col=ev>1?GB:(ev<1?RED:GD);
+    glow(x,xE,bY,18+clamp(ev,0,40)*1.2,col,.15+clamp(ev,0,20)*.008);
+    x.fillStyle=R(col[0],col[1],col[2],.9);x.beginPath();x.arc(xE,bY,4.5,0,Math.PI*2);x.fill();
+    // text
+    const txt=ev>=1?`Skeptic holds $${ev.toFixed(1)}`:`Skeptic lost — $${ev.toFixed(2)} remains`;
+    x.font=`${Math.max(13,w*.025)}px 'EB Garamond',serif`;x.fillStyle=R(col[0],col[1],col[2],.65);x.textAlign='center';x.fillText(txt,w*.5,bY-35);
+    if(ev>=20){x.font=`italic ${Math.max(11,w*.016)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.4);x.fillText('Reject at α = 0.05',w*.5,bY+50);}
+    AF.evalue=requestAnimationFrame(d);
+  }
+  stopAF('evalue');AF.evalue=requestAnimationFrame(d);
+}
+
+// E-value distribution
+function runEVDist(){
+  const c=document.getElementById('c-evdist');const{x,w,h}=sCanvas(c);
+  const N=500,lam=.4,mu=.5;
+  const nullE=[],altE=[];
+  for(let i=0;i<N;i++){nullE.push(Math.exp(lam*G()-lam*lam/2));altE.push(Math.exp(lam*(mu+G())-lam*lam/2));}
+  // histogram
+  const bins=40,maxV=8;
+  function hist(arr){const h=new Array(bins).fill(0);arr.forEach(v=>{const b=Math.floor(clamp(v,0,maxV-.01)/maxV*bins);h[b]++;});return h.map(v=>v/arr.length);}
+  const hNull=hist(nullE),hAlt=hist(altE);
+  const maxH=Math.max(...hNull,...hAlt)*1.2;
+  let start=0;
+  function d(t){
+    if(!start)start=t;const el=t-start;const prog=Math.min(1,el/2500);
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    const mx=w*.06,my=h*.12,cw=w*.88,ch=h*.72;
+    const half=cw*.47,gap=cw*.06;
+    // null side
+    x.font=`${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';
+    x.fillText('UNDER THE NULL',mx+half*.5,my-4);
+    const drawBins=Math.floor(prog*bins);
+    for(let i=0;i<drawBins;i++){
+      const bx=mx+(i/bins)*half,bw=half/bins-1;
+      const bh=hNull[i]/maxH*ch;
+      x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.fillRect(bx,my+ch-bh,bw,bh);
+    }
+    // alt side
+    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);
+    x.fillText('UNDER THE ALTERNATIVE',mx+half+gap+half*.5,my-4);
+    for(let i=0;i<drawBins;i++){
+      const bx=mx+half+gap+(i/bins)*half,bw=half/bins-1;
+      const bh=hAlt[i]/maxH*ch;
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.3);x.fillRect(bx,my+ch-bh,bw,bh);
+    }
+    // axes
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.15);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+half,my+ch);x.stroke();
+    x.beginPath();x.moveTo(mx+half+gap,my+ch);x.lineTo(mx+half*2+gap,my+ch);x.stroke();
+    // E=1 markers
+    const e1x=mx+(1/maxV)*half;
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.15);x.setLineDash([2,3]);x.beginPath();x.moveTo(e1x,my);x.lineTo(e1x,my+ch);x.stroke();x.setLineDash([]);
+    const e1x2=mx+half+gap+(1/maxV)*half;
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.15);x.setLineDash([2,3]);x.beginPath();x.moveTo(e1x2,my);x.lineTo(e1x2,my+ch);x.stroke();x.setLineDash([]);
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';
+    x.fillText('E = 1',e1x,my+ch+14);x.fillText('E = 1',e1x2,my+ch+14);
+    // annotation
+    if(prog>.8){
+      x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';
+      x.fillText('Centered around 1 — no systematic profit',mx+half*.5,my+ch+28);
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.25);
+      x.fillText('Shifted right — Skeptic profits on average',mx+half+gap+half*.5,my+ch+28);
+    }
+    if(prog<1)AF.evdist=requestAnimationFrame(d);
+  }
+  stopAF('evdist');AF.evdist=requestAnimationFrame(d);
+}
+
+// ── III. GAME ──
+function initGamePage(){
+  const c=document.getElementById('c-game');const{x,w,h}=sCanvas(c);
+  x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);x.font=`italic ${Math.max(12,w*.02)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Press Play to begin',w*.5,h*.5);
+  document.getElementById('gm-mu').oninput=function(){document.getElementById('gm-mu-d').textContent=parseFloat(this.value).toFixed(2);};
+  // static neuro & ab
+  ['c-neuro','c-ab'].forEach(id=>{const cc=document.getElementById(id);if(!cc)return;const{x:cx,w:cw,h:ch}=sCanvas(cc);cx.fillStyle=R(6,5,4,1);cx.fillRect(0,0,cw,ch);cx.font=`italic ${Math.max(11,cw*.025)}px 'EB Garamond',serif`;cx.fillStyle=R(GD[0],GD[1],GD[2],.2);cx.textAlign='center';cx.fillText('Press button to begin',cw*.5,ch*.5);});
+}
+
+function runGame(mode){
+  let canvasId,N,mu,lam,xLabel,yLabel;
+  if(mode==='abstract'){canvasId='c-game';N=80;mu=parseFloat(document.getElementById('gm-mu').value);lam=.35;xLabel='Observations';yLabel='W(t)';}
+  else if(mode==='neuro'){canvasId='c-neuro';N=60;mu=.35;lam=.3;xLabel='fMRI Volumes';yLabel='Evidence';}
+  else{canvasId='c-ab';N=60;mu=.12;lam=.5;xLabel='Visitors';yLabel='Evidence';}
+
+  const vals=[1],es=[];
+  for(let i=0;i<N;i++){
+    const obs=mode==='ab'?((Math.random()<(.15+mu))?1:0)-((Math.random()<.15)?1:0):(mu+G());
+    const e=Math.exp(lam*obs-lam*lam/2);es.push(e);vals.push(Math.max(vals[vals.length-1]*e,1e-4));
+  }
+
+  const c=document.getElementById(canvasId);const{x,w,h}=sCanvas(c);
+  let start=0;
+  function d(t){
+    if(!start)start=t;const el=t-start,prog=Math.min(1,el/10000),upTo=Math.floor(prog*N);
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);glow(x,w*.5,h*.4,w*.3,[20,15,8],.15);
+    const mx=w*.13,my=h*.14,cw=w*.78,ch=h*.66;
+    const logV=vals.map(v=>Math.log10(Math.max(v,.001)));
+    const logMax=Math.max(1.5,Math.max(...logV)*1.2);
+    const logMin=Math.min(-.5,Math.min(...logV)*1.1);
+
+    // clip region
+    x.save();x.beginPath();x.rect(mx-2,my-2,cw+4,ch+4);x.clip();
+
+    // axes
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.18);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+cw,my+ch);x.stroke();
+    x.beginPath();x.moveTo(mx,my);x.lineTo(mx,my+ch);x.stroke();
+
+    // threshold
+    const thLY=(Math.log10(20)-logMin)/(logMax-logMin);
+    const thPx=my+ch*(1-thLY);
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.12);x.setLineDash([3,6]);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,thPx);x.lineTo(mx+cw,thPx);x.stroke();x.setLineDash([]);
+
+    // W=1 line
+    const oneLY=(0-logMin)/(logMax-logMin);const onePx=my+ch*(1-oneLY);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.06);x.setLineDash([2,4]);
+    x.beginPath();x.moveTo(mx,onePx);x.lineTo(mx+cw,onePx);x.stroke();x.setLineDash([]);
+
+    // line
+    if(upTo>0){
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.8);x.lineWidth=1.8;x.lineJoin='round';
+      x.beginPath();
+      for(let i=0;i<=upTo;i++){
+        const px=mx+(i/N)*cw;const ly=(logV[i]-logMin)/(logMax-logMin);const py=my+ch*(1-ly);
+        if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+      // head
+      const hi=Math.min(upTo,N);const hx=mx+(hi/N)*cw;const hly=(logV[hi]-logMin)/(logMax-logMin);const hy=my+ch*(1-hly);
+      glow(x,hx,hy,16,GB,.18);x.fillStyle=R(GB[0],GB[1],GB[2],.9);x.beginPath();x.arc(hx,hy,2.5,0,Math.PI*2);x.fill();
+    }
+    x.restore(); // unclip
+
+    // labels
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(yLabel,0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(xLabel,mx+cw*.5,my+ch+18);
+    // threshold label
+    const thPxCl=clamp(thPx,my,my+ch);
+    x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.textAlign='right';x.fillText('1/α',mx-5,thPxCl+3);
+    // value display
+    if(upTo>0){
+      x.font=`${Math.max(11,w*.016)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.5);x.textAlign='right';
+      x.fillText(`W = ${vals[Math.min(upTo,N)].toFixed(2)}`,mx+cw,my+12);
+    }
+    if(prog<1)AF[mode]=requestAnimationFrame(d);
+  }
+  stopAF(mode);AF[mode]=requestAnimationFrame(d);
+}
+
+// ── IV. E-PROCESS ──
+function initEP(){
+  const c=document.getElementById('c-ep');const{x,w,h}=sCanvas(c);
+  const N=100,mu=.42,lam=.38;
+  const vals=[1],es=[];
+  for(let i=0;i<N;i++){const v=mu+G();const e=Math.exp(lam*v-lam*lam/2);es.push(e);vals.push(Math.max(vals[vals.length-1]*e,.001));}
+  let dust=Array.from({length:40},()=>({x:Math.random()*w,y:Math.random()*h,s:Math.random()*1+.3,sp:Math.random()*.1+.02,a:Math.random()*.15+.04,ph:Math.random()*Math.PI*2}));
+  let start=0,crossIdx=-1;
+
+  // Reset all HTML overlays
+  const olNL=document.getElementById('ep-nl'),olNR=document.getElementById('ep-nr'),
+        olEQ=document.getElementById('ep-eq'),olVD=document.getElementById('ep-vd');
+  [olNL,olNR,olEQ,olVD].forEach(el=>{if(el){el.classList.remove('vis','out');}});
+
+  function d(t){
+    if(!start)start=t;const el=t-start;
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);glow(x,w*.5,h*.4,w*.35,[22,16,8],.2);
+    dust.forEach(p=>{p.y-=p.sp;p.x+=Math.sin(t*.0003+p.ph)*.04;if(p.y<-5){p.y=h+5;p.x=Math.random()*w;}x.fillStyle=R(PARCH[0],PARCH[1],PARCH[2],p.a*(.6+.4*Math.sin(t*.002+p.ph)));x.beginPath();x.arc(p.x,p.y,p.s,0,Math.PI*2);x.fill();});
+
+    // title phase
+    if(el<3500){
+      const a=el<1800?eIO(el/1800):Math.max(0,1-eIO((el-2500)/1000));
+      x.font=`600 ${Math.max(18,w*.045)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],a*.7);x.textAlign='center';x.fillText('THE E-PROCESS',w*.5,h*.44);
+      x.font=`italic ${Math.max(11,w*.017)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],a*.45);x.fillText('A meditation on the accumulation of evidence',w*.5,h*.52);
+      AF.eprocess=requestAnimationFrame(d);return;
+    }
+
+    const drawEl=el-3500,prog=Math.min(1,drawEl/20000),upTo=Math.floor(prog*N);
+    const mx=w*.12,my=h*.14,cw=w*.78,ch=h*.66;
+    const logV=vals.map(v=>Math.log10(Math.max(v,.001)));
+    const logMax=Math.max(2,Math.max(...logV)*1.15);
+
+    // ── HTML overlay timing ──
+    if(olEQ){
+      if(drawEl>1800&&drawEl<17000){olEQ.classList.add('vis');olEQ.classList.remove('out');}
+      if(drawEl>=17000&&!olEQ.classList.contains('out')){olEQ.classList.add('out');olEQ.classList.remove('vis');}
+    }
+    if(olNL){
+      if(drawEl>3500&&drawEl<12000){olNL.classList.add('vis');olNL.classList.remove('out');}
+      if(drawEl>=12000&&!olNL.classList.contains('out')){olNL.classList.add('out');olNL.classList.remove('vis');}
+    }
+    if(olNR){
+      if(drawEl>7500&&drawEl<16000){olNR.classList.add('vis');olNR.classList.remove('out');}
+      if(drawEl>=16000&&!olNR.classList.contains('out')){olNR.classList.add('out');olNR.classList.remove('vis');}
+    }
+    if(olVD&&crossIdx>0&&upTo>crossIdx+12){olVD.classList.add('vis');}
+
+    x.save();x.beginPath();x.rect(mx-2,my-2,cw+4,ch+4);x.clip();
+
+    // axes
+    const axP=Math.min(1,(drawEl-300)/1800);
+    if(axP>0){const ae=eIO(axP);
+      x.strokeStyle=R(GD[0],GD[1],GD[2],.18*ae);x.lineWidth=.5;
+      x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+cw*ae,my+ch);x.stroke();
+      x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx,my+ch-ch*ae);x.stroke();
+    }
+
+    // threshold
+    const thP=Math.min(1,(drawEl-2500)/1500);
+    if(thP>0){const te=eIO(thP);const thY=my+ch*(1-Math.log10(20)/logMax);
+      x.strokeStyle=R(GB[0],GB[1],GB[2],.15*te);x.setLineDash([3,6]);x.lineWidth=.5;
+      x.beginPath();x.moveTo(mx,thY);x.lineTo(mx+cw*te,thY);x.stroke();x.setLineDash([]);
+    }
+
+    // line
+    if(upTo>0){
+      // trail glow
+      for(let i=Math.max(1,upTo-10);i<=upTo;i++){const px=mx+(i/N)*cw;const py=my+ch*(1-logV[i]/logMax);const age=(upTo-i)/10;glow(x,px,py,12,GOLD,.012*(1-age));}
+
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.85);x.lineWidth=2;x.lineJoin='round';x.lineCap='round';
+      x.beginPath();
+      for(let i=0;i<=upTo;i++){const px=mx+(i/N)*cw;const py=my+ch*(1-logV[i]/logMax);if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}
+      x.stroke();
+      const hi=upTo;const hx=mx+(hi/N)*cw,hy=my+ch*(1-logV[hi]/logMax);
+      const pulse=.6+.4*Math.sin(t*.005);
+      glow(x,hx,hy,22*pulse,GB,.22);x.fillStyle=R(GB[0],GB[1],GB[2],.9);x.beginPath();x.arc(hx,hy,2.5,0,Math.PI*2);x.fill();
+      // data arrival pulses
+      for(let i=Math.max(1,upTo-8);i<=upTo;i++){const px=mx+(i/N)*cw,py=my+ch*(1-logV[i]/logMax);const age=(upTo-i)/8;if(age<1){const col=es[i-1]>1.3?GB:(es[i-1]<.7?RED:GD);x.strokeStyle=R(col[0],col[1],col[2],(1-age)*.22);x.lineWidth=.5;x.beginPath();x.arc(px,py,(1-age)*12,0,Math.PI*2);x.stroke();}}
+      // crossing detection & animation
+      if(crossIdx<0){for(let i=1;i<=upTo;i++){if(vals[i]>=20&&vals[i-1]<20){crossIdx=i;break;}}}
+      if(crossIdx>0&&upTo>=crossIdx){
+        const cx2=mx+(crossIdx/N)*cw,cy2=my+ch*(1-logV[crossIdx]/logMax);
+        const vp=Math.min(1,(upTo-crossIdx)/15);
+        if(vp>0){const ve=eIO(vp);
+          x.strokeStyle=R(GB[0],GB[1],GB[2],(1-ve*.5)*.3);x.lineWidth=1;x.beginPath();x.arc(cx2,cy2,ve*70,0,Math.PI*2);x.stroke();
+          if(vp>.2){const ve2=eIO((vp-.2)/.8);x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],(1-ve2)*.15);x.lineWidth=.6;x.beginPath();x.arc(cx2,cy2,ve2*120,0,Math.PI*2);x.stroke();}
+          glow(x,cx2,cy2,40*ve,GB,.15);
+          // vertical drop line to axis
+          x.strokeStyle=R(GB[0],GB[1],GB[2],ve*.2);x.lineWidth=.5;x.setLineDash([2,4]);
+          x.beginPath();x.moveTo(cx2,cy2);x.lineTo(cx2,my+ch);x.stroke();x.setLineDash([]);
+        }
+      }
+    }
+    x.restore();
+
+    // labels outside clip region
+    if(axP>.5){const la=eO((axP-.5)*2);
+      x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35*la);x.textAlign='center';x.fillText('W(t) — Skeptic\'s Wealth',0,0);x.restore();
+      x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35*la);x.textAlign='center';x.fillText('Observations',mx+cw*.5,my+ch+18);
+    }
+    if(thP>.6){x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.3*(thP-.6)/.4);x.textAlign='left';x.fillText('1/α — threshold of conviction',mx+cw+6,my+ch*(1-Math.log10(20)/logMax)+3);}
+    // crossing time label
+    if(crossIdx>0&&upTo>=crossIdx){
+      const cx2=mx+(crossIdx/N)*cw;
+      const vp=Math.min(1,(upTo-crossIdx)/15);
+      if(vp>.3){x.font=`${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],eO((vp-.3)/.7)*.5);x.textAlign='center';x.fillText(`τ = ${crossIdx}`,cx2,my+ch+13);}
+    }
+
+    AF.eprocess=requestAnimationFrame(d);
+  }
+  stopAF('eprocess');crossIdx=-1;start=0;AF.eprocess=requestAnimationFrame(d);
+}
+
+// ── V. BETTING STRATEGIES ──
+function initBetting(){
+  document.getElementById('bt-mu').oninput=function(){document.getElementById('bt-mu-d').textContent=parseFloat(this.value).toFixed(2);};
+  const c=document.getElementById('c-bet');const{x,w,h}=sCanvas(c);
+  const mu=parseFloat(document.getElementById('bt-mu').value);
+  const N=100,lam=.4;
+  // shared e-values
+  const evals=[];for(let i=0;i<N;i++){evals.push(Math.exp(lam*(mu+G())-lam*lam/2));}
+
+  // All-in: product
+  const allIn=[1];for(let i=0;i<N;i++)allIn.push(Math.max(allIn[allIn.length-1]*evals[i],.001));
+  // Conservative: lambda=0.3
+  const consv=[1];for(let i=0;i<N;i++){const inc=.7+.3*evals[i];consv.push(Math.max(consv[consv.length-1]*inc,.001));}
+  // Adaptive: start at 0, learn
+  const adapt=[1];let pastE=[];
+  for(let i=0;i<N;i++){
+    let lb=0;
+    if(pastE.length>1){const mn=pastE.reduce((a,b)=>a+b,0)/pastE.length;if(mn>1){lb=Math.min(.6,Math.max(0,(mn-1)/mn));}}
+    const inc=(1-lb)+lb*evals[i];
+    adapt.push(Math.max(adapt[adapt.length-1]*inc,.001));pastE.push(evals[i]);
+  }
+  // Log-optimal (oracle, knows mu): lambda*=mu/sigma^2 capped
+  const optLam=clamp(mu,0,.8);
+  const logOpt=[1];for(let i=0;i<N;i++){const inc=(1-optLam)+optLam*evals[i];logOpt.push(Math.max(logOpt[logOpt.length-1]*inc,.001));}
+
+  const traces=[{v:allIn,c:GB,n:'All-In'},{v:consv,c:TEAL,n:'Conservative'},{v:adapt,c:BLUE,n:'Adaptive'},{v:logOpt,c:VIOL,n:'Log-Optimal'}];
+  let start=0;
+
+  function d(t){
+    if(!start)start=t;const el=t-start,prog=Math.min(1,el/14000),upTo=Math.floor(prog*N);
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);glow(x,w*.5,h*.4,w*.3,[20,15,8],.12);
+    const mx=w*.12,my=h*.12,cw=w*.78,ch=h*.7;
+    const allV=traces.flatMap(tr=>tr.v.slice(0,upTo+1));
+    const logAll=allV.map(v=>Math.log10(Math.max(v,.001)));
+    const logMax=Math.max(2,Math.max(...logAll)*1.15);
+    const logMin=Math.min(-.5,Math.min(...logAll)*1.1);
+
+    x.save();x.beginPath();x.rect(mx-2,my-2,cw+4,ch+4);x.clip();
+
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.15);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+cw,my+ch);x.stroke();
+    x.beginPath();x.moveTo(mx,my);x.lineTo(mx,my+ch);x.stroke();
+    // threshold
+    const thLY=(Math.log10(20)-logMin)/(logMax-logMin);const thPx=my+ch*(1-thLY);
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.08);x.setLineDash([3,6]);x.beginPath();x.moveTo(mx,thPx);x.lineTo(mx+cw,thPx);x.stroke();x.setLineDash([]);
+
+    traces.forEach(tr=>{
+      const logV=tr.v.map(v=>Math.log10(Math.max(v,.001)));
+      x.strokeStyle=R(tr.c[0],tr.c[1],tr.c[2],.7);x.lineWidth=1.5;x.lineJoin='round';
+      x.beginPath();
+      for(let i=0;i<=upTo;i++){const px=mx+(i/N)*cw;const ly=(logV[i]-logMin)/(logMax-logMin);const py=my+ch*(1-ly);if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}
+      x.stroke();
+      // head
+      if(upTo>0){const hi=upTo;const hx=mx+(hi/N)*cw,hly=(logV[hi]-logMin)/(logMax-logMin),hy=my+ch*(1-hly);
+        x.fillStyle=R(tr.c[0],tr.c[1],tr.c[2],.8);x.beginPath();x.arc(hx,hy,2.5,0,Math.PI*2);x.fill();}
+    });
+    x.restore();
+
+    // axis labels
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Observations (same data for all strategies)',mx+cw*.5,my+ch+18);
+    x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.2);x.textAlign='right';x.fillText('1/α',mx-5,clamp(thPx,my,my+ch)+3);
+
+    // final values
+    if(prog>.9){
+      let yOff=my+8;
+      traces.forEach(tr=>{
+        x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(tr.c[0],tr.c[1],tr.c[2],.5);x.textAlign='right';
+        x.fillText(`${tr.n}: W=${tr.v[N].toFixed(1)}`,mx+cw,yOff);yOff+=14;
+      });
+    }
+    if(prog<1)AF.betting=requestAnimationFrame(d);
+  }
+  stopAF('betting');AF.betting=requestAnimationFrame(d);
+}
+
+// ── VI. E vs P ──
+function initCmp(){
+  document.getElementById('cm-ef').oninput=function(){document.getElementById('cm-ef-d').textContent=parseFloat(this.value).toFixed(2);};
+  const c=document.getElementById('c-cmp');const{x,w,h}=sCanvas(c);
+  const mu=parseFloat(document.getElementById('cm-ef').value);
+  const N=80,lam=.35;
+  const xs=Array.from({length:N},()=>mu+G());
+  const eVals=[1];for(let i=0;i<N;i++){const e=Math.exp(lam*xs[i]-lam*lam/2);eVals.push(Math.max(eVals[eVals.length-1]*e,.001));}
+  const pVals=[];let sum=0;for(let i=0;i<N;i++){sum+=xs[i];const z=sum/Math.sqrt(i+1);pVals.push(Math.max(2*(1-nCDF(Math.abs(z))),1e-10));}
+  let start=0;
+
+  function d(t){
+    if(!start)start=t;const el=t-start,prog=Math.min(1,el/12000),upTo=Math.max(1,Math.floor(prog*N));
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    const half=w*.44,gap=w*.04,mx=w*.06,my=h*.14,ch=h*.66;
+
+    // ── LEFT: E-process (log scale) ──
+    const logE=eVals.map(v=>Math.log10(Math.max(v,.001)));
+    const logMax=Math.max(1.5,Math.max(...logE)*1.15);
+    const logMin=Math.min(-.3,Math.min(...logE.slice(0,upTo+1))*1.1);
+
+    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='center';x.fillText('E-PROCESS',mx+half*.5,my-6);
+
+    x.save();x.beginPath();x.rect(mx-1,my-1,half+2,ch+2);x.clip();
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.15);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+half,my+ch);x.stroke();
+    x.beginPath();x.moveTo(mx,my);x.lineTo(mx,my+ch);x.stroke();
+    // threshold
+    const thLY=(Math.log10(20)-logMin)/(logMax-logMin);const thPx=my+ch*(1-thLY);
+    x.strokeStyle=R(GB[0],GB[1],GB[2],.1);x.setLineDash([2,5]);x.beginPath();x.moveTo(mx,thPx);x.lineTo(mx+half,thPx);x.stroke();x.setLineDash([]);
+    // line
+    x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.8);x.lineWidth=1.6;x.lineJoin='round';x.beginPath();
+    for(let i=0;i<=upTo;i++){const px=mx+(i/N)*half;const ly=(logE[i]-logMin)/(logMax-logMin);const py=my+ch*(1-ly);if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    if(upTo>0){const hx=mx+(upTo/N)*half,hly=(logE[upTo]-logMin)/(logMax-logMin),hy=my+ch*(1-hly);glow(x,hx,hy,12,GB,.15);}
+    x.restore();
+
+    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Peek freely — always valid',mx+half*.5,my+ch+14);
+
+    // ── RIGHT: P-value ──
+    const rx=mx+half+gap;
+    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText('P-VALUE',rx+half*.5,my-6);
+
+    x.save();x.beginPath();x.rect(rx-1,my-1,half+2,ch+2);x.clip();
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.15);x.lineWidth=.5;
+    x.beginPath();x.moveTo(rx,my+ch);x.lineTo(rx+half,my+ch);x.stroke();
+    x.beginPath();x.moveTo(rx,my);x.lineTo(rx,my+ch);x.stroke();
+    // p=0.05
+    const pThY=my+ch*(1-.05);
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.1);x.setLineDash([2,5]);x.beginPath();x.moveTo(rx,pThY);x.lineTo(rx+half,pThY);x.stroke();x.setLineDash([]);
+    // line
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.6);x.lineWidth=1.4;x.lineJoin='round';x.beginPath();
+    for(let i=0;i<upTo;i++){const px=rx+((i+1)/N)*half;const py=my+ch*(1-clamp(pVals[i],0,1));if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}
+    x.stroke();
+    x.restore();
+
+    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Valid only at pre-specified n',rx+half*.5,my+ch+14);
+
+    if(prog<1)AF.comparison=requestAnimationFrame(d);
+  }
+  stopAF('comparison');AF.comparison=requestAnimationFrame(d);
+}
+
+// ── VII. CONFIDENCE SEQUENCES ──
+function initCS(){
+  document.getElementById('cs-mu').oninput=function(){document.getElementById('cs-mu-d').textContent=parseFloat(this.value).toFixed(2);};
+  document.getElementById('cs-al').oninput=function(){document.getElementById('cs-al-d').textContent=Math.round((1-parseFloat(this.value))*100)+'%';};
+
+  const c=document.getElementById('c-cs');const{x,w,h}=sCanvas(c);
+  const mu=parseFloat(document.getElementById('cs-mu').value);
+  const alpha=parseFloat(document.getElementById('cs-al').value);
+  const N=100;
+  const xs=Array.from({length:N},()=>mu+G());
+  const means=[],ups=[],lows=[];
+  let sum=0,sumSq=0;
+  for(let i=0;i<N;i++){
+    sum+=xs[i];sumSq+=xs[i]*xs[i];const n=i+1;const m=sum/n;means.push(m);
+    const v=n>1?(sumSq-sum*sum/n)/(n-1):1;
+    const rho=Math.max(.01,n*v/(2*Math.log(1/alpha)+Math.log(1+2*Math.log(1/alpha))));
+    const width=Math.sqrt((n*v+rho)*(Math.log(1+n*v/rho)+2*Math.log(2/alpha)))/n;
+    ups.push(m+width);lows.push(m-width);
+  }
+  let start=0;
+
+  function d(t){
+    if(!start)start=t;const el=t-start,prog=Math.min(1,el/14000),upTo=Math.max(1,Math.floor(prog*N));
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);glow(x,w*.5,h*.4,w*.3,[20,15,8],.1);
+    const mx=w*.1,my=h*.1,cw=w*.8,ch=h*.72;
+    const allV=[...ups.slice(0,upTo),...lows.slice(0,upTo),mu];
+    const yMin=Math.min(...allV)-.25,yMax=Math.max(...allV)+.25;
+    const toY=v=>my+ch*(1-(v-yMin)/(yMax-yMin));
+    const toX=i=>mx+(i/(N-1))*cw;
+
+    x.save();x.beginPath();x.rect(mx-1,my-1,cw+2,ch+2);x.clip();
+
+    // axes
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.lineWidth=.5;
+    x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+cw,my+ch);x.stroke();
+    x.beginPath();x.moveTo(mx,my);x.lineTo(mx,my+ch);x.stroke();
+
+    // true mean
+    const trY=toY(mu);
+    x.strokeStyle=R(TEAL[0],TEAL[1],TEAL[2],.2);x.setLineDash([4,5]);x.lineWidth=.8;
+    x.beginPath();x.moveTo(mx,trY);x.lineTo(mx+cw,trY);x.stroke();x.setLineDash([]);
+
+    // confidence band
+    if(upTo>1){
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.05);x.beginPath();
+      for(let i=0;i<upTo;i++){if(i===0)x.moveTo(toX(i),toY(ups[i]));else x.lineTo(toX(i),toY(ups[i]));}
+      for(let i=upTo-1;i>=0;i--)x.lineTo(toX(i),toY(lows[i]));x.closePath();x.fill();
+      // edges
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.2);x.lineWidth=.7;
+      x.beginPath();for(let i=0;i<upTo;i++){if(i===0)x.moveTo(toX(i),toY(ups[i]));else x.lineTo(toX(i),toY(ups[i]));}x.stroke();
+      x.beginPath();for(let i=0;i<upTo;i++){if(i===0)x.moveTo(toX(i),toY(lows[i]));else x.lineTo(toX(i),toY(lows[i]));}x.stroke();
+      // running mean
+      x.strokeStyle=R(GB[0],GB[1],GB[2],.65);x.lineWidth=1.4;
+      x.beginPath();for(let i=0;i<upTo;i++){if(i===0)x.moveTo(toX(i),toY(means[i]));else x.lineTo(toX(i),toY(means[i]));}x.stroke();
+      // head
+      const hx=toX(upTo-1),hy=toY(means[upTo-1]);glow(x,hx,hy,14,GB,.15);
+      x.fillStyle=R(GB[0],GB[1],GB[2],.9);x.beginPath();x.arc(hx,hy,2,0,Math.PI*2);x.fill();
+
+      // width bracket at current position
+      const lastUp=toY(ups[upTo-1]),lastLow=toY(lows[upTo-1]);
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.25);x.lineWidth=.8;
+      const bx=hx+10;
+      x.beginPath();x.moveTo(bx-4,lastUp);x.lineTo(bx,lastUp);x.lineTo(bx,lastLow);x.lineTo(bx-4,lastLow);x.stroke();
+      // small arrow heads
+      x.beginPath();x.moveTo(bx-3,lastUp+4);x.lineTo(bx,lastUp);x.lineTo(bx+3,lastUp+4);x.stroke();
+      x.beginPath();x.moveTo(bx-3,lastLow-4);x.lineTo(bx,lastLow);x.lineTo(bx+3,lastLow-4);x.stroke();
+    }
+    x.restore();
+
+    // labels outside clip
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(TEAL[0],TEAL[1],TEAL[2],.35);x.textAlign='left';
+    x.fillText(`True μ = ${mu.toFixed(2)}`,mx+cw+6,clamp(toY(mu),my+5,my+ch-5));
+
+    if(upTo>1){
+      const lastW=ups[upTo-1]-lows[upTo-1];
+      const midY=(toY(ups[upTo-1])+toY(lows[upTo-1]))/2;
+      const bx=toX(upTo-1)+18;
+      x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';
+      x.fillText(`± ${(lastW/2).toFixed(3)}`,bx+4,clamp(midY+3,my+10,my+ch-5));
+    }
+
+    // band label
+    x.font=`${Math.max(10,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.35);x.textAlign='right';
+    x.fillText(`${Math.round((1-alpha)*100)}% Confidence Sequence`,mx+cw,my+10);
+    x.font=`${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);
+    x.fillText(`[${lows[upTo-1]?.toFixed(3) ?? '—'}, ${ups[upTo-1]?.toFixed(3) ?? '—'}]`,mx+cw,my+22);
+
+    // axis labels
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Parameter',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Sample size',mx+cw*.5,my+ch+18);
+
+    if(upTo>N*.4){x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='center';x.fillText('Valid at every time — stop whenever you wish',mx+cw*.5,my+ch+32);}
+
+    if(prog<1)AF.confseq=requestAnimationFrame(d);
+  }
+  stopAF('confseq');AF.confseq=requestAnimationFrame(d);
+}
+
+// ── BOOT ──
+window.addEventListener('resize',()=>{const active=document.querySelector('.nav-tab.active');if(active)setTimeout(()=>initPage(active.dataset.page),100);});
+setTimeout(initPrologue,200);
+</script>
+
+</body>
+</html>
