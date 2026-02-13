@@ -4,6 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <title>The E-Value — Game-Theoretic Evidence</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
@@ -15,6 +17,7 @@
 –blue:#5a8ab4;–blue-dim:#4a6a8a;–violet:#8a6aaa;–violet-dim:#6a5a7a;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
+html{background:#060504;color-scheme:dark;}
 body{background:var(–bg);color:var(–gold);font-family:‘Cormorant Garamond’,serif;overflow-x:hidden;min-height:100vh;}
 
 /* ── NAV ── */
@@ -29,7 +32,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(
 .nav-num{font-family:‘Cinzel’,serif;font-size:.7em;margin-right:3px;opacity:.5;}
 
 /* ── PAGE ── */
-.page{display:none;min-height:100vh;padding-top:60px;opacity:0;transition:opacity .8s;}
+.page{display:none;min-height:100vh;padding-top:60px;opacity:0;transition:opacity .8s;background:var(–bg);}
 .page.active{display:block;opacity:1;}
 .page-hdr{text-align:center;padding:clamp(24px,5vh,60px) 16px clamp(8px,2vh,20px);}
 .page-ttl{font-family:‘Cinzel’,serif;font-size:clamp(20px,3.5vw,44px);font-weight:600;letter-spacing:.12em;color:var(–gold);text-shadow:0 0 40px rgba(201,168,76,.12);}
