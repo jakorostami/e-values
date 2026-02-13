@@ -6,19 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <meta name="supported-color-schemes" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <title>The E-Value — Game-Theoretic Evidence</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
 :root {
-–bg:#060504;–bg-warm:#0d0a07;–gold:#c9a84c;–gold-dim:#8a7a52;
-–gold-bright:#e8c95a;–gold-pale:#d4c49a;–red:#a03c28;–red-soft:#8a4a3a;
-–parchment:#d4c5a0;–ink:#28200f;–teal:#4a9a8a;–teal-dim:#3a7a6a;
-–blue:#5a8ab4;–blue-dim:#4a6a8a;–violet:#8a6aaa;–violet-dim:#6a5a7a;
+–bg:#060504;–bg-warm:#0d0a07;–gold:#d4b455;–gold-dim:#a89460;
+–gold-bright:#f0d464;–gold-pale:#ddd0a8;–red:#b84430;–red-soft:#9a5040;
+–parchment:#d4c5a0;–ink:#28200f;–teal:#5ab09e;–teal-dim:#4a8a7a;
+–blue:#6a9ac4;–blue-dim:#5a7a9a;–violet:#9a7aba;–violet-dim:#7a6a8a;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{background:#060504;color-scheme:dark;}
-body{background:var(–bg);color:var(–gold);font-family:‘Cormorant Garamond’,serif;overflow-x:hidden;min-height:100vh;}
+html{background:#060504 !important;color-scheme:dark;}
+body{background:#060504 !important;color:var(–gold);font-family:‘Cormorant Garamond’,serif;overflow-x:hidden;min-height:100vh;}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(180deg,rgba(6,5,4,.97)0%,rgba(6,5,4,.88)80%,transparent);padding:10px 0 18px;backdrop-filter:blur(8px);}
@@ -32,7 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(
 .nav-num{font-family:‘Cinzel’,serif;font-size:.7em;margin-right:3px;opacity:.5;}
 
 /* ── PAGE ── */
-.page{display:none;min-height:100vh;padding-top:60px;opacity:0;transition:opacity .8s;background:var(–bg);}
+.page{display:none;min-height:100vh;padding-top:60px;opacity:0;transition:opacity .8s;background:#060504 !important;color:var(–gold);}
 .page.active{display:block;opacity:1;}
 .page-hdr{text-align:center;padding:clamp(24px,5vh,60px) 16px clamp(8px,2vh,20px);}
 .page-ttl{font-family:‘Cinzel’,serif;font-size:clamp(20px,3.5vw,44px);font-weight:600;letter-spacing:.12em;color:var(–gold);text-shadow:0 0 40px rgba(201,168,76,.12);}
@@ -100,14 +102,14 @@ input[type=“range”]::-webkit-slider-thumb{-webkit-appearance:none;width:11px
 .ep-verdict{top:6%;bottom:auto;left:50%;transform:translateX(-50%);text-align:center;max-width:clamp(260px,45vw,480px);}
 .ep-verdict .v-main{font-family:‘EB Garamond’,serif;font-size:clamp(15px,1.8vw,22px);color:var(–gold);font-style:italic;}
 .ep-verdict .v-sub{font-family:‘EB Garamond’,serif;font-size:clamp(11px,1.2vw,15px);color:var(–gold-dim);margin-top:4px;}
-.ep-verdict .v-note{font-family:‘Cormorant Garamond’,serif;font-size:clamp(10px,1vw,13px);color:rgba(138,122,82,.5);margin-top:6px;}
+.ep-verdict .v-note{font-family:‘Cormorant Garamond’,serif;font-size:clamp(10px,1vw,13px);color:rgba(168,148,96,.6);margin-top:6px;}
 .ep-eq{bottom:6%;top:auto;left:50%;transform:translateX(-50%);text-align:center;}
 .ep-eq .eq-desc{font-family:‘EB Garamond’,serif;font-size:clamp(12px,1.4vw,17px);color:var(–gold-dim);font-style:italic;}
 .ep-eq .eq-math{font-family:‘EB Garamond’,serif;font-size:clamp(15px,1.8vw,22px);color:var(–gold);margin:5px 0;letter-spacing:.03em;text-shadow:0 0 16px rgba(201,168,76,.1);}
 
 .section-spacer{height:clamp(16px,3vh,36px);}
 .pf{text-align:center;padding:32px 16px 24px;}
-.pf-t{font-family:‘EB Garamond’,serif;font-size:clamp(10px,1vw,12px);color:rgba(138,122,82,.35);font-style:italic;}
+.pf-t{font-family:‘EB Garamond’,serif;font-size:clamp(10px,1vw,12px);color:rgba(168,148,96,.45);font-style:italic;}
 
 ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(–bg);} ::-webkit-scrollbar-thumb{background:rgba(201,168,76,.12);border-radius:2px;}
 
@@ -312,8 +314,8 @@ const R=(r,g,b,a)=>`rgba(${r},${g},${b},${a})`;
 const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const eO=t=>1-(1-t)*(1-t);
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-const GOLD=[201,168,76],GD=[138,122,82],GB=[232,201,90],RED=[160,60,40],
-      TEAL=[74,154,138],BLUE=[90,138,180],VIOL=[138,106,170],PARCH=[212,197,160],BG=[6,5,4];
+const GOLD=[212,180,85],GD=[168,148,96],GB=[240,212,100],RED=[184,68,48],
+      TEAL=[90,176,158],BLUE=[106,154,196],VIOL=[154,122,186],PARCH=[212,197,160],BG=[6,5,4];
 
 function sCanvas(c){const d=window.devicePixelRatio||1,r=c.parentElement.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,w:r.width,h:r.height};}
 function glow(x,cx,cy,r,c,a){const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,R(c[0],c[1],c[2],a));g.addColorStop(.5,R(c[0],c[1],c[2],a*.3));g.addColorStop(1,R(c[0],c[1],c[2],0));x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();}
