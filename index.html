@@ -144,7 +144,7 @@
     <button class="audio-btn muted" id="audio-mute" onclick="toggleMute()">MUTE</button>
   </div>
 </div></nav>
-<audio id="bgm" loop preload="none" src="music/interstellar-pandora-yad-oud.mp3"></audio>
+<audio id="bgm" loop preload="auto" src="music/interstellar-pandora-yad-oud.mp3"></audio>
 
 <!-- ═══ I. PROLOGUE ═══ -->
 <section class="page active" id="page-intro">
@@ -455,10 +455,44 @@ function stopAF(k){if(AF[k]){cancelAnimationFrame(AF[k]);AF[k]=null;}}
 // ── AUDIO ──
 const bgm=document.getElementById('bgm');
 let audioPlaying=false;
+
+// Autoplay: start muted, unmute on first user interaction
+bgm.muted=true;
+bgm.play().then(()=>{
+  audioPlaying=true;
+  document.getElementById('audio-play').textContent='PAUSE';
+  document.getElementById('audio-play').classList.add('active');
+  document.getElementById('audio-mute').classList.add('muted');
+  document.getElementById('audio-mute').textContent='MUTED';
+}).catch(()=>{});
+
+// On first click/touch anywhere, unmute
+function unmuteOnInteract(){
+  if(audioPlaying&&bgm.muted){
+    bgm.muted=false;
+    document.getElementById('audio-mute').classList.remove('muted');
+    document.getElementById('audio-mute').textContent='MUTE';
+  }
+  if(!audioPlaying){
+    bgm.muted=false;
+    bgm.play().then(()=>{
+      audioPlaying=true;
+      document.getElementById('audio-play').textContent='PAUSE';
+      document.getElementById('audio-play').classList.add('active');
+      document.getElementById('audio-mute').classList.remove('muted');
+      document.getElementById('audio-mute').textContent='MUTE';
+    }).catch(()=>{});
+  }
+  document.removeEventListener('click',unmuteOnInteract);
+  document.removeEventListener('touchstart',unmuteOnInteract);
+}
+document.addEventListener('click',unmuteOnInteract);
+document.addEventListener('touchstart',unmuteOnInteract);
+
 function toggleAudio(){
   const btn=document.getElementById('audio-play');
   if(audioPlaying){bgm.pause();btn.textContent='PLAY';btn.classList.remove('active');audioPlaying=false;}
-  else{bgm.play().then(()=>{btn.textContent='PAUSE';btn.classList.add('active');audioPlaying=true;document.getElementById('audio-mute').classList.remove('muted');}).catch(()=>{});}
+  else{bgm.muted=false;bgm.play().then(()=>{btn.textContent='PAUSE';btn.classList.add('active');audioPlaying=true;document.getElementById('audio-mute').classList.remove('muted');document.getElementById('audio-mute').textContent='MUTE';}).catch(()=>{});}
 }
 function toggleMute(){
   const btn=document.getElementById('audio-mute');
