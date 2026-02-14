@@ -28,6 +28,11 @@
   .nav-tab:hover{color:#ddd0a8;}
   .nav-tab.active{color:#d4b455;text-shadow:0 0 20px rgba(201,168,76,.2);}
   .nav-tab.active::after{width:100%;left:0;}
+  .audio-ctrls{display:flex;gap:4px;margin-left:auto;padding-left:8px;flex-shrink:0;}
+  .audio-btn{font-family:'Cinzel',serif;font-size:clamp(7px,.75vw,9px);letter-spacing:.14em;color:#a89460;background:none;border:1px solid rgba(201,168,76,.12);border-radius:3px;cursor:pointer;padding:2px 8px;transition:all .4s;opacity:.5;}
+  .audio-btn:hover{opacity:.8;border-color:rgba(201,168,76,.3);}
+  .audio-btn.active{color:#d4b455;border-color:rgba(201,168,76,.3);opacity:.8;text-shadow:0 0 12px rgba(201,168,76,.15);}
+  .audio-btn.muted{opacity:.3;}
   .nav-num{font-family:'Cinzel',serif;font-size:.7em;margin-right:3px;opacity:.5;}
 
   /* ── PAGE ── */
@@ -134,7 +139,12 @@
   <button class="nav-tab" data-page="physics"><span class="nav-num">VIII.</span>Physics</button>
   <button class="nav-tab" data-page="finance"><span class="nav-num">IX.</span>Finance</button>
   <button class="nav-tab" data-page="neuro"><span class="nav-num">X.</span>Neuro</button>
+  <div class="audio-ctrls">
+    <button class="audio-btn" id="audio-play" onclick="toggleAudio()">PLAY</button>
+    <button class="audio-btn muted" id="audio-mute" onclick="toggleMute()">MUTE</button>
+  </div>
 </div></nav>
+<audio id="bgm" loop preload="none" src="music/interstellar-pandora-yad-oud.mp3"></audio>
 
 <!-- ═══ I. PROLOGUE ═══ -->
 <section class="page active" id="page-intro">
@@ -441,6 +451,21 @@ function poisson(lam){let L=Math.exp(-lam),k=0,p=1;do{k++;p*=Math.random();}whil
 
 const AF={};
 function stopAF(k){if(AF[k]){cancelAnimationFrame(AF[k]);AF[k]=null;}}
+
+// ── AUDIO ──
+const bgm=document.getElementById('bgm');
+let audioPlaying=false;
+function toggleAudio(){
+  const btn=document.getElementById('audio-play');
+  if(audioPlaying){bgm.pause();btn.textContent='PLAY';btn.classList.remove('active');audioPlaying=false;}
+  else{bgm.play().then(()=>{btn.textContent='PAUSE';btn.classList.add('active');audioPlaying=true;document.getElementById('audio-mute').classList.remove('muted');}).catch(()=>{});}
+}
+function toggleMute(){
+  const btn=document.getElementById('audio-mute');
+  bgm.muted=!bgm.muted;
+  if(bgm.muted){btn.classList.add('muted');btn.textContent='MUTED';}
+  else{btn.classList.remove('muted');btn.textContent='MUTE';}
+}
 
 // ── CHART HELPER ──
 function drawAxes(x,mx,my,cw,ch,opts={}){
