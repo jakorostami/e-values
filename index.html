@@ -133,6 +133,7 @@
   <button class="nav-tab" data-page="confseq"><span class="nav-num">VII.</span>Conf. Seq.</button>
   <button class="nav-tab" data-page="physics"><span class="nav-num">VIII.</span>Physics</button>
   <button class="nav-tab" data-page="finance"><span class="nav-num">IX.</span>Finance</button>
+  <button class="nav-tab" data-page="neuro"><span class="nav-num">X.</span>Neuro</button>
 </div></nav>
 
 <!-- ═══ I. PROLOGUE ═══ -->
@@ -378,6 +379,50 @@
   <div class="pf"><div class="pf-t">Shafer &amp; Vovk (2019) · Chapter 16 — E-statistics for risk measures · E-detectors (Shin, Ramdas &amp; Rinaldo, 2024)</div></div>
 </section>
 
+<!-- ═══ X. NEUROSCIENCE ═══ -->
+<section class="page" id="page-neuro">
+  <div class="page-hdr"><div class="page-ttl">NEUROSCIENCE</div><div class="page-ln"></div><div class="page-sub">Massively parallel sequential testing</div></div>
+  <div class="cb">
+    <div class="qb"><div class="qt">An fMRI scan tests tens of thousands of voxels simultaneously. Classical methods must correct for all comparisons at once. With e-values, each voxel runs its own sequential test — and the e-BH procedure controls false discovery rate at any stopping time, under arbitrary dependence.</div><div class="qa">— Chapter 9 · The e-BH procedure for FDR control</div></div>
+    <p class="prose">A brain scan divides the cortex into a lattice of volumetric pixels — <em>voxels</em>. Each voxel produces a noisy time series of BOLD signal. The question at every voxel: is there neural activation above baseline? This is a <strong>massively parallel</strong> sequential testing problem. Each voxel runs an independent <code>TwoSidedNormalMixture</code> e-process (martingales.py). The e-BH procedure (Definition 9.8) then selects discoveries: reject all voxels whose e-process exceeds K/(α · |D|), controlling FDR at level α under arbitrary dependence between voxels.</p>
+    <div class="md">k* = max{ k : k · E<sub>[k]</sub> / K ≥ 1/α }<span class="md-l">e-BH discovery threshold — Theorem 9.11 guarantees FDR ≤ α for any compound e-variables.</span></div>
+  </div>
+
+  <!-- BRAIN HEATMAP -->
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose"><strong>Live Cortical Mapping.</strong> A top-down view of the cortex. Each cell is one voxel — a region of interest being tested in parallel. As fMRI volumes arrive, evidence accumulates. Cool regions show no activation (e-process near 1). Warm regions show growing evidence. When a voxel's e-process crosses 1/α, it lights up — a discovery. The scan progress bar shows acquisition time, and the counter tracks discoveries in real time.</p>
+  </div>
+  <div class="cc" id="brain-wrap" style="aspect-ratio:16/10;"><canvas id="c-brain"></canvas><div class="cc-vig"></div><div class="cc-label">CORTICAL HEATMAP · SEQUENTIAL EVIDENCE ACCUMULATION</div></div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose"><strong>Voxel Signals.</strong> Below, each ribbon is a single voxel's BOLD signal over time. Most voxels are null — pure noise around zero. A subset carry true activation (a small positive drift). The 3D view reveals the spatial structure: many parallel streams of evidence, tested simultaneously.</p>
+  </div>
+  <div class="cc" id="neuro-sig-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-sig"></canvas><div class="cc-vig"></div><div class="cc-label">VOXEL SIGNALS · 3D TRAJECTORY FIELD</div></div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows — the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
+  </div>
+  <div class="cc" id="neuro-ep-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-ep"></canvas><div class="cc-vig"></div><div class="cc-label">PARALLEL E-PROCESSES · MIXTURE SUPERMARTINGALES</div></div>
+
+  <div class="cb"><div class="section-spacer"></div>
+    <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists — anywhere in the brain — while each individual voxel's test retains its own validity.</p>
+    <div class="md">M<sub>K</sub>(t) = (1/K) Σ<sub>k=1</sub><sup>K</sup> E<sub>k</sub>(t)<span class="md-l">Arithmetic mean e-merging function — admissible under arbitrary dependence (Theorem 8.4).</span></div>
+  </div>
+  <div class="cc ar169" id="neuro-merge-wrap"><canvas id="c-neuro-merge"></canvas><div class="cc-vig"></div></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(168,148,96,.25);"></div>Null voxels (no activation)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(90,176,158,.7);"></div>Active voxels (true signal)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8c95a;"></div>Discoveries (e-BH rejections)</div>
+  </div>
+  <div class="ctrls">
+    <button class="btn" onclick="initNeuro()">New Brain</button>
+    <div class="cg"><div class="cl">Voxels</div><input type="range" id="nr-k" min="10" max="100" step="10" value="50"><div class="cv" id="nr-k-d">50</div></div>
+    <div class="cg"><div class="cl">Active %</div><input type="range" id="nr-act" min="5" max="40" step="5" value="20"><div class="cv" id="nr-act-d">20%</div></div>
+    <div class="cg"><div class="cl">Effect μ</div><input type="range" id="nr-mu" min=".1" max=".8" step=".05" value=".35"><div class="cv" id="nr-mu-d">0.35</div></div>
+  </div>
+  <div class="pf"><div class="pf-t">TwoSidedNormalMixture (martingales.py) · e-BH procedure (Chapter 9, Theorem 9.11) · Compound e-values</div></div>
+</section>
+
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
 // ── UTILS ──
@@ -435,6 +480,7 @@ function initPage(pg){
   if(pg==='confseq')initCS();
   if(pg==='physics')initPhysics();
   if(pg==='finance')initFinance();
+  if(pg==='neuro')initNeuro();
 }
 
 // ── I. PROLOGUE ──
@@ -1096,12 +1142,12 @@ function initVaR(){
   // E-statistic for quantile (Example 16.9): e^q_β(x,r) = 1{x>r}/(1-β)
   // E-process via betting fractions (Definition 7.21, EProcessUpdater):
   //   M_t = M_{t-1} * ((1-λ_t) + λ_t * E_t)
-  const losses=[],exceed=[],eProc=[1];
+  const rets=[],exceed=[],eProc=[1];
   for(let i=0;i<N;i++){
     const loss=G(); // standardized loss ~ N(0,1)
     const bankVaR=2.33-quality*1.2; // honest=2.33 (true 99th %ile), reckless→lower
     const exc=loss>bankVaR?1:0;
-    losses.push(loss);exceed.push(exc);
+    rets.push(-loss);exceed.push(exc); // P&L return = -loss; exceedances are deep negative bars
     // Example 16.9: e = 1{loss > VaR} / (1-β) where 1-β = alpha_var
     const eVal=exc?(1/alpha_var):0; // 100 on exceedance, 0 otherwise
     // Equation 16.15: M_t = M_{t-1} * ((1-λ) + λ*E_t)
@@ -1121,7 +1167,7 @@ function initVaR(){
     // ── TOP: Loss distribution with VaR exceedances ──
     x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='left';x.fillText('DAILY P&L · VaR EXCEEDANCES',mx,my-4);
 
-    const lSlice=losses.slice(0,upTo);
+    const lSlice=rets.slice(0,upTo);
     const lMin=Math.min(-3,Math.min(...lSlice,0)-.5),lMax=Math.max(3,Math.max(...lSlice,0)+.5);
 
     x.save();x.beginPath();x.rect(mx-2,my-2,cw+4,ch+4);x.clip();
@@ -1129,10 +1175,20 @@ function initVaR(){
     const zY=my+ch*(1-(0-lMin)/(lMax-lMin));
     x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.lineWidth=.5;x.beginPath();x.moveTo(mx,zY);x.lineTo(mx+cw,zY);x.stroke();
 
+    // VaR threshold line (returns below -VaR are exceedances)
+    const varLine=-(2.33-quality*1.2); // -bankVaR in return space
+    const varY=my+ch*(1-(varLine-lMin)/(lMax-lMin));
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.2);x.lineWidth=0.8;x.setLineDash([4,4]);
+    x.beginPath();x.moveTo(mx,varY);x.lineTo(mx+cw,varY);x.stroke();
+    x.setLineDash([]);
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.3);x.textAlign='right';
+    x.fillText('−VaR',mx+cw-2,varY-4);
+
     // bars
     for(let i=0;i<upTo;i++){
       const px=mx+(i/N)*cw;const bw=Math.max(1,(cw/N)*.8);
-      const ly=(losses[i]-lMin)/(lMax-lMin);const py=my+ch*(1-ly);
+      const ly=(rets[i]-lMin)/(lMax-lMin);const py=my+ch*(1-ly);
       const col=exceed[i]?RED:GD;
       const al=exceed[i]?.6:.2;
       x.fillStyle=R(col[0],col[1],col[2],al);
@@ -1351,6 +1407,650 @@ function initRegime(){
     if(prog<1)AF.regime=requestAnimationFrame(d);
   }
   stopAF('regime');start=0;AF.regime=requestAnimationFrame(d);
+}
+
+// ═══════════════════════════════════════════════
+// ══  X. NEUROSCIENCE  ══════════════════════════
+// ═══════════════════════════════════════════════
+
+function initNeuro(){
+  document.getElementById('nr-k').oninput=function(){document.getElementById('nr-k-d').textContent=this.value;};
+  document.getElementById('nr-act').oninput=function(){document.getElementById('nr-act-d').textContent=this.value+'%';};
+  document.getElementById('nr-mu').oninput=function(){document.getElementById('nr-mu-d').textContent=parseFloat(this.value).toFixed(2);};
+
+  const K=parseInt(document.getElementById('nr-k').value);
+  const actPct=parseInt(document.getElementById('nr-act').value);
+  const mu=parseFloat(document.getElementById('nr-mu').value);
+  const T=80, alpha=0.05;
+  const nActive=Math.round(K*actPct/100);
+  const thresholdVal=1/alpha; // = 20
+
+  // TwoSidedNormalMixture.best_rho (martingales.py line 106-108)
+  const v_opt=T/2;
+  const rho=v_opt/(2*Math.log(1/alpha)+Math.log(1+2*Math.log(1/alpha)));
+
+  // Generate voxel data
+  const isActive=[], signals=[], wealth=[];
+  for(let k=0;k<K;k++){
+    const active=k<nActive;
+    isActive.push(active);
+    const drift=active?mu:0;
+    const sig=[], w=[1];
+    let cumSum=0;
+    for(let t=0;t<T;t++){
+      const obs=drift+G();
+      sig.push(obs);
+      cumSum+=obs;
+      const v=t+1;
+      // TwoSidedNormalMixture.log_superMG (martingales.py line 95-97)
+      const logM=0.5*Math.log(rho/(v+rho))+cumSum*cumSum/(2*(v+rho));
+      w.push(Math.exp(logM));
+    }
+    signals.push(sig);
+    wealth.push(w);
+  }
+
+  // Shuffle so active voxels aren't grouped
+  const order=Array.from({length:K},(_,i)=>i);
+  for(let i=K-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+
+  // ─── BRAIN VOXEL GRID ───
+  // Generate a grid of cells inside a brain-shaped mask (top-down axial view)
+  const brainCols=14, brainRows=16;
+  const brainCells=[]; // {col,row,voxelIdx or -1}
+  // Brain outline: two hemispheres (ellipses) with fissure gap
+  function inBrain(col,row){
+    const cx=col/(brainCols-1)*2-1; // -1 to 1
+    const cy=row/(brainRows-1)*2-1;
+    // Vertical ellipse with slight front bulge
+    const frontBulge=1+0.15*(1-cy); // wider at front (top)
+    const rx=0.82*frontBulge, ry=0.92;
+    const inEllipse=(cx*cx)/(rx*rx)+(cy*cy)/(ry*ry)<1;
+    // Longitudinal fissure (narrow gap in center)
+    const fissureWidth=0.06+0.04*Math.abs(cy);
+    const inFissure=Math.abs(cx)<fissureWidth&&Math.abs(cy)<0.75;
+    return inEllipse&&!inFissure;
+  }
+  // Collect valid cells
+  const validCells=[];
+  for(let r=0;r<brainRows;r++){
+    for(let c=0;c<brainCols;c++){
+      if(inBrain(c,r))validCells.push({col:c,row:r});
+    }
+  }
+  // Assign tested voxels to random brain positions
+  const cellAssign=new Array(validCells.length).fill(-1);
+  const voxelPositions=[];
+  // Spread active voxels in clusters for realism
+  const assignIndices=Array.from({length:validCells.length},(_,i)=>i);
+  for(let i=assignIndices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[assignIndices[i],assignIndices[j]]=[assignIndices[j],assignIndices[i]];}
+  for(let k=0;k<K&&k<assignIndices.length;k++){
+    cellAssign[assignIndices[k]]=k;
+  }
+
+  // Brain canvas
+  const cB=document.getElementById('c-brain');const{x:xB,w:wB,h:hB}=sCanvas(cB);
+  // Scan line state
+  let scanPulsePhase=0;
+
+  // ─── DRAW BRAIN ───
+  function drawBrain(upTo,elapsed){
+    xB.fillStyle=R(6,5,4,1);xB.fillRect(0,0,wB,hB);
+    glow(xB,wB*.5,hB*.46,wB*.3,[10,8,5],.06);
+
+    const bx=wB*.5, by=hB*.46;
+    const bw=Math.min(wB*.42,hB*.42);
+
+    // ── Brain outline (subtle glow) ──
+    // Left hemisphere
+    xB.save();
+    xB.beginPath();
+    xB.ellipse(bx-bw*0.02,by,bw*0.48,bw*0.56,0,0,Math.PI*2);
+    const bgGrad=xB.createRadialGradient(bx,by,bw*0.1,bx,by,bw*0.6);
+    bgGrad.addColorStop(0,R(20,16,10,.15));
+    bgGrad.addColorStop(1,R(10,8,5,.02));
+    xB.fillStyle=bgGrad;xB.fill();
+    // Right hemisphere
+    xB.beginPath();
+    xB.ellipse(bx+bw*0.02,by,bw*0.48,bw*0.56,0,0,Math.PI*2);
+    xB.fillStyle=bgGrad;xB.fill();
+    xB.restore();
+
+    // ── Voxel grid cells ──
+    const cellW=bw*0.85/brainCols;
+    const cellH=bw*1.05/brainRows;
+    const gridX=bx-brainCols*cellW/2;
+    const gridY=by-brainRows*cellH/2;
+
+    for(let ci=0;ci<validCells.length;ci++){
+      const cell=validCells[ci];
+      const cx=gridX+cell.col*cellW;
+      const cy=gridY+cell.row*cellH;
+      const vk=cellAssign[ci];
+
+      let r,g,b,a;
+      if(vk<0){
+        // Untested brain tissue — very dim
+        r=22;g=18;b=12;a=0.25;
+      } else {
+        // Tested voxel — color by current wealth
+        const wt=upTo<=T?wealth[vk][Math.min(upTo,T)]:wealth[vk][T];
+        const logW=Math.log10(Math.max(wt,1e-6));
+        const crossed=wt>=thresholdVal;
+
+        if(crossed){
+          // Discovery — bright gold with pulse
+          const pulse=0.8+0.2*Math.sin(elapsed*0.006+vk);
+          r=240;g=210;b=80;a=0.7*pulse;
+        } else if(logW>0.3){
+          // Growing evidence — teal-warm blend
+          const t=clamp(logW/Math.log10(thresholdVal),0,1);
+          r=Math.round(90+150*t);g=Math.round(176-80*t);b=Math.round(158-110*t);
+          a=0.2+0.45*t;
+        } else if(logW>-0.3){
+          // Near baseline — dim teal
+          r=60;g=100;b=90;a=0.12;
+        } else {
+          // Below baseline — cool
+          r=30;g=40;b=50;a=0.1;
+        }
+      }
+
+      // Rounded rect voxel
+      const pad=0.8;
+      const rr=1.5;
+      xB.fillStyle=R(r,g,b,a);
+      xB.beginPath();
+      xB.roundRect(cx+pad,cy+pad,cellW-pad*2,cellH-pad*2,rr);
+      xB.fill();
+
+      // Glow for discoveries
+      if(vk>=0){
+        const wt=upTo<=T?wealth[vk][Math.min(upTo,T)]:wealth[vk][T];
+        if(wt>=thresholdVal){
+          glow(xB,cx+cellW/2,cy+cellH/2,cellW*0.8,[240,210,80],.08);
+        }
+      }
+    }
+
+    // ── Brain outline stroke ──
+    xB.strokeStyle=R(GD[0],GD[1],GD[2],.1);
+    xB.lineWidth=0.8;
+    // Left hemisphere
+    xB.beginPath();
+    for(let i=0;i<=60;i++){
+      const ang=i/60*Math.PI*2;
+      const cx2=Math.cos(ang),sy2=Math.sin(ang);
+      const frontBulge=1+0.15*(1-sy2);
+      const px=bx-bw*0.02+cx2*bw*0.48*frontBulge*0.82;
+      const py=by+sy2*bw*0.56*0.92;
+      if(i===0)xB.moveTo(px,py);else xB.lineTo(px,py);
+    }
+    xB.stroke();
+    // Right hemisphere
+    xB.beginPath();
+    for(let i=0;i<=60;i++){
+      const ang=i/60*Math.PI*2;
+      const cx2=Math.cos(ang),sy2=Math.sin(ang);
+      const frontBulge=1+0.15*(1-sy2);
+      const px=bx+bw*0.02+cx2*bw*0.48*frontBulge*0.82;
+      const py=by+sy2*bw*0.56*0.92;
+      if(i===0)xB.moveTo(px,py);else xB.lineTo(px,py);
+    }
+    xB.stroke();
+
+    // ── Scan progress bar ──
+    const barW=bw*1.2, barH=4;
+    const barX=bx-barW/2, barY=by+bw*0.65;
+    const prog=clamp(upTo/T,0,1);
+    xB.fillStyle=R(GD[0],GD[1],GD[2],.08);
+    xB.fillRect(barX,barY,barW,barH);
+    xB.fillStyle=R(TEAL[0],TEAL[1],TEAL[2],.25);
+    xB.fillRect(barX,barY,barW*prog,barH);
+    // Scan line
+    if(prog<1){
+      const slx=barX+barW*prog;
+      xB.fillStyle=R(TEAL[0],TEAL[1],TEAL[2],.6);
+      xB.fillRect(slx-1,barY-1,2,barH+2);
+    }
+    xB.font=`${Math.max(9,wB*.012)}px 'EB Garamond',serif`;
+    xB.fillStyle=R(GD[0],GD[1],GD[2],.3);xB.textAlign='left';
+    xB.fillText(`VOL ${Math.min(upTo,T)}/${T}`,barX,barY-4);
+
+    // ── Discovery counter ──
+    let nDisc=0;
+    for(let k=0;k<K;k++){
+      const wt=upTo<=T?wealth[k][Math.min(upTo,T)]:wealth[k][T];
+      if(wt>=thresholdVal)nDisc++;
+    }
+    xB.textAlign='right';
+    xB.font=`${Math.max(11,wB*.015)}px 'EB Garamond',serif`;
+    xB.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);
+    xB.fillText(`${nDisc} discoveries  ·  ${K} voxels tested  ·  α = ${alpha}`,barX+barW,barY-4);
+
+    // ── Region labels (subtle) ──
+    xB.font=`italic ${Math.max(8,wB*.009)}px 'EB Garamond',serif`;
+    xB.fillStyle=R(GD[0],GD[1],GD[2],.12);xB.textAlign='center';
+    xB.fillText('frontal',bx,gridY-6);
+    xB.fillText('occipital',bx,gridY+brainRows*cellH+12);
+    xB.fillText('L',gridX-10,by+2);
+    xB.fillText('R',gridX+brainCols*cellW+10,by+2);
+  }
+  function project(px,py,pz, rY,rX, cx,cy,sc){
+    const cY=Math.cos(rY),sY=Math.sin(rY);
+    let x1=px*cY+pz*sY, z1=-px*sY+pz*cY, y1=py;
+    const cX=Math.cos(rX),sX=Math.sin(rX);
+    let y2=y1*cX-z1*sX, z2=y1*sX+z1*cX;
+    const fov=4.5;
+    const d=fov/(fov+z2);
+    return{sx:cx+x1*d*sc, sy:cy-y2*d*sc, d:d, z:z2};
+  }
+
+  function line3D(x,a,b,rY,rX,cx,cy,sc){
+    const pa=project(a[0],a[1],a[2],rY,rX,cx,cy,sc);
+    const pb=project(b[0],b[1],b[2],rY,rX,cx,cy,sc);
+    x.beginPath();x.moveTo(pa.sx,pa.sy);x.lineTo(pb.sx,pb.sy);x.stroke();
+  }
+
+  // ─── DRAW WIREFRAME CUBE ───
+  function drawCube(x,w,h,rY,rX,cx,cy,sc,al){
+    // Cube corners at ±1
+    const C=[
+      [-1,-1,-1],[ 1,-1,-1],[ 1, 1,-1],[-1, 1,-1],
+      [-1,-1, 1],[ 1,-1, 1],[ 1, 1, 1],[-1, 1, 1]
+    ];
+    const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    x.strokeStyle=R(GD[0],GD[1],GD[2],al);
+    x.lineWidth=0.6;
+    edges.forEach(([a,b])=>line3D(x,C[a],C[b],rY,rX,cx,cy,sc));
+  }
+
+  // ─── DRAW THRESHOLD PLANE ───
+  function drawThresholdPlane(x,yNorm,rY,rX,cx,cy,sc){
+    // Horizontal plane at y=yNorm spanning x/z of the cube
+    const steps=8;
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.06);
+    x.lineWidth=0.4;
+    // Grid lines in X direction
+    for(let i=0;i<=steps;i++){
+      const z=-1+2*i/steps;
+      const pa=project(-1,yNorm,z,rY,rX,cx,cy,sc);
+      const pb=project( 1,yNorm,z,rY,rX,cx,cy,sc);
+      x.beginPath();x.moveTo(pa.sx,pa.sy);x.lineTo(pb.sx,pb.sy);x.stroke();
+    }
+    // Grid lines in Z direction
+    for(let i=0;i<=steps;i++){
+      const xv=-1+2*i/steps;
+      const pa=project(xv,yNorm,-1,rY,rX,cx,cy,sc);
+      const pb=project(xv,yNorm, 1,rY,rX,cx,cy,sc);
+      x.beginPath();x.moveTo(pa.sx,pa.sy);x.lineTo(pb.sx,pb.sy);x.stroke();
+    }
+    // Border
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.12);
+    x.lineWidth=0.7;
+    const corners=[[-1,yNorm,-1],[1,yNorm,-1],[1,yNorm,1],[-1,yNorm,1]];
+    x.beginPath();
+    corners.forEach((c,i)=>{
+      const p=project(c[0],c[1],c[2],rY,rX,cx,cy,sc);
+      if(i===0)x.moveTo(p.sx,p.sy);else x.lineTo(p.sx,p.sy);
+    });
+    x.closePath();x.stroke();
+    // Label
+    const lp=project(1.12,yNorm,-1,rY,rX,cx,cy,sc);
+    x.font=`italic ${Math.max(9,cy*.035)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.25);x.textAlign='left';
+    x.fillText('1/α',lp.sx,lp.sy+3);
+  }
+
+  // ─── DRAW AXIS LABELS ───
+  function drawLabels(x,rY,rX,cx,cy,sc,isEP){
+    // Time arrow along bottom-front edge
+    const ta=project(-1,-1.12,-1,rY,rX,cx,cy,sc);
+    const tb=project( 1,-1.12,-1,rY,rX,cx,cy,sc);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.1);x.lineWidth=0.5;
+    x.beginPath();x.moveTo(ta.sx,ta.sy);x.lineTo(tb.sx,tb.sy);x.stroke();
+    // arrowhead
+    const dx=tb.sx-ta.sx,dy=tb.sy-ta.sy,len=Math.sqrt(dx*dx+dy*dy);
+    const ux=dx/len,uy=dy/len;
+    x.beginPath();x.moveTo(tb.sx,tb.sy);x.lineTo(tb.sx-ux*6+uy*3,tb.sy-uy*6-ux*3);x.moveTo(tb.sx,tb.sy);x.lineTo(tb.sx-ux*6-uy*3,tb.sy-uy*6+ux*3);x.stroke();
+    x.font=`italic ${Math.max(9,cy*.032)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='center';
+    x.fillText('time',tb.sx+8,tb.sy+2);
+
+    // Voxel axis along bottom-right edge
+    const va=project(1,-1.12,-1,rY,rX,cx,cy,sc);
+    const vb=project(1,-1.12, 1,rY,rX,cx,cy,sc);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.07);
+    x.beginPath();x.moveTo(va.sx,va.sy);x.lineTo(vb.sx,vb.sy);x.stroke();
+    x.fillText('voxels',vb.sx,vb.sy+12);
+
+    // Y axis label
+    const ya=project(-1.15, 0,-1,rY,rX,cx,cy,sc);
+    x.fillText(isEP?'log₁₀ M(t)':'BOLD',ya.sx-10,ya.sy);
+  }
+
+  // ─── MAIN DRAW ───
+  function drawScene(x,w,h,rY,rX,upTo,isEP){
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    glow(x,w*.48,h*.48,w*.32,[12,9,5],.08);
+
+    const cx=w*.5, cy=h*.5, sc=Math.min(w,h)*.36;
+
+    // Value ranges for mapping into [-1,1] cube
+    let yMin,yMax;
+    if(isEP){
+      yMin=-1; yMax=Math.log10(thresholdVal)*1.8;
+    } else {
+      yMin=-3; yMax=3;
+    }
+
+    // Draw cube
+    drawCube(x,w,h,rY,rX,cx,cy,sc,0.08);
+
+    // Threshold plane (e-process only)
+    if(isEP){
+      const thNorm=(Math.log10(thresholdVal)-yMin)/(yMax-yMin)*2-1;
+      drawThresholdPlane(x,thNorm,rY,rX,cx,cy,sc);
+    }
+
+    // Sort voxels back-to-front
+    const sorted=[];
+    for(let ki=0;ki<K;ki++){
+      const k=order[ki];
+      const zNorm=(ki/(K-1))*2-1;
+      const midP=project(0,0,zNorm,rY,rX,0,0,1);
+      sorted.push({k,ki,zNorm,vz:midP.z});
+    }
+    sorted.sort((a,b)=>b.vz-a.vz);
+
+    // Draw trajectories
+    const nPts=Math.min(upTo+1, T+1);
+    for(const v of sorted){
+      const k=v.k, zN=v.zNorm;
+      const active=isActive[k];
+      const depth=clamp((v.vz+3)/6,0,1);
+      const fade=0.2+0.8*(1-depth);
+
+      if(nPts<2)continue;
+
+      // For e-process: find crossing time
+      let crossT=-1;
+      if(isEP){
+        for(let t=1;t<nPts&&t<=T;t++){
+          if(wealth[k][t]>=thresholdVal){crossT=t;break;}
+        }
+      }
+
+      // Draw path in segments — color changes at crossing
+      for(let t=1;t<nPts;t++){
+        const tI=t-1, tJ=t;
+        const rawI=isEP?wealth[k][tI]:(tI<T?signals[k][tI]:signals[k][T-1]);
+        const rawJ=isEP?wealth[k][tJ]:(tJ<T?signals[k][tJ]:signals[k][T-1]);
+        const yI=isEP?Math.log10(Math.max(rawI,1e-6)):rawI;
+        const yJ=isEP?Math.log10(Math.max(rawJ,1e-6)):rawJ;
+
+        const xI=(tI/T)*2-1, xJ=(tJ/T)*2-1;
+        const yNI=clamp((yI-yMin)/(yMax-yMin)*2-1,-1,1);
+        const yNJ=clamp((yJ-yMin)/(yMax-yMin)*2-1,-1,1);
+
+        const pI=project(xI,yNI,zN,rY,rX,cx,cy,sc);
+        const pJ=project(xJ,yNJ,zN,rY,rX,cx,cy,sc);
+
+        // Color logic
+        let col,al,lw;
+        if(isEP && crossT>=0 && tJ>=crossT){
+          // CROSSED — bright gold
+          col=GB; al=0.8*fade; lw=2.0*fade;
+        } else if(isEP && active){
+          // Active, not yet crossed — teal
+          col=TEAL; al=0.35*fade; lw=1.0*fade;
+        } else if(!isEP && active){
+          col=TEAL; al=0.3*fade; lw=0.8*fade;
+        } else {
+          // Null voxel
+          col=GD; al=0.06*fade; lw=0.35*fade;
+        }
+
+        x.strokeStyle=R(col[0],col[1],col[2],al);
+        x.lineWidth=lw;
+        x.beginPath();x.moveTo(pI.sx,pI.sy);x.lineTo(pJ.sx,pJ.sy);x.stroke();
+      }
+
+      // Head dot
+      if(nPts>1 && (active || (isEP && crossT>=0))){
+        const tH=nPts-1;
+        const rawH=isEP?wealth[k][tH]:(tH<T?signals[k][tH]:signals[k][T-1]);
+        const yH=isEP?Math.log10(Math.max(rawH,1e-6)):rawH;
+        const xH=(tH/T)*2-1;
+        const yNH=clamp((yH-yMin)/(yMax-yMin)*2-1,-1,1);
+        const pH=project(xH,yNH,zN,rY,rX,cx,cy,sc);
+
+        const crossed=isEP&&crossT>=0;
+        const hCol=crossed?GB:(active?TEAL:GD);
+        const hAl=crossed?0.9*fade:0.5*fade;
+        if(crossed)glow(x,pH.sx,pH.sy,8*fade,GB,.15*fade);
+        x.fillStyle=R(hCol[0],hCol[1],hCol[2],hAl);
+        x.beginPath();x.arc(pH.sx,pH.sy,crossed?2.5:1.5,0,Math.PI*2);x.fill();
+      }
+    }
+
+    // Labels
+    drawLabels(x,rY,rX,cx,cy,sc,isEP);
+  }
+
+  // ─── PRECOMPUTE MERGED E-PROCESS ───
+  // Arithmetic mean M_K(t) = (1/K) Σ E_k(t) — Proposition 8.3, Theorem 8.4
+  const merged=[];
+  for(let t=0;t<=T;t++){
+    let sum=0;
+    for(let k=0;k<K;k++)sum+=wealth[k][t];
+    merged.push(sum/K);
+  }
+
+  // ─── DRAW MERGED E-PROCESS (2D) ───
+  function drawMerged(upTo,elapsed){
+    const cM=document.getElementById('c-neuro-merge');
+    const{x,w,h}=sCanvas(cM);
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
+    glow(x,w*.4,h*.4,w*.3,[12,9,5],.06);
+
+    const mx=w*.1, my=h*.08, cw=w*.82, ch=h*.78;
+
+    // Y range: log10 scale, floor at -0.5, ceiling at max merged or 1/alpha
+    const nPts=Math.min(upTo+1,T+1);
+    let yMaxRaw=thresholdVal*1.5;
+    for(let t=0;t<nPts;t++)yMaxRaw=Math.max(yMaxRaw,merged[t]);
+    const logMin=-0.5, logMax=Math.log10(yMaxRaw)*1.15;
+    const toX=t=>mx+(t/T)*cw;
+    const toY=v=>{const lv=Math.log10(Math.max(v,Math.pow(10,logMin)));return my+ch*(1-(lv-logMin)/(logMax-logMin));};
+
+    // Grid
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.5;
+    const gridVals=[0.1,1,10,100,1000,10000];
+    x.font=`${Math.max(9,w*.011)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='right';
+    gridVals.forEach(v=>{
+      const lv=Math.log10(v);
+      if(lv<logMin||lv>logMax)return;
+      const yy=toY(v);
+      x.beginPath();x.moveTo(mx,yy);x.lineTo(mx+cw,yy);x.stroke();
+      x.fillText(v>=1?v.toFixed(0):v.toFixed(1),mx-6,yy+3);
+    });
+
+    // 1/α threshold line
+    const thY=toY(thresholdVal);
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.lineWidth=1;x.setLineDash([6,4]);
+    x.beginPath();x.moveTo(mx,thY);x.lineTo(mx+cw,thY);x.stroke();
+    x.setLineDash([]);
+    x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.3);x.textAlign='left';
+    x.fillText('1/α = '+thresholdVal,mx+cw+4,thY+3);
+
+    // Baseline at 1
+    const baseY=toY(1);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.lineWidth=0.5;
+    x.beginPath();x.moveTo(mx,baseY);x.lineTo(mx+cw,baseY);x.stroke();
+    x.fillStyle=R(GD[0],GD[1],GD[2],.15);x.textAlign='left';
+    x.fillText('E₀ = 1',mx+cw+4,baseY+3);
+
+    // Individual voxel e-processes (ghost traces)
+    for(let k=0;k<K;k++){
+      const active=isActive[k];
+      let crossed=false;
+      const col=active?TEAL:GD;
+      const al=active?0.06:0.015;
+      x.strokeStyle=R(col[0],col[1],col[2],al);x.lineWidth=0.4;
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=toX(t), py=toY(wealth[k][t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+        if(wealth[k][t]>=thresholdVal)crossed=true;
+      }
+      x.stroke();
+    }
+
+    // Merged e-process — bold gold line
+    if(nPts>1){
+      // Glow trail
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.08);x.lineWidth=6;
+      x.lineJoin='round';x.lineCap='round';
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=toX(t), py=toY(merged[t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+
+      // Main line
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.75);x.lineWidth=2;
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=toX(t), py=toY(merged[t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+
+      // Head dot
+      const lastT=nPts-1;
+      const hx=toX(lastT), hy=toY(merged[lastT]);
+      glow(x,hx,hy,12,GOLD,.12);
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.9);
+      x.beginPath();x.arc(hx,hy,3,0,Math.PI*2);x.fill();
+
+      // Value label at head
+      x.font=`${Math.max(11,w*.013)}px 'EB Garamond',serif`;
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='left';
+      x.fillText('M_K = '+(merged[lastT]<100?merged[lastT].toFixed(2):merged[lastT].toFixed(0)),hx+8,hy-4);
+    }
+
+    // Axes
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.lineWidth=0.6;
+    x.beginPath();x.moveTo(mx,my);x.lineTo(mx,my+ch);x.lineTo(mx+cw,my+ch);x.stroke();
+    // X label
+    x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='center';
+    x.fillText('scan volume (t)',mx+cw/2,my+ch+20);
+    // Y label
+    x.save();x.translate(mx-28,my+ch/2);x.rotate(-Math.PI/2);
+    x.fillText('log₁₀  M_K(t)',0,0);x.restore();
+
+    // Title
+    x.font=`${Math.max(11,w*.013)}px 'Cinzel',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';
+    x.fillText('MERGED E-PROCESS  ·  ARITHMETIC MEAN',mx+cw/2,my-6);
+  }
+
+  // Canvases
+  const c1=document.getElementById('c-neuro-sig');const{x:x1,w:w1,h:h1}=sCanvas(c1);
+  const c2=document.getElementById('c-neuro-ep');const{x:x2,w:w2,h:h2}=sCanvas(c2);
+  let start=0;
+
+  // ─── DRAG ROTATION STATE ───
+  let dragRY=-0.55, dragRX=0.3; // user-controlled angles
+  let isDragging=false, dragStartX=0, dragStartY=0, dragBaseRY=0, dragBaseRX=0;
+  let autoRotate=true, lastInteract=0;
+  const SENSITIVITY=0.006;
+
+  function onPointerDown(e){
+    isDragging=true;autoRotate=false;lastInteract=performance.now();
+    dragStartX=e.clientX||(e.touches&&e.touches[0].clientX);
+    dragStartY=e.clientY||(e.touches&&e.touches[0].clientY);
+    dragBaseRY=dragRY;dragBaseRX=dragRX;
+    e.currentTarget.style.cursor='grabbing';
+    e.preventDefault();
+  }
+  function onPointerMove(e){
+    if(!isDragging)return;
+    const cx=e.clientX||(e.touches&&e.touches[0].clientX);
+    const cy=e.clientY||(e.touches&&e.touches[0].clientY);
+    if(cx===undefined)return;
+    dragRY=dragBaseRY+(cx-dragStartX)*SENSITIVITY;
+    dragRX=clamp(dragBaseRX-(cy-dragStartY)*SENSITIVITY,-1.2,1.2);
+    e.preventDefault();
+  }
+  function onPointerUp(){
+    isDragging=false;lastInteract=performance.now();
+    c1.style.cursor='grab';c2.style.cursor='grab';
+  }
+  // Clean up previous listeners if re-initing
+  if(window._neuroCleanup)window._neuroCleanup();
+  [c1,c2].forEach(c=>{
+    c.style.cursor='grab';
+    c.addEventListener('mousedown',onPointerDown);
+    c.addEventListener('touchstart',onPointerDown,{passive:false});
+  });
+  document.addEventListener('mousemove',onPointerMove);
+  document.addEventListener('touchmove',onPointerMove,{passive:false});
+  document.addEventListener('mouseup',onPointerUp);
+  document.addEventListener('touchend',onPointerUp);
+  window._neuroCleanup=()=>{
+    [c1,c2].forEach(c=>{
+      c.removeEventListener('mousedown',onPointerDown);
+      c.removeEventListener('touchstart',onPointerDown);
+    });
+    document.removeEventListener('mousemove',onPointerMove);
+    document.removeEventListener('touchmove',onPointerMove);
+    document.removeEventListener('mouseup',onPointerUp);
+    document.removeEventListener('touchend',onPointerUp);
+  };
+
+  function d(t){
+    if(!start)start=t;
+    const el=t-start;
+    const prog=Math.min(1,el/22000);
+    const upTo=Math.floor(prog*T);
+
+    // Resume gentle auto-rotation after 3s of no interaction
+    if(!isDragging&&!autoRotate&&(performance.now()-lastInteract)>3000)autoRotate=true;
+    if(autoRotate){
+      dragRY+=-0.0001*Math.cos(el*0.00018);
+      dragRX+=0.00003*Math.cos(el*0.00012);
+      dragRX=clamp(dragRX,-1.2,1.2);
+    }
+
+    drawBrain(upTo,el);
+    drawScene(x1,w1,h1,dragRY,dragRX,upTo,false);
+    drawScene(x2,w2,h2,dragRY,dragRX,upTo,true);
+    drawMerged(upTo,el);
+
+    // Stats overlay
+    if(upTo>5){
+      let nDisc=0,nFalse=0;
+      for(let k=0;k<K;k++){
+        let crossed=false;
+        for(let tt=1;tt<=upTo&&tt<=T;tt++){if(wealth[k][tt]>=thresholdVal){crossed=true;break;}}
+        if(crossed){nDisc++;if(!isActive[k])nFalse++;}
+      }
+      const fdp=nDisc>0?(nFalse/nDisc*100).toFixed(0):'0';
+      x2.font=`${Math.max(11,w2*.014)}px 'EB Garamond',serif`;
+      x2.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x2.textAlign='right';
+      x2.fillText(`Discoveries: ${nDisc}/${K}  ·  FDP: ${fdp}%  ·  True active: ${nActive}`,w2*.93,h2*.06);
+    }
+
+    AF.neuro=requestAnimationFrame(d);
+  }
+
+  stopAF('neuro');start=0;AF.neuro=requestAnimationFrame(d);
 }
 
 // ── BOOT ──
