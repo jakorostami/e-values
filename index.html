@@ -403,15 +403,12 @@
     <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows — the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
   </div>
   <div class="cc" id="neuro-ep-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-ep"></canvas><div class="cc-vig"></div><div class="cc-label">PARALLEL E-PROCESSES · MIXTURE SUPERMARTINGALES</div></div>
-<<<<<<< HEAD
 
   <div class="cb"><div class="section-spacer"></div>
     <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists — anywhere in the brain — while each individual voxel's test retains its own validity.</p>
     <div class="md">M<sub>K</sub>(t) = (1/K) Σ<sub>k=1</sub><sup>K</sup> E<sub>k</sub>(t)<span class="md-l">Arithmetic mean e-merging function — admissible under arbitrary dependence (Theorem 8.4).</span></div>
   </div>
   <div class="cc ar169" id="neuro-merge-wrap"><canvas id="c-neuro-merge"></canvas><div class="cc-vig"></div></div>
-=======
->>>>>>> 067be9c8db5ea718f0022e516742a827aad66687
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:rgba(168,148,96,.25);"></div>Null voxels (no activation)</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(90,176,158,.7);"></div>Active voxels (true signal)</div>
@@ -419,10 +416,7 @@
   </div>
   <div class="ctrls">
     <button class="btn" onclick="initNeuro()">New Brain</button>
-<<<<<<< HEAD
     <div class="cg"><div class="cl">Voxels</div><input type="range" id="nr-k" min="10" max="100" step="10" value="50"><div class="cv" id="nr-k-d">50</div></div>
-=======
->>>>>>> 067be9c8db5ea718f0022e516742a827aad66687
     <div class="cg"><div class="cl">Active %</div><input type="range" id="nr-act" min="5" max="40" step="5" value="20"><div class="cv" id="nr-act-d">20%</div></div>
     <div class="cg"><div class="cl">Effect μ</div><input type="range" id="nr-mu" min=".1" max=".8" step=".05" value=".35"><div class="cv" id="nr-mu-d">0.35</div></div>
   </div>
@@ -1420,7 +1414,6 @@ function initRegime(){
 // ═══════════════════════════════════════════════
 
 function initNeuro(){
-<<<<<<< HEAD
   document.getElementById('nr-k').oninput=function(){document.getElementById('nr-k-d').textContent=this.value;};
   document.getElementById('nr-act').oninput=function(){document.getElementById('nr-act-d').textContent=this.value+'%';};
   document.getElementById('nr-mu').oninput=function(){document.getElementById('nr-mu-d').textContent=parseFloat(this.value).toFixed(2);};
@@ -1429,14 +1422,6 @@ function initNeuro(){
   const actPct=parseInt(document.getElementById('nr-act').value);
   const mu=parseFloat(document.getElementById('nr-mu').value);
   const T=80, alpha=0.05;
-=======
-  document.getElementById('nr-act').oninput=function(){document.getElementById('nr-act-d').textContent=this.value+'%';};
-  document.getElementById('nr-mu').oninput=function(){document.getElementById('nr-mu-d').textContent=parseFloat(this.value).toFixed(2);};
-
-  const actPct=parseInt(document.getElementById('nr-act').value);
-  const mu=parseFloat(document.getElementById('nr-mu').value);
-  const K=40, T=80, alpha=0.05;
->>>>>>> 067be9c8db5ea718f0022e516742a827aad66687
   const nActive=Math.round(K*actPct/100);
   const thresholdVal=1/alpha; // = 20
 
@@ -1853,7 +1838,6 @@ function initNeuro(){
     drawLabels(x,rY,rX,cx,cy,sc,isEP);
   }
 
-<<<<<<< HEAD
   // ─── PRECOMPUTE MERGED E-PROCESS ───
   // Arithmetic mean M_K(t) = (1/K) Σ E_k(t) — Proposition 8.3, Theorem 8.4
   const merged=[];
@@ -1976,8 +1960,6 @@ function initNeuro(){
     x.fillText('MERGED E-PROCESS  ·  ARITHMETIC MEAN',mx+cw/2,my-6);
   }
 
-=======
->>>>>>> 067be9c8db5ea718f0022e516742a827aad66687
   // Canvases
   const c1=document.getElementById('c-neuro-sig');const{x:x1,w:w1,h:h1}=sCanvas(c1);
   const c2=document.getElementById('c-neuro-ep');const{x:x2,w:w2,h:h2}=sCanvas(c2);
@@ -2049,10 +2031,7 @@ function initNeuro(){
     drawBrain(upTo,el);
     drawScene(x1,w1,h1,dragRY,dragRX,upTo,false);
     drawScene(x2,w2,h2,dragRY,dragRX,upTo,true);
-<<<<<<< HEAD
     drawMerged(upTo,el);
-=======
->>>>>>> 067be9c8db5ea718f0022e516742a827aad66687
 
     // Stats overlay
     if(upTo>5){
