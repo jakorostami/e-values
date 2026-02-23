@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<title>The E-Value — Game-Theoretic Evidence</title>
+<title>The E-Value: Game-Theoretic Evidence</title>
 <style>
 
   :root {
@@ -177,12 +177,12 @@
     <div class="cg"><div class="cl">Observed e-value</div><input type="range" id="ev-sl" min="0" max="50" step=".5" value="1"><div class="cv" id="ev-disp">1.0</div></div>
   </div>
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose">Below: the <em>distribution</em> of e-values under two worlds. Under the null (left), e-values scatter around 1 — Skeptic breaks even on average. Under the alternative (right), e-values shift upward — Skeptic profits because truth is on her side.</p>
+    <p class="prose">Below: the <em>distribution</em> of e-values under two worlds. Under the null (left), e-values scatter around 1, Skeptic breaks even on average. Under the alternative (right), e-values shift upward, Skeptic profits because truth is on her side.</p>
   </div>
   <div class="cc ar2" id="evdist-wrap"><canvas id="c-evdist"></canvas><div class="cc-vig"></div><div class="cc-label">E-VALUE DISTRIBUTION: NULL vs ALTERNATIVE</div></div>
   <div class="ctrls"><button class="btn" onclick="runEVDist()">Sample 500 E-values</button></div>
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose">The simplest e-variable is the <strong>likelihood ratio</strong> — the log-optimal bet, which maximizes expected wealth growth:</p>
+    <p class="prose">The simplest e-variable is the <strong>likelihood ratio</strong>, the log-optimal bet, which maximizes expected wealth growth:</p>
     <div class="md">E = exp(μ · x − μ²/2)<span class="md-l">The Kelly-optimal wager for testing N(0,1) vs N(μ,1).</span></div>
   </div>
   <div class="pf"><div class="pf-t">Section 1.5 — Betting interpretation of e-values</div></div>
@@ -217,7 +217,7 @@
     <div>
       <div class="cc ar32" id="ab-wrap"><canvas id="c-ab"></canvas><div class="cc-vig"></div><div class="cc-label">A/B TESTING · CONVERSION RATE</div></div>
       <div class="ctrls"><button class="btn" onclick="runGame('ab')">Run Test</button></div>
-      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential comparison of two conversion rates. Each visitor provides a Bernoulli observation. Peek at the result after every user — the e-process remains valid. <em>No need to wait for a fixed sample size.</em></p></div>
+      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential comparison of two conversion rates. Each visitor provides a Bernoulli observation. Peek at the result after every user, the e-process remains valid. <em>No need to wait for a fixed sample size.</em></p></div>
     </div>
   </div>
   <div class="pf"><div class="pf-t">Section 7.6 — Testing by betting · Algorithm 7.16</div></div>
@@ -228,12 +228,12 @@
   <div class="page-hdr"><div class="page-ttl">THE E-PROCESS</div><div class="page-ln"></div><div class="page-sub">Evidence accumulating through time</div></div>
   <div class="cb">
     <p class="prose">An e-process remains valid at <em>any stopping time</em>. You may peek whenever you wish and the conclusion holds. This is the gift of Ville's inequality.</p>
-    <div class="md">P( sup<sub>t</sub> M<sub>t</sub> ≥ 1/α ) ≤ α<span class="md-l">For any nonnegative supermartingale — valid at all times simultaneously.</span></div>
+    <div class="md">P( sup<sub>t</sub> M<sub>t</sub> ≥ 1/α ) ≤ α<span class="md-l">For any nonnegative supermartingale, valid at all times simultaneously.</span></div>
   </div>
   <div class="cc ar169" id="ep-wrap" style="position:relative;">
     <canvas id="c-ep"></canvas><div class="cc-vig"></div>
-    <div class="ep-overlay ep-narr ep-narr-l" id="ep-nl">Each observation is a round<br>in a game against Nature.<br><br><em>Skeptic places a bet — constrained<br>so that under the null, no strategy<br>can systematically profit.</em></div>
-    <div class="ep-overlay ep-narr ep-narr-r" id="ep-nr">But if the alternative is true,<br>wealth grows — evidence accumulates<br>like light gathering in a lens.<br><br><em>No probability was assumed.<br>The game was assumed.<br>The game forced the probability.</em></div>
+    <div class="ep-overlay ep-narr ep-narr-l" id="ep-nl">Each observation is a round<br>in a game against Nature.<br><br><em>Skeptic places a bet, constrained<br>so that under the null, no strategy<br>can systematically profit.</em></div>
+    <div class="ep-overlay ep-narr ep-narr-r" id="ep-nr">But if the alternative is true,<br>wealth grows, evidence accumulates<br>like light gathering in a lens.<br><br><em>No probability was assumed.<br>The game was assumed.<br>The game forced the probability.</em></div>
     <div class="ep-overlay ep-eq" id="ep-eq">
       <div class="eq-desc">The wealth of Skeptic, who bets against Nature</div>
       <div class="eq-math">W₀ = 1 &nbsp;·&nbsp; Wₜ = Wₜ₋₁ · Sₜ(Xₜ)</div>
@@ -317,12 +317,12 @@
   <div class="page-hdr"><div class="page-ttl">PHYSICS</div><div class="page-ln"></div><div class="page-sub">Evidence in the fundamental sciences</div></div>
   <div class="cb">
     <div class="qb"><div class="qt">In particle physics, discoveries are declared at "5 sigma." But sigma is a fixed-sample concept. An e-process lets us monitor the detector continuously — accumulating evidence as each collision arrives.</div><div class="qa">— The sequential paradigm applied to experimental physics</div></div>
-    <p class="prose">The connection between e-processes and physics runs deep. In particle physics, sequential monitoring of collision data yields an e-process that accumulates evidence for new particles — the Poisson likelihood ratio is a natural e-value. And the <code>TwoSidedNormalMixture</code> from martingales.py provides the core machinery for testing any sequential stream of observations: a mixture supermartingale that simultaneously gives an e-process and a time-uniform confidence sequence.</p>
+    <p class="prose">The connection between e-processes and physics runs deep. In particle physics, sequential monitoring of collision data yields an e-process that accumulates evidence for new particles: the Poisson likelihood ratio is a natural e-value. And the <code>TwoSidedNormalMixture</code> from martingales.py provides the core machinery for testing any sequential stream of observations: a mixture supermartingale that simultaneously gives an e-process and a time-uniform confidence sequence.</p>
   </div>
 
   <!-- PARTICLE DETECTION -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Particle Discovery at a Collider.</strong> A detector counts events in successive time windows. Under background only (null), counts follow Poisson(λ₀). If a new particle exists (alternative), counts follow Poisson(λ₁ &gt; λ₀). Each window yields an e-value — the likelihood ratio. The product e-process accumulates evidence collision by collision.</p>
+    <p class="prose"><strong>Particle Discovery at a Collider.</strong> A detector counts events in successive time windows. Under background only (null), counts follow Poisson(λ₀). If a new particle exists (alternative), counts follow Poisson(λ₁ &gt; λ₀). Each window yields an e-value: the likelihood ratio. The product e-process accumulates evidence collision by collision.</p>
     <div class="md">E<sub>t</sub> = (λ₁/λ₀)<sup>X<sub>t</sub></sup> · exp(λ₀ − λ₁)<span class="md-l">Poisson likelihood ratio — the optimal bet for counting experiments.</span></div>
   </div>
   <div class="cc ar169" id="particle-wrap"><canvas id="c-particle"></canvas><div class="cc-vig"></div><div class="cc-label">PARTICLE COLLIDER · SEQUENTIAL DISCOVERY</div></div>
@@ -334,7 +334,7 @@
 
   <!-- SEQUENTIAL MEAN TEST (TwoSidedNormalMixture from martingales.py) -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Sequential Mean Testing.</strong> The core of the library: testing whether a stream of observations has mean zero. The <code>TwoSidedNormalMixture</code> class (martingales.py) constructs a mixture supermartingale that yields both an e-process and a time-uniform confidence sequence. Under the null (μ = 0), the wealth fluctuates near 1. Under drift μ &gt; 0, the running mean escapes the shrinking confidence band and the e-process grows — evidence accumulates proportional to μ².</p>
+    <p class="prose"><strong>Sequential Mean Testing.</strong> The core of the library: testing whether a stream of observations has mean zero. The <code>TwoSidedNormalMixture</code> class (martingales.py) constructs a mixture supermartingale that yields both an e-process and a time-uniform confidence sequence. Under the null (μ = 0), the wealth fluctuates near 1. Under drift μ &gt; 0, the running mean escapes the shrinking confidence band and the e-process grows, evidence accumulates proportional to μ².</p>
     <div class="md">log M(S, v) = ½ log( ρ / (v + ρ) ) + S² / ( 2(v + ρ) )<span class="md-l">TwoSidedNormalMixture.log_superMG — with ρ = best_rho(v_opt, α).</span></div>
   </div>
   <div class="cc ar169" id="meantest-wrap"><canvas id="c-meantest"></canvas><div class="cc-vig"></div><div class="cc-label">SEQUENTIAL MEAN TEST · CONFIDENCE SEQUENCE</div></div>
@@ -361,7 +361,7 @@
 
   <!-- VaR BACKTESTING -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>VaR Backtesting.</strong> A bank reports daily Value-at-Risk: the loss threshold it claims will be exceeded only 1% of the time. The backtest e-statistic (Example 16.9) is e<sup>q</sup><sub>β</sub>(x, r) = 𝟙{x &gt; r} / (1−β) — a simple indicator that equals 1/α on exceedance days and 0 otherwise. These sequential e-values are combined into an e-process via the betting fraction approach (Equation 16.15, <code>EProcessUpdater</code>): M<sub>t</sub> = M<sub>t−1</sub> · ((1−λ) + λE<sub>t</sub>). If the bank's model is honest, the e-process stays bounded. If risk is underestimated, evidence accumulates.</p>
+    <p class="prose"><strong>VaR Backtesting.</strong> A bank reports daily Value-at-Risk: the loss threshold it claims will be exceeded only 1% of the time. The backtest e-statistic (Example 16.9) is e<sup>q</sup><sub>β</sub>(x, r) = 𝟙{x &gt; r} / (1−β), a simple indicator that equals 1/α on exceedance days and 0 otherwise. These sequential e-values are combined into an e-process via the betting fraction approach (Equation 16.15, <code>EProcessUpdater</code>): M<sub>t</sub> = M<sub>t−1</sub> · ((1−λ) + λE<sub>t</sub>). If the bank's model is honest, the e-process stays bounded. If risk is underestimated, evidence accumulates.</p>
     <div class="md">E<sub>t</sub> = 𝟙{L<sub>t</sub> &gt; VaR<sub>t</sub>} / α<span class="md-l">Exceedance indicator divided by the claimed probability — a backtest e-statistic (Ex. 16.9).</span></div>
   </div>
   <div class="cc ar169" id="var-wrap"><canvas id="c-var"></canvas><div class="cc-vig"></div><div class="cc-label">VaR BACKTESTING · REGULATORY MONITORING</div></div>
@@ -400,22 +400,22 @@
 
   <!-- BRAIN HEATMAP -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Live Cortical Mapping.</strong> A top-down view of the cortex. Each cell is one voxel — a region of interest being tested in parallel. As fMRI volumes arrive, evidence accumulates. Cool regions show no activation (e-process near 1). Warm regions show growing evidence. When a voxel's e-process crosses 1/α, it lights up — a discovery. The scan progress bar shows acquisition time, and the counter tracks discoveries in real time.</p>
+    <p class="prose"><strong>Live Cortical Mapping.</strong> A top-down view of the cortex. Each cell is one voxel, a region of interest being tested in parallel. As fMRI volumes arrive, evidence accumulates. Cool regions show no activation (e-process near 1). Warm regions show growing evidence. When a voxel's e-process crosses 1/α, it lights up, a discovery. The scan progress bar shows acquisition time, and the counter tracks discoveries in real time.</p>
   </div>
   <div class="cc" id="brain-wrap" style="aspect-ratio:16/10;"><canvas id="c-brain"></canvas><div class="cc-vig"></div><div class="cc-label">CORTICAL HEATMAP · SEQUENTIAL EVIDENCE ACCUMULATION</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Voxel Signals.</strong> Below, each ribbon is a single voxel's BOLD signal over time. Most voxels are null — pure noise around zero. A subset carry true activation (a small positive drift). The 3D view reveals the spatial structure: many parallel streams of evidence, tested simultaneously.</p>
+    <p class="prose"><strong>Voxel Signals.</strong> Below, each ribbon is a single voxel's BOLD signal over time. Most voxels are null, pure noise around zero. A subset carry true activation (a small positive drift). The 3D view reveals the spatial structure: many parallel streams of evidence, tested simultaneously.</p>
   </div>
   <div class="cc" id="neuro-sig-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-sig"></canvas><div class="cc-vig"></div><div class="cc-label">VOXEL SIGNALS · 3D TRAJECTORY FIELD</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows — the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
+    <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows, the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
   </div>
   <div class="cc" id="neuro-ep-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-ep"></canvas><div class="cc-vig"></div><div class="cc-label">PARALLEL E-PROCESSES · MIXTURE SUPERMARTINGALES</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists — anywhere in the brain — while each individual voxel's test retains its own validity.</p>
+    <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists, anywhere in the brain, while each individual voxel's test retains its own validity.</p>
     <div class="md">M<sub>K</sub>(t) = (1/K) Σ<sub>k=1</sub><sup>K</sup> E<sub>k</sub>(t)<span class="md-l">Arithmetic mean e-merging function — admissible under arbitrary dependence (Theorem 8.4).</span></div>
   </div>
   <div class="cc ar169" id="neuro-merge-wrap"><canvas id="c-neuro-merge"></canvas><div class="cc-vig"></div></div>
