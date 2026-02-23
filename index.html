@@ -554,7 +554,7 @@ function initPrologue(){
     glow(x,w*.5,h*.5,55*pulse,GOLD,.06);
     x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.12*pulse);x.lineWidth=.5;
     for(let i=0;i<6;i++){x.save();x.translate(w*.5,h*.5);x.rotate(i*Math.PI/3+t*.0002);x.beginPath();x.moveTo(0,-25*pulse);x.lineTo(0,-60*pulse);x.stroke();x.restore();}
-    x.font=`italic ${Math.max(12,w*.03)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.3*pulse);x.textAlign='center';x.fillText('𝔼ₚ[ E ] ≤ 1',w*.5,h*.5+4);
+    x.font=`italic ${Math.max(12,w*.03)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45*pulse);x.textAlign='center';x.fillText('𝔼ₚ[ E ] ≤ 1',w*.5,h*.5+4);
     AF.intro=requestAnimationFrame(d);
   }
   stopAF('intro');AF.intro=requestAnimationFrame(d);
@@ -569,10 +569,10 @@ function initEValue(){
     x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
     const bY=h*.5,maxE=50,lx=w*.08,rx=w*.92,bW=rx-lx;
     x.strokeStyle=R(GD[0],GD[1],GD[2],.18);x.lineWidth=1;x.beginPath();x.moveTo(lx,bY);x.lineTo(rx,bY);x.stroke();
-    [0,1,5,10,20,50].forEach(v=>{const px=lx+(v/maxE)*bW;x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.beginPath();x.moveTo(px,bY-5);x.lineTo(px,bY+5);x.stroke();x.font=`${Math.max(9,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(v.toString(),px,bY+18);});
+    [0,1,5,10,20,50].forEach(v=>{const px=lx+(v/maxE)*bW;x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.beginPath();x.moveTo(px,bY-5);x.lineTo(px,bY+5);x.stroke();x.font=`${Math.max(9,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48);x.textAlign='center';x.fillText(v.toString(),px,bY+18);});
     const x1=lx+(1/maxE)*bW;
     x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.setLineDash([2,4]);x.beginPath();x.moveTo(x1,bY-h*.25);x.lineTo(x1,bY+24);x.stroke();x.setLineDash([]);
-    x.font=`italic ${Math.max(9,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.fillText('Break even',x1,bY-h*.25+12);
+    x.font=`italic ${Math.max(9,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.fillText('Break even',x1,bY-h*.25+12);
     const x20=lx+(20/maxE)*bW;
     x.strokeStyle=R(GB[0],GB[1],GB[2],.08);x.setLineDash([2,4]);x.beginPath();x.moveTo(x20,bY-h*.2);x.lineTo(x20,bY+24);x.stroke();x.setLineDash([]);
     x.font=`italic ${Math.max(9,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.fillText('1/α = 20',x20,bY-h*.2+12);
@@ -641,9 +641,9 @@ function runEVDist(){
 // ── III. GAME ──
 function initGamePage(){
   const c=document.getElementById('c-game');const{x,w,h}=sCanvas(c);
-  x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);x.font=`italic ${Math.max(12,w*.02)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Press Play to begin',w*.5,h*.5);
+  x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);x.font=`italic ${Math.max(12,w*.02)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.38);x.textAlign='center';x.fillText('Press Play to begin',w*.5,h*.5);
   document.getElementById('gm-mu').oninput=function(){document.getElementById('gm-mu-d').textContent=parseFloat(this.value).toFixed(2);};
-  ['c-neuro','c-ab'].forEach(id=>{const cc=document.getElementById(id);if(!cc)return;const{x:cx,w:cw,h:ch}=sCanvas(cc);cx.fillStyle=R(6,5,4,1);cx.fillRect(0,0,cw,ch);cx.font=`italic ${Math.max(11,cw*.025)}px 'EB Garamond',serif`;cx.fillStyle=R(GD[0],GD[1],GD[2],.2);cx.textAlign='center';cx.fillText('Press button to begin',cw*.5,ch*.5);});
+  ['c-neuro','c-ab'].forEach(id=>{const cc=document.getElementById(id);if(!cc)return;const{x:cx,w:cw,h:ch}=sCanvas(cc);cx.fillStyle=R(6,5,4,1);cx.fillRect(0,0,cw,ch);cx.font=`italic ${Math.max(11,cw*.025)}px 'EB Garamond',serif`;cx.fillStyle=R(GD[0],GD[1],GD[2],.32);cx.textAlign='center';cx.fillText('Press button to begin',cw*.5,ch*.5);});
 }
 
 function runGame(mode){
@@ -685,11 +685,11 @@ function runGame(mode){
       glow(x,hx,hy,16,GB,.18);x.fillStyle=R(GB[0],GB[1],GB[2],.9);x.beginPath();x.arc(hx,hy,2.5,0,Math.PI*2);x.fill();
     }
     x.restore();
-    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(yLabel,0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText(xLabel,mx+cw*.5,my+ch+18);
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48);x.textAlign='center';x.fillText(yLabel,0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48);x.textAlign='center';x.fillText(xLabel,mx+cw*.5,my+ch+18);
     const thPxCl=clamp(thPx,my,my+ch);
     x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.textAlign='right';x.fillText('1/α',mx-5,thPxCl+3);
-    if(upTo>0){x.font=`${Math.max(11,w*.016)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.5);x.textAlign='right';x.fillText(`W = ${vals[Math.min(upTo,N)].toFixed(2)}`,mx+cw,my+12);}
+    if(upTo>0){x.font=`${Math.max(11,w*.016)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.65);x.textAlign='right';x.fillText(`W = ${vals[Math.min(upTo,N)].toFixed(2)}`,mx+cw,my+12);}
     if(prog<1)AF[mode]=requestAnimationFrame(d);
   }
   stopAF(mode);AF[mode]=requestAnimationFrame(d);
@@ -711,8 +711,8 @@ function initEP(){
     dust.forEach(p=>{p.y-=p.sp;p.x+=Math.sin(t*.0003+p.ph)*.04;if(p.y<-5){p.y=h+5;p.x=Math.random()*w;}x.fillStyle=R(PARCH[0],PARCH[1],PARCH[2],p.a*(.6+.4*Math.sin(t*.002+p.ph)));x.beginPath();x.arc(p.x,p.y,p.s,0,Math.PI*2);x.fill();});
     if(el<3500){
       const a=el<1800?eIO(el/1800):Math.max(0,1-eIO((el-2500)/1000));
-      x.font=`600 ${Math.max(18,w*.045)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],a*.7);x.textAlign='center';x.fillText('THE E-PROCESS',w*.5,h*.44);
-      x.font=`italic ${Math.max(11,w*.017)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],a*.45);x.fillText('A meditation on the accumulation of evidence',w*.5,h*.52);
+      x.font=`600 ${Math.max(18,w*.045)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],a*.85);x.textAlign='center';x.fillText('THE E-PROCESS',w*.5,h*.44);
+      x.font=`italic ${Math.max(11,w*.017)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],a*.6);x.fillText('A meditation on the accumulation of evidence',w*.5,h*.52);
       AF.eprocess=requestAnimationFrame(d);return;
     }
     const drawEl=el-3500,prog=Math.min(1,drawEl/20000),upTo=Math.floor(prog*N);
@@ -744,7 +744,7 @@ function initEP(){
       }
     }
     x.restore();
-    if(axP>.5){const la=eO((axP-.5)*2);x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35*la);x.textAlign='center';x.fillText('W(t) — Skeptic\'s Wealth',0,0);x.restore();x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35*la);x.textAlign='center';x.fillText('Observations',mx+cw*.5,my+ch+18);}
+    if(axP>.5){const la=eO((axP-.5)*2);x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48*la);x.textAlign='center';x.fillText('W(t) — Skeptic\'s Wealth',0,0);x.restore();x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48*la);x.textAlign='center';x.fillText('Observations',mx+cw*.5,my+ch+18);}
     if(thP>.6){x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.3*(thP-.6)/.4);x.textAlign='left';x.fillText('1/α — threshold of conviction',mx+cw+6,my+ch*(1-Math.log10(20)/logMax)+3);}
     if(crossIdx>0&&upTo>=crossIdx){const cx2=mx+(crossIdx/N)*cw;const vp=Math.min(1,(upTo-crossIdx)/15);if(vp>.3){x.font=`${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],eO((vp-.3)/.7)*.5);x.textAlign='center';x.fillText(`τ = ${crossIdx}`,cx2,my+ch+13);}}
     AF.eprocess=requestAnimationFrame(d);
@@ -785,8 +785,8 @@ function initBetting(){
       if(upTo>0){const hi=upTo;const hx=mx+(hi/N)*cw,hly=(logV[hi]-logMin)/(logMax-logMin),hy=my+ch*(1-hly);x.fillStyle=R(tr.c[0],tr.c[1],tr.c[2],.8);x.beginPath();x.arc(hx,hy,2.5,0,Math.PI*2);x.fill();}
     });
     x.restore();
-    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Observations (same data for all strategies)',mx+cw*.5,my+ch+18);
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Observations (same data for all strategies)',mx+cw*.5,my+ch+18);
     x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.2);x.textAlign='right';x.fillText('1/α',mx-5,clamp(thPx,my,my+ch)+3);
     if(prog>.9){let yOff=my+8;traces.forEach(tr=>{x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(tr.c[0],tr.c[1],tr.c[2],.5);x.textAlign='right';x.fillText(`${tr.n}: W=${tr.v[N].toFixed(1)}`,mx+cw,yOff);yOff+=14;});}
     if(prog<1)AF.betting=requestAnimationFrame(d);
@@ -809,7 +809,7 @@ function initCmp(){
     x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
     const half=w*.44,gap=w*.04,mx=w*.06,my=h*.14,ch=h*.66;
     const logE=eVals.map(v=>Math.log10(Math.max(v,.001)));const logMax=Math.max(1.5,Math.max(...logE)*1.15);const logMin=Math.min(-.3,Math.min(...logE.slice(0,upTo+1))*1.1);
-    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='center';x.fillText('E-PROCESS',mx+half*.5,my-6);
+    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='center';x.fillText('E-PROCESS',mx+half*.5,my-6);
     x.save();x.beginPath();x.rect(mx-1,my-1,half+2,ch+2);x.clip();
     drawAxes(x,mx,my,half,ch);
     const thLY=(Math.log10(20)-logMin)/(logMax-logMin);const thPx=my+ch*(1-thLY);
@@ -818,9 +818,9 @@ function initCmp(){
     for(let i=0;i<=upTo;i++){const px=mx+(i/N)*half;const ly=(logE[i]-logMin)/(logMax-logMin);const py=my+ch*(1-ly);if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}x.stroke();
     if(upTo>0){const hx=mx+(upTo/N)*half,hly=(logE[upTo]-logMin)/(logMax-logMin),hy=my+ch*(1-hly);glow(x,hx,hy,12,GB,.15);}
     x.restore();
-    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Peek freely — always valid',mx+half*.5,my+ch+14);
+    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.38);x.textAlign='center';x.fillText('Peek freely — always valid',mx+half*.5,my+ch+14);
     const rx=mx+half+gap;
-    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';x.fillText('P-VALUE',rx+half*.5,my-6);
+    x.font=`600 ${Math.max(10,w*.013)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.48);x.textAlign='center';x.fillText('P-VALUE',rx+half*.5,my-6);
     x.save();x.beginPath();x.rect(rx-1,my-1,half+2,ch+2);x.clip();
     drawAxes(x,rx,my,half,ch);
     const pThY=my+ch*(1-.05);
@@ -828,7 +828,7 @@ function initCmp(){
     x.strokeStyle=R(GD[0],GD[1],GD[2],.6);x.lineWidth=1.4;x.lineJoin='round';x.beginPath();
     for(let i=0;i<upTo;i++){const px=rx+((i+1)/N)*half;const py=my+ch*(1-clamp(pVals[i],0,1));if(i===0)x.moveTo(px,py);else x.lineTo(px,py);}x.stroke();
     x.restore();
-    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='center';x.fillText('Valid only at pre-specified n',rx+half*.5,my+ch+14);
+    x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.38);x.textAlign='center';x.fillText('Valid only at pre-specified n',rx+half*.5,my+ch+14);
     if(prog<1)AF.comparison=requestAnimationFrame(d);
   }
   stopAF('comparison');AF.comparison=requestAnimationFrame(d);
@@ -865,12 +865,12 @@ function initCS(){
     }
     x.restore();
     x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(TEAL[0],TEAL[1],TEAL[2],.35);x.textAlign='left';x.fillText(`True μ = ${mu.toFixed(2)}`,mx+cw+6,clamp(toY(mu),my+5,my+ch-5));
-    if(upTo>1){const lastW=ups[upTo-1]-lows[upTo-1];const midY=(toY(ups[upTo-1])+toY(lows[upTo-1]))/2;const bx=toX(upTo-1)+18;x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';x.fillText(`± ${(lastW/2).toFixed(3)}`,bx+4,clamp(midY+3,my+10,my+ch-5));}
-    x.font=`${Math.max(10,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.35);x.textAlign='right';x.fillText(`${Math.round((1-alpha)*100)}% Confidence Sequence`,mx+cw,my+10);
-    x.font=`${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.fillText(`[${lows[upTo-1]?.toFixed(3)??'—'}, ${ups[upTo-1]?.toFixed(3)??'—'}]`,mx+cw,my+22);
-    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Parameter',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Sample size',mx+cw*.5,my+ch+18);
-    if(upTo>N*.4){x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='center';x.fillText('Valid at every time — stop whenever you wish',mx+cw*.5,my+ch+32);}
+    if(upTo>1){const lastW=ups[upTo-1]-lows[upTo-1];const midY=(toY(ups[upTo-1])+toY(lows[upTo-1]))/2;const bx=toX(upTo-1)+18;x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='left';x.fillText(`± ${(lastW/2).toFixed(3)}`,bx+4,clamp(midY+3,my+10,my+ch-5));}
+    x.font=`${Math.max(10,w*.013)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.48);x.textAlign='right';x.fillText(`${Math.round((1-alpha)*100)}% Confidence Sequence`,mx+cw,my+10);
+    x.font=`${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.38);x.fillText(`[${lows[upTo-1]?.toFixed(3)??'—'}, ${ups[upTo-1]?.toFixed(3)??'—'}]`,mx+cw,my+22);
+    x.save();x.translate(mx-22,my+ch*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Parameter',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.011)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Sample size',mx+cw*.5,my+ch+18);
+    if(upTo>N*.4){x.font=`italic ${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.32);x.textAlign='center';x.fillText('Valid at every time — stop whenever you wish',mx+cw*.5,my+ch+32);}
     if(prog<1)AF.confseq=requestAnimationFrame(d);
   }
   stopAF('confseq');AF.confseq=requestAnimationFrame(d);
@@ -919,7 +919,7 @@ function initParticle(){
     const mx2=mx,my2=h*.56,ch2=h*.34;
 
     // ── TOP: Event counts histogram ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='left';x.fillText('EVENT COUNTS PER WINDOW',mx,my-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='left';x.fillText('EVENT COUNTS PER WINDOW',mx,my-4);
 
     const maxC=Math.max(15,...counts)+2;
     // change point marker
@@ -928,7 +928,7 @@ function initParticle(){
       x.fillStyle=R(RED[0],RED[1],RED[2],.04);x.fillRect(cpx,my,mx+cw-cpx,ch);
       x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.setLineDash([2,4]);x.lineWidth=.5;
       x.beginPath();x.moveTo(cpx,my);x.lineTo(cpx,my+ch);x.stroke();x.setLineDash([]);
-      x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(RED[0],RED[1],RED[2],.35);x.textAlign='center';x.fillText('signal onset',cpx,my+ch+12);
+      x.font=`italic ${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(RED[0],RED[1],RED[2],.48);x.textAlign='center';x.fillText('signal onset',cpx,my+ch+12);
     }
     // bars
     const bw=Math.max(1,(cw/N)*.7);
@@ -949,7 +949,7 @@ function initParticle(){
     x.strokeStyle=R(GD[0],GD[1],GD[2],.15);x.lineWidth=.5;x.setLineDash([3,5]);
     const bgY=my+ch-(lam0/maxC)*ch;
     x.beginPath();x.moveTo(mx,bgY);x.lineTo(mx+cw,bgY);x.stroke();x.setLineDash([]);
-    x.font=`italic ${Math.max(8,w*.008)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.25);x.textAlign='right';x.fillText(`λ₀=${lam0.toFixed(0)}`,mx-4,bgY+3);
+    x.font=`italic ${Math.max(8,w*.008)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.38);x.textAlign='right';x.fillText(`λ₀=${lam0.toFixed(0)}`,mx-4,bgY+3);
     // axis
     x.strokeStyle=R(GD[0],GD[1],GD[2],.12);x.lineWidth=.5;x.beginPath();x.moveTo(mx,my+ch);x.lineTo(mx+cw,my+ch);x.stroke();
 
@@ -957,7 +957,7 @@ function initParticle(){
     sparks=sparks.filter(s=>{s.x+=s.vx;s.y+=s.vy;s.vy+=.03;s.life-=.015;if(s.life>0){x.fillStyle=R(GB[0],GB[1],GB[2],s.life*.5);x.beginPath();x.arc(s.x,s.y,1.2*s.life,0,Math.PI*2);x.fill();return true;}return false;});
 
     // ── BOTTOM: E-process (log scale) ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';x.fillText('E-PROCESS — EVIDENCE FOR NEW PARTICLE',mx2,my2-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='left';x.fillText('E-PROCESS — EVIDENCE FOR NEW PARTICLE',mx2,my2-4);
 
     const logE=eProc.map(v=>Math.log10(Math.max(v,1e-6)));
     const logMax=Math.max(2,Math.max(...logE)*1.15);
@@ -1010,10 +1010,10 @@ function initParticle(){
 
     // Labels
     x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.textAlign='right';x.fillText('1/α',mx2-5,clamp(thY,my2,my2+ch2)+3);
-    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Collision windows',mx2+cw*.5,my2+ch2+14);
+    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Collision windows',mx2+cw*.5,my2+ch2+14);
 
-    if(upTo>0){x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='right';x.fillText(`W = ${eProc[upTo].toFixed(2)}`,mx2+cw,my2+10);}
+    if(upTo>0){x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='right';x.fillText(`W = ${eProc[upTo].toFixed(2)}`,mx2+cw,my2+10);}
 
     if(prog<1)AF.particle=requestAnimationFrame(d);
   }
@@ -1062,7 +1062,7 @@ function initMeanTest(){
     const mx2=mx,my2=h*.56,ch2=h*.34;
 
     // ── TOP: Running mean with confidence sequence band ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='left';x.fillText('RUNNING MEAN X̄(t) WITH CONFIDENCE SEQUENCE',mx,my-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='left';x.fillText('RUNNING MEAN X̄(t) WITH CONFIDENCE SEQUENCE',mx,my-4);
     // Compute y-range from visible data
     let yMin=-0.8,yMax=0.8;
     for(let i=1;i<=Math.min(upTo,N);i++){
@@ -1076,7 +1076,7 @@ function initMeanTest(){
     const zeroY=my+ch*(1-(0-yMin)/(yMax-yMin));
     x.strokeStyle=R(GD[0],GD[1],GD[2],.1);x.setLineDash([2,4]);x.lineWidth=.5;
     x.beginPath();x.moveTo(mx,zeroY);x.lineTo(mx+cw,zeroY);x.stroke();x.setLineDash([]);
-    x.font=`italic ${Math.max(8,w*.008)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='right';x.fillText('μ₀ = 0',mx-4,zeroY+3);
+    x.font=`italic ${Math.max(8,w*.008)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.32);x.textAlign='right';x.fillText('μ₀ = 0',mx-4,zeroY+3);
 
     // Confidence sequence band (filled)
     if(upTo>1){
@@ -1124,7 +1124,7 @@ function initMeanTest(){
     if(upTo>0){x.font=`italic ${Math.max(8,w*.008)}px 'EB Garamond',serif`;x.fillStyle=R(TEAL[0],TEAL[1],TEAL[2],.3);x.textAlign='right';x.fillText(`X̄ = ${runMean[upTo].toFixed(3)}   CS: [${(runMean[upTo]-csBound[upTo]).toFixed(2)}, ${(runMean[upTo]+csBound[upTo]).toFixed(2)}]`,mx+cw,my+10);}
 
     // ── BOTTOM: E-process wealth (TwoSidedNormalMixture supermartingale) ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';x.fillText('E-PROCESS WEALTH (MIXTURE SUPERMARTINGALE)',mx2,my2-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='left';x.fillText('E-PROCESS WEALTH (MIXTURE SUPERMARTINGALE)',mx2,my2-4);
     const logW=wealth.map(v=>Math.log10(Math.max(v,1e-6)));
     const lwSlice=logW.slice(0,upTo+1);
     const lwMax=Math.max(1.5,Math.max(...lwSlice)*1.15);
@@ -1158,11 +1158,11 @@ function initMeanTest(){
     }
     x.restore();
 
-    x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(RED[0],RED[1],RED[2],.2);x.textAlign='right';x.fillText('1/α',mx2-5,clamp(thY,my2,my2+ch2)+3);
-    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ M(t)',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Observations',mx2+cw*.5,my2+ch2+14);
+    x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(RED[0],RED[1],RED[2],.32);x.textAlign='right';x.fillText('1/α',mx2-5,clamp(thY,my2,my2+ch2)+3);
+    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('log₁₀ M(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Observations',mx2+cw*.5,my2+ch2+14);
 
-    if(upTo>0){x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='right';x.fillText(`M = ${wealth[upTo].toFixed(3)}   ρ = ${rho.toFixed(1)}`,mx2+cw,my2+10);}
+    if(upTo>0){x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='right';x.fillText(`M = ${wealth[upTo].toFixed(3)}   ρ = ${rho.toFixed(1)}`,mx2+cw,my2+10);}
 
     if(prog<1)AF.meantest=requestAnimationFrame(d);
   }
@@ -1224,7 +1224,7 @@ function initVaR(){
     const mx2=mx,my2=h*.52,ch2=h*.38;
 
     // ── TOP: Loss distribution with VaR exceedances ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='left';x.fillText('DAILY P&L · VaR EXCEEDANCES',mx,my-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='left';x.fillText('DAILY P&L · VaR EXCEEDANCES',mx,my-4);
 
     const lSlice=rets.slice(0,upTo);
     const lMin=Math.min(-3,Math.min(...lSlice,0)-.5),lMax=Math.max(3,Math.max(...lSlice,0)+.5);
@@ -1261,7 +1261,7 @@ function initVaR(){
     x.restore();
 
     // ── BOTTOM: E-process ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';x.fillText('BACKTEST E-PROCESS',mx2,my2-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='left';x.fillText('BACKTEST E-PROCESS',mx2,my2-4);
 
     const logE=eProc.map(v=>Math.log10(Math.max(v,.001)));
     const leSlice=logE.slice(0,upTo+1);
@@ -1298,8 +1298,8 @@ function initVaR(){
     x.restore();
 
     x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.textAlign='right';x.fillText('1/α',mx2-5,clamp(thY,my2,my2+ch2)+3);
-    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Trading days',mx2+cw*.5,my2+ch2+14);
+    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('log₁₀ W(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Trading days',mx2+cw*.5,my2+ch2+14);
 
     // Exceedance count
     if(upTo>0){
@@ -1307,7 +1307,7 @@ function initVaR(){
       const excRate=(excCount/upTo*100).toFixed(1);
       x.font=`${Math.max(10,w*.012)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='right';
       x.fillText(`Exceedances: ${excCount}/${upTo} (${excRate}%)  ·  Claimed: ${(alpha_var*100).toFixed(0)}%`,mx+cw,my+ch+12);
-      x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='right';x.fillText(`W = ${eProc[upTo].toFixed(2)}`,mx2+cw,my2+10);
+      x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='right';x.fillText(`W = ${eProc[upTo].toFixed(2)}`,mx2+cw,my2+10);
     }
 
     if(prog<1)AF.var=requestAnimationFrame(d);
@@ -1361,7 +1361,7 @@ function initRegime(){
     const mx2=mx,my2=h*.5,ch2=h*.4;
 
     // ── TOP: Returns with regime coloring ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='left';x.fillText('MARKET RETURNS',mx,my-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='left';x.fillText('MARKET RETURNS',mx,my-4);
 
     const rSlice=returns.slice(0,upTo);
     const rMax=Math.max(4,Math.max(...rSlice.map(Math.abs))*1.2);
@@ -1402,7 +1402,7 @@ function initRegime(){
     x.restore();
 
     // ── BOTTOM: CUSUM e-detector ──
-    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.4);x.textAlign='left';x.fillText('CUSUM E-DETECTOR',mx2,my2-4);
+    x.font=`${Math.max(9,w*.01)}px 'Cinzel',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='left';x.fillText('CUSUM E-DETECTOR',mx2,my2-4);
 
     const logC=cusum.map(v=>Math.log10(Math.max(v,1e-10)));
     const lcSlice=logC.slice(0,upTo+1);
@@ -1455,12 +1455,12 @@ function initRegime(){
     x.restore();
 
     x.font=`${Math.max(8,w*.009)}px 'EB Garamond',serif`;x.fillStyle=R(GB[0],GB[1],GB[2],.25);x.textAlign='right';x.fillText('1/α',mx2-5,clamp(thY,my2,my2+ch2)+3);
-    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('log₁₀ C(t)',0,0);x.restore();
-    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.3);x.textAlign='center';x.fillText('Trading days',mx2+cw*.5,my2+ch2+14);
+    x.save();x.translate(mx2-22,my2+ch2*.5);x.rotate(-Math.PI/2);x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('log₁₀ C(t)',0,0);x.restore();
+    x.font=`italic ${Math.max(9,w*.01)}px 'EB Garamond',serif`;x.fillStyle=R(GD[0],GD[1],GD[2],.45);x.textAlign='center';x.fillText('Trading days',mx2+cw*.5,my2+ch2+14);
 
     if(upTo>0){
       const alarmCount=alarms.filter(a=>a<=upTo).length;
-      x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='right';x.fillText(`C = ${cusum[upTo].toFixed(1)}  ·  Alarms: ${alarmCount}`,mx2+cw,my2+10);
+      x.font=`${Math.max(11,w*.014)}px 'EB Garamond',serif`;x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.6);x.textAlign='right';x.fillText(`C = ${cusum[upTo].toFixed(1)}  ·  Alarms: ${alarmCount}`,mx2+cw,my2+10);
     }
 
     if(prog<1)AF.regime=requestAnimationFrame(d);
@@ -1555,7 +1555,7 @@ function initNeuro(){
   // ─── DRAW BRAIN ───
   function drawBrain(upTo,elapsed){
     xB.fillStyle=R(6,5,4,1);xB.fillRect(0,0,wB,hB);
-    glow(xB,wB*.5,hB*.46,wB*.3,[10,8,5],.06);
+    glow(xB,wB*.5,hB*.46,wB*.3,[10,8,5],.1);
 
     const bx=wB*.5, by=hB*.46;
     const bw=Math.min(wB*.42,hB*.42);
@@ -1589,8 +1589,8 @@ function initNeuro(){
 
       let r,g,b,a;
       if(vk<0){
-        // Untested brain tissue — very dim
-        r=22;g=18;b=12;a=0.25;
+        // Untested brain tissue — dim
+        r=28;g=22;b=15;a=0.35;
       } else {
         // Tested voxel — color by current wealth
         const wt=upTo<=T?wealth[vk][Math.min(upTo,T)]:wealth[vk][T];
@@ -1600,18 +1600,18 @@ function initNeuro(){
         if(crossed){
           // Discovery — bright gold with pulse
           const pulse=0.8+0.2*Math.sin(elapsed*0.006+vk);
-          r=240;g=210;b=80;a=0.7*pulse;
+          r=240;g=210;b=80;a=0.85*pulse;
         } else if(logW>0.3){
           // Growing evidence — teal-warm blend
           const t=clamp(logW/Math.log10(thresholdVal),0,1);
           r=Math.round(90+150*t);g=Math.round(176-80*t);b=Math.round(158-110*t);
-          a=0.2+0.45*t;
+          a=0.3+0.5*t;
         } else if(logW>-0.3){
           // Near baseline — dim teal
-          r=60;g=100;b=90;a=0.12;
+          r=60;g=100;b=90;a=0.18;
         } else {
           // Below baseline — cool
-          r=30;g=40;b=50;a=0.1;
+          r=30;g=40;b=50;a=0.14;
         }
       }
 
@@ -1627,7 +1627,7 @@ function initNeuro(){
       if(vk>=0){
         const wt=upTo<=T?wealth[vk][Math.min(upTo,T)]:wealth[vk][T];
         if(wt>=thresholdVal){
-          glow(xB,cx+cellW/2,cy+cellH/2,cellW*0.8,[240,210,80],.08);
+          glow(xB,cx+cellW/2,cy+cellH/2,cellW*0.8,[240,210,80],.14);
         }
       }
     }
@@ -1728,8 +1728,8 @@ function initNeuro(){
   function drawThresholdPlane(x,yNorm,rY,rX,cx,cy,sc){
     // Horizontal plane at y=yNorm spanning x/z of the cube
     const steps=8;
-    x.strokeStyle=R(RED[0],RED[1],RED[2],.06);
-    x.lineWidth=0.4;
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.12);
+    x.lineWidth=0.5;
     // Grid lines in X direction
     for(let i=0;i<=steps;i++){
       const z=-1+2*i/steps;
@@ -1745,8 +1745,8 @@ function initNeuro(){
       x.beginPath();x.moveTo(pa.sx,pa.sy);x.lineTo(pb.sx,pb.sy);x.stroke();
     }
     // Border
-    x.strokeStyle=R(RED[0],RED[1],RED[2],.12);
-    x.lineWidth=0.7;
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.25);
+    x.lineWidth=0.9;
     const corners=[[-1,yNorm,-1],[1,yNorm,-1],[1,yNorm,1],[-1,yNorm,1]];
     x.beginPath();
     corners.forEach((c,i)=>{
@@ -1757,7 +1757,7 @@ function initNeuro(){
     // Label
     const lp=project(1.12,yNorm,-1,rY,rX,cx,cy,sc);
     x.font=`italic ${Math.max(9,cy*.035)}px 'EB Garamond',serif`;
-    x.fillStyle=R(RED[0],RED[1],RED[2],.25);x.textAlign='left';
+    x.fillStyle=R(RED[0],RED[1],RED[2],.4);x.textAlign='left';
     x.fillText('1/α',lp.sx,lp.sy+3);
   }
 
@@ -1766,20 +1766,20 @@ function initNeuro(){
     // Time arrow along bottom-front edge
     const ta=project(-1,-1.12,-1,rY,rX,cx,cy,sc);
     const tb=project( 1,-1.12,-1,rY,rX,cx,cy,sc);
-    x.strokeStyle=R(GD[0],GD[1],GD[2],.1);x.lineWidth=0.5;
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.18);x.lineWidth=0.5;
     x.beginPath();x.moveTo(ta.sx,ta.sy);x.lineTo(tb.sx,tb.sy);x.stroke();
     // arrowhead
     const dx=tb.sx-ta.sx,dy=tb.sy-ta.sy,len=Math.sqrt(dx*dx+dy*dy);
     const ux=dx/len,uy=dy/len;
     x.beginPath();x.moveTo(tb.sx,tb.sy);x.lineTo(tb.sx-ux*6+uy*3,tb.sy-uy*6-ux*3);x.moveTo(tb.sx,tb.sy);x.lineTo(tb.sx-ux*6-uy*3,tb.sy-uy*6+ux*3);x.stroke();
     x.font=`italic ${Math.max(9,cy*.032)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.2);x.textAlign='center';
+    x.fillStyle=R(GD[0],GD[1],GD[2],.35);x.textAlign='center';
     x.fillText('time',tb.sx+8,tb.sy+2);
 
     // Voxel axis along bottom-right edge
     const va=project(1,-1.12,-1,rY,rX,cx,cy,sc);
     const vb=project(1,-1.12, 1,rY,rX,cx,cy,sc);
-    x.strokeStyle=R(GD[0],GD[1],GD[2],.07);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.12);
     x.beginPath();x.moveTo(va.sx,va.sy);x.lineTo(vb.sx,vb.sy);x.stroke();
     x.fillText('voxels',vb.sx,vb.sy+12);
 
@@ -1791,7 +1791,7 @@ function initNeuro(){
   // ─── MAIN DRAW ───
   function drawScene(x,w,h,rY,rX,upTo,isEP){
     x.fillStyle=R(6,5,4,1);x.fillRect(0,0,w,h);
-    glow(x,w*.48,h*.48,w*.32,[12,9,5],.08);
+    glow(x,w*.48,h*.48,w*.32,[12,9,5],.14);
 
     const cx=w*.5, cy=h*.5, sc=Math.min(w,h)*.36;
 
@@ -1804,7 +1804,7 @@ function initNeuro(){
     }
 
     // Draw cube
-    drawCube(x,w,h,rY,rX,cx,cy,sc,0.08);
+    drawCube(x,w,h,rY,rX,cx,cy,sc,0.16);
 
     // Threshold plane (e-process only)
     if(isEP){
@@ -1828,7 +1828,7 @@ function initNeuro(){
       const k=v.k, zN=v.zNorm;
       const active=isActive[k];
       const depth=clamp((v.vz+3)/6,0,1);
-      const fade=0.2+0.8*(1-depth);
+      const fade=0.35+0.65*(1-depth);
 
       if(nPts<2)continue;
 
@@ -1859,15 +1859,15 @@ function initNeuro(){
         let col,al,lw;
         if(isEP && crossT>=0 && tJ>=crossT){
           // CROSSED — bright gold
-          col=GB; al=0.8*fade; lw=2.0*fade;
+          col=GB; al=0.9*fade; lw=2.5*fade;
         } else if(isEP && active){
           // Active, not yet crossed — teal
-          col=TEAL; al=0.35*fade; lw=1.0*fade;
+          col=TEAL; al=0.6*fade; lw=1.4*fade;
         } else if(!isEP && active){
-          col=TEAL; al=0.3*fade; lw=0.8*fade;
+          col=TEAL; al=0.55*fade; lw=1.2*fade;
         } else {
           // Null voxel
-          col=GD; al=0.06*fade; lw=0.35*fade;
+          col=GD; al=0.15*fade; lw=0.5*fade;
         }
 
         x.strokeStyle=R(col[0],col[1],col[2],al);
@@ -1886,10 +1886,10 @@ function initNeuro(){
 
         const crossed=isEP&&crossT>=0;
         const hCol=crossed?GB:(active?TEAL:GD);
-        const hAl=crossed?0.9*fade:0.5*fade;
-        if(crossed)glow(x,pH.sx,pH.sy,8*fade,GB,.15*fade);
+        const hAl=crossed?1.0*fade:0.7*fade;
+        if(crossed)glow(x,pH.sx,pH.sy,10*fade,GB,.22*fade);
         x.fillStyle=R(hCol[0],hCol[1],hCol[2],hAl);
-        x.beginPath();x.arc(pH.sx,pH.sy,crossed?2.5:1.5,0,Math.PI*2);x.fill();
+        x.beginPath();x.arc(pH.sx,pH.sy,crossed?3:2,0,Math.PI*2);x.fill();
       }
     }
 
