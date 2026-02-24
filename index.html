@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<title>The E-Value: Game-Theoretic Evidence</title>
+<title>The E-Value — Game-Theoretic Evidence</title>
 <style>
 
   :root {
@@ -139,6 +139,7 @@
   <button class="nav-tab" data-page="physics"><span class="nav-num">VIII.</span>Physics</button>
   <button class="nav-tab" data-page="finance"><span class="nav-num">IX.</span>Finance</button>
   <button class="nav-tab" data-page="neuro"><span class="nav-num">X.</span>Neuro</button>
+  <button class="nav-tab" data-page="merging"><span class="nav-num">XI.</span>Merging</button>
   <div class="audio-ctrls">
     <button class="audio-btn" id="audio-play" onclick="toggleAudio()">PLAY</button>
     <button class="audio-btn muted" id="audio-mute" onclick="toggleMute()">MUTE</button>
@@ -177,12 +178,12 @@
     <div class="cg"><div class="cl">Observed e-value</div><input type="range" id="ev-sl" min="0" max="50" step=".5" value="1"><div class="cv" id="ev-disp">1.0</div></div>
   </div>
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose">Below: the <em>distribution</em> of e-values under two worlds. Under the null (left), e-values scatter around 1, Skeptic breaks even on average. Under the alternative (right), e-values shift upward, Skeptic profits because truth is on her side.</p>
+    <p class="prose">Below: the <em>distribution</em> of e-values under two worlds. Under the null (left), e-values scatter around 1 — Skeptic breaks even on average. Under the alternative (right), e-values shift upward — Skeptic profits because truth is on her side.</p>
   </div>
   <div class="cc ar2" id="evdist-wrap"><canvas id="c-evdist"></canvas><div class="cc-vig"></div><div class="cc-label">E-VALUE DISTRIBUTION: NULL vs ALTERNATIVE</div></div>
   <div class="ctrls"><button class="btn" onclick="runEVDist()">Sample 500 E-values</button></div>
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose">The simplest e-variable is the <strong>likelihood ratio</strong>, the log-optimal bet, which maximizes expected wealth growth:</p>
+    <p class="prose">The simplest e-variable is the <strong>likelihood ratio</strong> — the log-optimal bet, which maximizes expected wealth growth:</p>
     <div class="md">E = exp(μ · x − μ²/2)<span class="md-l">The Kelly-optimal wager for testing N(0,1) vs N(μ,1).</span></div>
   </div>
   <div class="pf"><div class="pf-t">Section 1.5 — Betting interpretation of e-values</div></div>
@@ -217,7 +218,7 @@
     <div>
       <div class="cc ar32" id="ab-wrap"><canvas id="c-ab"></canvas><div class="cc-vig"></div><div class="cc-label">A/B TESTING · CONVERSION RATE</div></div>
       <div class="ctrls"><button class="btn" onclick="runGame('ab')">Run Test</button></div>
-      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential comparison of two conversion rates. Each visitor provides a Bernoulli observation. Peek at the result after every user, the e-process remains valid. <em>No need to wait for a fixed sample size.</em></p></div>
+      <div class="cb"><p class="prose" style="font-size:clamp(12px,1.3vw,15px);">Sequential comparison of two conversion rates. Each visitor provides a Bernoulli observation. Peek at the result after every user — the e-process remains valid. <em>No need to wait for a fixed sample size.</em></p></div>
     </div>
   </div>
   <div class="pf"><div class="pf-t">Section 7.6 — Testing by betting · Algorithm 7.16</div></div>
@@ -228,12 +229,12 @@
   <div class="page-hdr"><div class="page-ttl">THE E-PROCESS</div><div class="page-ln"></div><div class="page-sub">Evidence accumulating through time</div></div>
   <div class="cb">
     <p class="prose">An e-process remains valid at <em>any stopping time</em>. You may peek whenever you wish and the conclusion holds. This is the gift of Ville's inequality.</p>
-    <div class="md">P( sup<sub>t</sub> M<sub>t</sub> ≥ 1/α ) ≤ α<span class="md-l">For any nonnegative supermartingale, valid at all times simultaneously.</span></div>
+    <div class="md">P( sup<sub>t</sub> M<sub>t</sub> ≥ 1/α ) ≤ α<span class="md-l">For any nonnegative supermartingale — valid at all times simultaneously.</span></div>
   </div>
   <div class="cc ar169" id="ep-wrap" style="position:relative;">
     <canvas id="c-ep"></canvas><div class="cc-vig"></div>
-    <div class="ep-overlay ep-narr ep-narr-l" id="ep-nl">Each observation is a round<br>in a game against Nature.<br><br><em>Skeptic places a bet, constrained<br>so that under the null, no strategy<br>can systematically profit.</em></div>
-    <div class="ep-overlay ep-narr ep-narr-r" id="ep-nr">But if the alternative is true,<br>wealth grows, evidence accumulates<br>like light gathering in a lens.<br><br><em>No probability was assumed.<br>The game was assumed.<br>The game forced the probability.</em></div>
+    <div class="ep-overlay ep-narr ep-narr-l" id="ep-nl">Each observation is a round<br>in a game against Nature.<br><br><em>Skeptic places a bet — constrained<br>so that under the null, no strategy<br>can systematically profit.</em></div>
+    <div class="ep-overlay ep-narr ep-narr-r" id="ep-nr">But if the alternative is true,<br>wealth grows — evidence accumulates<br>like light gathering in a lens.<br><br><em>No probability was assumed.<br>The game was assumed.<br>The game forced the probability.</em></div>
     <div class="ep-overlay ep-eq" id="ep-eq">
       <div class="eq-desc">The wealth of Skeptic, who bets against Nature</div>
       <div class="eq-math">W₀ = 1 &nbsp;·&nbsp; Wₜ = Wₜ₋₁ · Sₜ(Xₜ)</div>
@@ -317,12 +318,12 @@
   <div class="page-hdr"><div class="page-ttl">PHYSICS</div><div class="page-ln"></div><div class="page-sub">Evidence in the fundamental sciences</div></div>
   <div class="cb">
     <div class="qb"><div class="qt">In particle physics, discoveries are declared at "5 sigma." But sigma is a fixed-sample concept. An e-process lets us monitor the detector continuously — accumulating evidence as each collision arrives.</div><div class="qa">— The sequential paradigm applied to experimental physics</div></div>
-    <p class="prose">The connection between e-processes and physics runs deep. In particle physics, sequential monitoring of collision data yields an e-process that accumulates evidence for new particles: the Poisson likelihood ratio is a natural e-value. And the <code>TwoSidedNormalMixture</code> from martingales.py provides the core machinery for testing any sequential stream of observations: a mixture supermartingale that simultaneously gives an e-process and a time-uniform confidence sequence.</p>
+    <p class="prose">The connection between e-processes and physics runs deep. In particle physics, sequential monitoring of collision data yields an e-process that accumulates evidence for new particles — the Poisson likelihood ratio is a natural e-value. And the <code>TwoSidedNormalMixture</code> from martingales.py provides the core machinery for testing any sequential stream of observations: a mixture supermartingale that simultaneously gives an e-process and a time-uniform confidence sequence.</p>
   </div>
 
   <!-- PARTICLE DETECTION -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Particle Discovery at a Collider.</strong> A detector counts events in successive time windows. Under background only (null), counts follow Poisson(λ₀). If a new particle exists (alternative), counts follow Poisson(λ₁ &gt; λ₀). Each window yields an e-value: the likelihood ratio. The product e-process accumulates evidence collision by collision.</p>
+    <p class="prose"><strong>Particle Discovery at a Collider.</strong> A detector counts events in successive time windows. Under background only (null), counts follow Poisson(λ₀). If a new particle exists (alternative), counts follow Poisson(λ₁ &gt; λ₀). Each window yields an e-value — the likelihood ratio. The product e-process accumulates evidence collision by collision.</p>
     <div class="md">E<sub>t</sub> = (λ₁/λ₀)<sup>X<sub>t</sub></sup> · exp(λ₀ − λ₁)<span class="md-l">Poisson likelihood ratio — the optimal bet for counting experiments.</span></div>
   </div>
   <div class="cc ar169" id="particle-wrap"><canvas id="c-particle"></canvas><div class="cc-vig"></div><div class="cc-label">PARTICLE COLLIDER · SEQUENTIAL DISCOVERY</div></div>
@@ -334,7 +335,7 @@
 
   <!-- SEQUENTIAL MEAN TEST (TwoSidedNormalMixture from martingales.py) -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Sequential Mean Testing.</strong> The core of the library: testing whether a stream of observations has mean zero. The <code>TwoSidedNormalMixture</code> class (martingales.py) constructs a mixture supermartingale that yields both an e-process and a time-uniform confidence sequence. Under the null (μ = 0), the wealth fluctuates near 1. Under drift μ &gt; 0, the running mean escapes the shrinking confidence band and the e-process grows, evidence accumulates proportional to μ².</p>
+    <p class="prose"><strong>Sequential Mean Testing.</strong> The core of the library: testing whether a stream of observations has mean zero. The <code>TwoSidedNormalMixture</code> class (martingales.py) constructs a mixture supermartingale that yields both an e-process and a time-uniform confidence sequence. Under the null (μ = 0), the wealth fluctuates near 1. Under drift μ &gt; 0, the running mean escapes the shrinking confidence band and the e-process grows — evidence accumulates proportional to μ².</p>
     <div class="md">log M(S, v) = ½ log( ρ / (v + ρ) ) + S² / ( 2(v + ρ) )<span class="md-l">TwoSidedNormalMixture.log_superMG — with ρ = best_rho(v_opt, α).</span></div>
   </div>
   <div class="cc ar169" id="meantest-wrap"><canvas id="c-meantest"></canvas><div class="cc-vig"></div><div class="cc-label">SEQUENTIAL MEAN TEST · CONFIDENCE SEQUENCE</div></div>
@@ -361,7 +362,7 @@
 
   <!-- VaR BACKTESTING -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>VaR Backtesting.</strong> A bank reports daily Value-at-Risk: the loss threshold it claims will be exceeded only 1% of the time. The backtest e-statistic (Example 16.9) is e<sup>q</sup><sub>β</sub>(x, r) = 𝟙{x &gt; r} / (1−β), a simple indicator that equals 1/α on exceedance days and 0 otherwise. These sequential e-values are combined into an e-process via the betting fraction approach (Equation 16.15, <code>EProcessUpdater</code>): M<sub>t</sub> = M<sub>t−1</sub> · ((1−λ) + λE<sub>t</sub>). If the bank's model is honest, the e-process stays bounded. If risk is underestimated, evidence accumulates.</p>
+    <p class="prose"><strong>VaR Backtesting.</strong> A bank reports daily Value-at-Risk: the loss threshold it claims will be exceeded only 1% of the time. The backtest e-statistic (Example 16.9) is e<sup>q</sup><sub>β</sub>(x, r) = 𝟙{x &gt; r} / (1−β) — a simple indicator that equals 1/α on exceedance days and 0 otherwise. These sequential e-values are combined into an e-process via the betting fraction approach (Equation 16.15, <code>EProcessUpdater</code>): M<sub>t</sub> = M<sub>t−1</sub> · ((1−λ) + λE<sub>t</sub>). If the bank's model is honest, the e-process stays bounded. If risk is underestimated, evidence accumulates.</p>
     <div class="md">E<sub>t</sub> = 𝟙{L<sub>t</sub> &gt; VaR<sub>t</sub>} / α<span class="md-l">Exceedance indicator divided by the claimed probability — a backtest e-statistic (Ex. 16.9).</span></div>
   </div>
   <div class="cc ar169" id="var-wrap"><canvas id="c-var"></canvas><div class="cc-vig"></div><div class="cc-label">VaR BACKTESTING · REGULATORY MONITORING</div></div>
@@ -400,29 +401,29 @@
 
   <!-- BRAIN HEATMAP -->
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Live Cortical Mapping.</strong> A top-down view of the cortex. Each cell is one voxel, a region of interest being tested in parallel. As fMRI volumes arrive, evidence accumulates. Cool regions show no activation (e-process near 1). Warm regions show growing evidence. When a voxel's e-process crosses 1/α, it lights up, a discovery. The scan progress bar shows acquisition time, and the counter tracks discoveries in real time.</p>
+    <p class="prose"><strong>Live Cortical Mapping.</strong> A top-down view of the cortex. Each cell is one voxel — a region of interest being tested in parallel. As fMRI volumes arrive, evidence accumulates. Cool regions show no activation (e-process near 1). Warm regions show growing evidence. When a voxel's e-process crosses 1/α, it lights up — a discovery. The scan progress bar shows acquisition time, and the counter tracks discoveries in real time.</p>
   </div>
   <div class="cc" id="brain-wrap" style="aspect-ratio:16/10;"><canvas id="c-brain"></canvas><div class="cc-vig"></div><div class="cc-label">CORTICAL HEATMAP · SEQUENTIAL EVIDENCE ACCUMULATION</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Voxel Signals.</strong> Below, each ribbon is a single voxel's BOLD signal over time. Most voxels are null, pure noise around zero. A subset carry true activation (a small positive drift). The 3D view reveals the spatial structure: many parallel streams of evidence, tested simultaneously.</p>
+    <p class="prose"><strong>Voxel Signals.</strong> Below, each ribbon is a single voxel's BOLD signal over time. Most voxels are null — pure noise around zero. A subset carry true activation (a small positive drift). The 3D view reveals the spatial structure: many parallel streams of evidence, tested simultaneously.</p>
   </div>
   <div class="cc" id="neuro-sig-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-sig"></canvas><div class="cc-vig"></div><div class="cc-label">VOXEL SIGNALS · 3D TRAJECTORY FIELD</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows, the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
+    <p class="prose"><strong>Parallel E-Processes.</strong> Each voxel's signal feeds a <code>TwoSidedNormalMixture</code> supermartingale. Under the null, wealth stays near 1. Under activation, it grows — the active voxels rise from the field like peaks on a landscape. The e-BH threshold adapts to the number of discoveries, controlling false discovery rate across all voxels simultaneously.</p>
   </div>
   <div class="cc" id="neuro-ep-wrap" style="aspect-ratio:16/9;"><canvas id="c-neuro-ep"></canvas><div class="cc-vig"></div><div class="cc-label">PARALLEL E-PROCESSES · MIXTURE SUPERMARTINGALES</div></div>
 
   <div class="cb"><div class="section-spacer"></div>
-    <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists, anywhere in the brain, while each individual voxel's test retains its own validity.</p>
+    <p class="prose"><strong>Merged E-Process.</strong> The arithmetic mean M<sub>K</sub> = (E<sub>1</sub> + ··· + E<sub>K</sub>) / K is the canonical e-merging function (Proposition 8.3, Theorem 8.4). It essentially dominates all symmetric e-merging functions. At each scan volume, we average all K voxel e-processes into a single global test statistic. If the merged process crosses 1/α, there is global evidence that <em>some</em> activation exists — anywhere in the brain — while each individual voxel's test retains its own validity.</p>
     <div class="md">M<sub>K</sub>(t) = (1/K) Σ<sub>k=1</sub><sup>K</sup> E<sub>k</sub>(t)<span class="md-l">Arithmetic mean e-merging function — admissible under arbitrary dependence (Theorem 8.4).</span></div>
   </div>
   <div class="cc ar169" id="neuro-merge-wrap"><canvas id="c-neuro-merge"></canvas><div class="cc-vig"></div></div>
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:rgba(168,148,96,.25);"></div>Null voxels (no activation)</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(90,176,158,.7);"></div>Active voxels (true signal)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e8c95a;"></div>Discoveries (e-BH rejections)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(160,240,225,.7);"></div>Discoveries (e-BH rejections)</div>
   </div>
   <div class="ctrls">
     <button class="btn" onclick="initNeuro()">New Brain</button>
@@ -431,6 +432,33 @@
     <div class="cg"><div class="cl">Effect μ</div><input type="range" id="nr-mu" min=".1" max=".8" step=".05" value=".35"><div class="cv" id="nr-mu-d">0.35</div></div>
   </div>
   <div class="pf"><div class="pf-t">TwoSidedNormalMixture (martingales.py) · e-BH procedure (Chapter 9, Theorem 9.11) · Compound e-values</div></div>
+</section>
+
+<!-- ═══ XI. MERGING ═══ -->
+<section class="page" id="page-merging">
+  <div class="page-hdr"><div class="page-ttl">MERGING</div><div class="page-ln"></div><div class="page-sub">From parallel sequential tests to a single global verdict</div></div>
+  <div class="cb">
+    <div class="qb"><div class="qt">The arithmetic mean M<sub>K</sub> essentially dominates any symmetric e-merging function. Every admissible e-merging function takes the form of a weighted arithmetic mean. The product is dominated by the average.</div><div class="qa">— Chapter 8 · Proposition 8.3, Theorem 8.4 · Vovk &amp; Wang (2024)</div></div>
+    <p class="prose">Each independent hypothesis generates its own sequential e-process via <code>TwoSidedNormalMixture</code> and <code>EProcessUpdater</code>. The <strong>arithmetic mean</strong> M<sub>K</sub> — the admissible e-merging function of Vovk &amp; Wang — combines all K processes into a single global e-process that remains valid under arbitrary dependence. The merged process inherits the strongest signals: if even a subset carry evidence, the average grows.</p>
+    <div class="md">M<sub>K</sub>(t) = (1/K) Σ<sub>k=1</sub><sup>K</sup> E<sub>k</sub>(t)<span class="md-l">Arithmetic mean e-merging function — admissible, essentially dominates all symmetric merging functions.</span></div>
+  </div>
+
+  <div class="cc" id="merge-wrap" style="aspect-ratio:20/9;"><canvas id="c-merge"></canvas><div class="cc-vig"></div></div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(90,176,158,.7);"></div>Active e-processes (true signal)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(160,240,225,.75);"></div>Individual rejections (crossed 1/α)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(168,148,96,.2);"></div>Null e-processes (no signal)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8c95a;"></div>Merged global e-process M<sub>K</sub></div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(184,68,48,.5);"></div>Rejection threshold 1/α</div>
+  </div>
+  <div class="ctrls">
+    <button class="btn" onclick="initMerging()">New</button>
+    <div class="cg"><div class="cl">Streams K</div><input type="range" id="mg-k" min="6" max="20" step="2" value="12"><div class="cv" id="mg-k-d">12</div></div>
+    <div class="cg"><div class="cl">Active %</div><input type="range" id="mg-act" min="10" max="50" step="5" value="25"><div class="cv" id="mg-act-d">25%</div></div>
+    <div class="cg"><div class="cl">Effect μ</div><input type="range" id="mg-mu" min=".15" max=".9" step=".05" value=".45"><div class="cv" id="mg-mu-d">0.45</div></div>
+  </div>
+  <div class="pf"><div class="pf-t">TwoSidedNormalMixture (martingales.py) · EProcessUpdater (eprocessupdater.py) · Arithmetic mean M<sub>K</sub> (Chapter 8, Theorem 8.4) · Vovk &amp; Wang (2024)</div></div>
 </section>
 
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
@@ -442,7 +470,7 @@ const eIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const eO=t=>1-(1-t)*(1-t);
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 const GOLD=[212,180,85],GD=[168,148,96],GB=[240,212,100],RED=[184,68,48],
-      TEAL=[90,176,158],BLUE=[106,154,196],VIOL=[154,122,186],PARCH=[212,197,160],BG=[6,5,4];
+      TEAL=[90,176,158],TEALHI=[160,240,225],BLUE=[106,154,196],VIOL=[154,122,186],PARCH=[212,197,160],BG=[6,5,4];
 
 function sCanvas(c){const d=window.devicePixelRatio||1,r=c.parentElement.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,w:r.width,h:r.height};}
 function glow(x,cx,cy,r,c,a){const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,R(c[0],c[1],c[2],a));g.addColorStop(.5,R(c[0],c[1],c[2],a*.3));g.addColorStop(1,R(c[0],c[1],c[2],0));x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.fill();}
@@ -540,6 +568,7 @@ function initPage(pg){
   if(pg==='physics')initPhysics();
   if(pg==='finance')initFinance();
   if(pg==='neuro')initNeuro();
+  if(pg==='merging')initMerging();
 }
 
 // ── I. PROLOGUE ──
@@ -1598,13 +1627,13 @@ function initNeuro(){
         const crossed=wt>=thresholdVal;
 
         if(crossed){
-          // Discovery — bright gold with pulse
+          // Discovery — bright teal with pulse
           const pulse=0.8+0.2*Math.sin(elapsed*0.006+vk);
-          r=240;g=210;b=80;a=0.85*pulse;
+          r=160;g=240;b=225;a=0.85*pulse;
         } else if(logW>0.3){
-          // Growing evidence — teal-warm blend
+          // Growing evidence — teal to bright teal blend
           const t=clamp(logW/Math.log10(thresholdVal),0,1);
-          r=Math.round(90+150*t);g=Math.round(176-80*t);b=Math.round(158-110*t);
+          r=Math.round(90+70*t);g=Math.round(176+64*t);b=Math.round(158+67*t);
           a=0.3+0.5*t;
         } else if(logW>-0.3){
           // Near baseline — dim teal
@@ -1627,7 +1656,7 @@ function initNeuro(){
       if(vk>=0){
         const wt=upTo<=T?wealth[vk][Math.min(upTo,T)]:wealth[vk][T];
         if(wt>=thresholdVal){
-          glow(xB,cx+cellW/2,cy+cellH/2,cellW*0.8,[240,210,80],.14);
+          glow(xB,cx+cellW/2,cy+cellH/2,cellW*0.8,[160,240,225],.14);
         }
       }
     }
@@ -1858,8 +1887,8 @@ function initNeuro(){
         // Color logic
         let col,al,lw;
         if(isEP && crossT>=0 && tJ>=crossT){
-          // CROSSED — bright gold
-          col=GB; al=0.9*fade; lw=2.5*fade;
+          // CROSSED — bright teal
+          col=TEALHI; al=0.9*fade; lw=2.5*fade;
         } else if(isEP && active){
           // Active, not yet crossed — teal
           col=TEAL; al=0.6*fade; lw=1.4*fade;
@@ -1885,9 +1914,9 @@ function initNeuro(){
         const pH=project(xH,yNH,zN,rY,rX,cx,cy,sc);
 
         const crossed=isEP&&crossT>=0;
-        const hCol=crossed?GB:(active?TEAL:GD);
+        const hCol=crossed?TEALHI:(active?TEAL:GD);
         const hAl=crossed?1.0*fade:0.7*fade;
-        if(crossed)glow(x,pH.sx,pH.sy,10*fade,GB,.22*fade);
+        if(crossed)glow(x,pH.sx,pH.sy,10*fade,TEALHI,.22*fade);
         x.fillStyle=R(hCol[0],hCol[1],hCol[2],hAl);
         x.beginPath();x.arc(pH.sx,pH.sy,crossed?3:2,0,Math.PI*2);x.fill();
       }
@@ -2110,6 +2139,347 @@ function initNeuro(){
   }
 
   stopAF('neuro');start=0;AF.neuro=requestAnimationFrame(d);
+}
+
+// ═══════════════════════════════════════════════
+// ══  XI. MERGING  ═════════════════════════════
+// ═══════════════════════════════════════════════
+
+function initMerging(){
+  document.getElementById('mg-k').oninput=function(){document.getElementById('mg-k-d').textContent=this.value;};
+  document.getElementById('mg-act').oninput=function(){document.getElementById('mg-act-d').textContent=this.value+'%';};
+  document.getElementById('mg-mu').oninput=function(){document.getElementById('mg-mu-d').textContent=parseFloat(this.value).toFixed(2);};
+
+  const K=parseInt(document.getElementById('mg-k').value);
+  const actPct=parseInt(document.getElementById('mg-act').value);
+  const mu=parseFloat(document.getElementById('mg-mu').value);
+  const T=100, alpha=0.05;
+  const nActive=Math.max(1,Math.round(K*actPct/100));
+  const thresholdVal=1/alpha;
+
+  // TwoSidedNormalMixture.best_rho (martingales.py line 106-108)
+  const v_opt=T/2;
+  const rho=v_opt/(2*Math.log(1/alpha)+Math.log(1+2*Math.log(1/alpha)));
+
+  // Generate K e-processes
+  const isActive=[], wealth=[];
+  for(let k=0;k<K;k++){
+    const active=k<nActive;
+    isActive.push(active);
+    const drift=active?mu:0;
+    const w=[1];
+    let cumSum=0;
+    for(let t=0;t<T;t++){
+      const obs=drift+G();
+      cumSum+=obs;
+      const v=t+1;
+      const logM=0.5*Math.log(rho/(v+rho))+cumSum*cumSum/(2*(v+rho));
+      w.push(Math.exp(logM));
+    }
+    wealth.push(w);
+  }
+
+  // Merged e-process: M_K(t) = (1/K) Σ E_k(t)
+  const merged=[];
+  for(let t=0;t<=T;t++){
+    let s=0;for(let k=0;k<K;k++)s+=wealth[k][t];
+    merged.push(s/K);
+  }
+
+  // Shuffle for visual variety
+  const order=Array.from({length:K},(_,i)=>i);
+  for(let i=K-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+
+  const cM=document.getElementById('c-merge');
+  const{x,w:W,h:H}=sCanvas(cM);
+
+  // Layout zones
+  const leftW=W*0.35, funnelX=W*0.35, funnelW=W*0.22, rightX=W*0.57, rightW=W*0.40;
+  const padY=H*0.08, plotH=H-padY*2;
+
+  // Y mapping: log10 scale
+  let yMaxAll=thresholdVal*2;
+  for(let k=0;k<K;k++)for(let t=0;t<=T;t++)yMaxAll=Math.max(yMaxAll,wealth[k][t]);
+  for(let t=0;t<=T;t++)yMaxAll=Math.max(yMaxAll,merged[t]);
+  const logMin=-0.5, logMax=Math.log10(yMaxAll)*1.1;
+  const toY=v=>{const lv=Math.log10(Math.max(v,Math.pow(10,logMin)));return padY+plotH*(1-(lv-logMin)/(logMax-logMin));};
+  const lerp=(a,b,t)=>a+(b-a)*t;
+
+  let start=0;
+
+  function d(now){
+    if(!start)start=now;
+    const el=now-start;
+    const prog=Math.min(1,el/25000);
+    const upTo=Math.floor(prog*T);
+
+    x.fillStyle=R(6,5,4,1);x.fillRect(0,0,W,H);
+
+    // Background glows
+    glow(x,leftW*.5,H*.5,leftW*.4,[10,8,5],.06);
+    glow(x,funnelX+funnelW*.5,H*.5,funnelW*.5,[20,16,8],.08);
+    glow(x,rightX+rightW*.5,H*.5,rightW*.4,[16,12,5],.06);
+
+    // ═══ MERGING ZONE — central funnel ═══
+    const fCx=funnelX+funnelW*.5;
+    const fLeftTop=funnelX+funnelW*.05;
+    const fRightTop=funnelX+funnelW*.8;
+    const fNarrowTop=H*.42, fNarrowBot=H*.58;
+
+    // Funnel gradient fill
+    const fGrad=x.createLinearGradient(funnelX,0,funnelX+funnelW,0);
+    fGrad.addColorStop(0,R(201,168,76,.015));
+    fGrad.addColorStop(0.4,R(201,168,76,.04));
+    fGrad.addColorStop(0.8,R(201,168,76,.06));
+    fGrad.addColorStop(1,R(201,168,76,.02));
+    x.fillStyle=fGrad;
+    x.beginPath();
+    x.moveTo(fLeftTop,padY);
+    x.lineTo(fLeftTop,padY+plotH);
+    x.bezierCurveTo(fCx,padY+plotH,fRightTop,fNarrowBot+20,fRightTop,fNarrowBot);
+    x.lineTo(fRightTop,fNarrowTop);
+    x.bezierCurveTo(fRightTop,fNarrowTop-20,fCx,padY,fLeftTop,padY);
+    x.closePath();
+    x.fill();
+
+    // Funnel outline
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.lineWidth=0.6;
+    x.beginPath();
+    x.moveTo(fLeftTop,padY);x.lineTo(fLeftTop,padY+plotH);
+    x.bezierCurveTo(fCx,padY+plotH,fRightTop,fNarrowBot+20,fRightTop,fNarrowBot);
+    x.moveTo(fLeftTop,padY);
+    x.bezierCurveTo(fCx,padY,fRightTop,fNarrowTop-20,fRightTop,fNarrowTop);
+    x.stroke();
+
+    // Funnel label
+    x.font=`600 ${Math.max(10,W*.012)}px 'Cinzel',serif`;
+    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='center';
+    x.fillText('M\u2096',fCx,H*.39);
+    x.font=`italic ${Math.max(9,W*.009)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.4);
+    x.fillText('Arithmetic Mean',fCx,H*.39+14);
+    x.fillText('e-Merging Function',fCx,H*.39+26);
+
+    // Particles from funnel exit
+    if(upTo>2){
+      const pulseT=el*0.002;
+      for(let i=0;i<8;i++){
+        const p=(pulseT+i*0.38)%3.0;
+        if(p>1)continue;
+        const px=lerp(fRightTop,fRightTop+15,p);
+        const pa=0.15*(1-p);
+        glow(x,px,H*.5,4,GOLD,pa);
+      }
+    }
+
+    // ═══ LEFT: Individual e-processes ═══
+    const leftPlotX=leftW*.08, leftPlotW=leftW*.85;
+    const nPts=Math.min(upTo+1,T+1);
+
+    // Threshold (left)
+    const thY=toY(thresholdVal);
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.lineWidth=0.5;x.setLineDash([4,5]);
+    x.beginPath();x.moveTo(leftPlotX,thY);x.lineTo(leftPlotX+leftPlotW,thY);x.stroke();
+    x.setLineDash([]);
+    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.35);x.textAlign='right';
+    x.fillText('1/\u03B1',leftPlotX-3,thY+3);
+
+    // Grid (left)
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.3;
+    [0.1,1,10,100,1000].forEach(v=>{
+      const lv=Math.log10(v);if(lv<logMin||lv>logMax)return;
+      const yy=toY(v);
+      x.beginPath();x.moveTo(leftPlotX,yy);x.lineTo(leftPlotX+leftPlotW,yy);x.stroke();
+    });
+
+    // Draw each e-process
+    for(let ki=0;ki<K;ki++){
+      const k=order[ki];
+      const active=isActive[k];
+      if(nPts<2)continue;
+
+      let crossT=-1;
+      for(let t=1;t<nPts;t++){if(wealth[k][t]>=thresholdVal){crossT=t;break;}}
+      const crossed=crossT>=0;
+
+      const col=crossed?TEALHI:(active?TEAL:GD);
+      const al=crossed?0.75:(active?0.5:0.3);
+      const lw=crossed?1.8:(active?1.2:0.7);
+
+      x.strokeStyle=R(col[0],col[1],col[2],al);
+      x.lineWidth=lw;x.lineJoin='round';
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=leftPlotX+(t/T)*leftPlotW;
+        const py=toY(wealth[k][t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+
+      // Head dot — all streams
+      {
+        const lastT=nPts-1;
+        const hx=leftPlotX+(lastT/T)*leftPlotW;
+        const hy=toY(wealth[k][lastT]);
+        if(crossed)glow(x,hx,hy,8,TEALHI,.12);
+        x.fillStyle=R(col[0],col[1],col[2],crossed?0.9:(active?0.65:0.4));
+        x.beginPath();x.arc(hx,hy,crossed?2.5:(active?1.8:1.2),0,Math.PI*2);x.fill();
+      }
+
+      // Connection line to funnel — all streams
+      if(nPts>1){
+        const lastT=nPts-1;
+        const hx=leftPlotX+(lastT/T)*leftPlotW;
+        const hy=toY(wealth[k][lastT]);
+        const entryY=padY+(ki/(K-1))*plotH;
+        const cAl=crossed?0.22:(active?0.12:0.06);
+        const cCol=crossed?TEALHI:(active?TEAL:GD);
+
+        x.strokeStyle=R(cCol[0],cCol[1],cCol[2],cAl);
+        x.lineWidth=crossed?1.0:0.5;
+        x.beginPath();x.moveTo(hx,hy);
+        const cpx1=hx+(fLeftTop-hx)*0.5;
+        x.bezierCurveTo(cpx1,hy,cpx1,entryY,fLeftTop,entryY);
+        x.stroke();
+
+        // Flowing particles on active connections
+        if(active&&nPts>10){
+          const pPhase=((el*0.001)+ki*0.3)%1;
+          const bx=lerp(hx,fLeftTop,pPhase);
+          const by=lerp(hy,entryY,pPhase);
+          const pAl=0.15*Math.sin(pPhase*Math.PI);
+          glow(x,bx,by,3,cCol,pAl);
+        }
+      }
+    }
+
+    // Left title
+    x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='center';
+    x.fillText('INDEPENDENT E-PROCESSES',leftPlotX+leftPlotW*.5,padY-8);
+    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='center';
+    x.fillText('time',leftPlotX+leftPlotW*.5,padY+plotH+14);
+    x.save();x.translate(leftPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
+    x.fillText('log\u2081\u2080 E\u2096(t)',0,0);x.restore();
+
+    // ═══ RIGHT: Merged e-process ═══
+    const rightPlotX=rightX+rightW*.08, rightPlotW=rightW*.85;
+
+    // Threshold (right)
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.lineWidth=0.5;x.setLineDash([4,5]);
+    x.beginPath();x.moveTo(rightPlotX,thY);x.lineTo(rightPlotX+rightPlotW,thY);x.stroke();
+    x.setLineDash([]);
+    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.35);x.textAlign='left';
+    x.fillText('1/\u03B1',rightPlotX+rightPlotW+4,thY+3);
+
+    // Grid (right)
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.3;
+    [0.1,1,10,100,1000].forEach(v=>{
+      const lv=Math.log10(v);if(lv<logMin||lv>logMax)return;
+      const yy=toY(v);
+      x.beginPath();x.moveTo(rightPlotX,yy);x.lineTo(rightPlotX+rightPlotW,yy);x.stroke();
+    });
+
+    // Ghost traces on right
+    for(let ki=0;ki<K;ki++){
+      const k=order[ki];
+      const active=isActive[k];
+      let crossT=-1;
+      for(let t=1;t<nPts;t++){if(wealth[k][t]>=thresholdVal){crossT=t;break;}}
+      const crossed=crossT>=0;
+      const col=crossed?TEALHI:(active?TEAL:GD);
+      const al=crossed?0.12:(active?0.08:0.04);
+      x.strokeStyle=R(col[0],col[1],col[2],al);x.lineWidth=crossed?0.6:0.4;
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=rightPlotX+(t/T)*rightPlotW;
+        const py=toY(wealth[k][t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+    }
+
+    // Merged e-process — bold gold
+    if(nPts>1){
+      // Glow trail
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.08);x.lineWidth=7;
+      x.lineJoin='round';x.lineCap='round';
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=rightPlotX+(t/T)*rightPlotW;const py=toY(merged[t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+
+      // Main line
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.8);x.lineWidth=2.5;
+      x.beginPath();
+      for(let t=0;t<nPts;t++){
+        const px=rightPlotX+(t/T)*rightPlotW;const py=toY(merged[t]);
+        if(t===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.stroke();
+
+      // Head dot
+      const lastT=nPts-1;
+      const hx=rightPlotX+(lastT/T)*rightPlotW;
+      const hy=toY(merged[lastT]);
+      glow(x,hx,hy,18,GOLD,.12);
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.95);
+      x.beginPath();x.arc(hx,hy,4,0,Math.PI*2);x.fill();
+
+      // Value label
+      x.font=`${Math.max(11,W*.013)}px 'EB Garamond',serif`;
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.7);x.textAlign='left';
+      const valStr=merged[lastT]<100?merged[lastT].toFixed(2):merged[lastT].toFixed(0);
+      x.fillText('M\u2096 = '+valStr,hx+10,hy-6);
+
+      // Connection from funnel exit to merged start
+      const mergeStartY=toY(merged[0]);
+      x.strokeStyle=R(GOLD[0],GOLD[1],GOLD[2],.15);x.lineWidth=1.2;
+      x.beginPath();x.moveTo(fRightTop,H*.5);
+      const cpxr=fRightTop+(rightPlotX-fRightTop)*0.5;
+      x.bezierCurveTo(cpxr,H*.5,cpxr,mergeStartY,rightPlotX,mergeStartY);
+      x.stroke();
+    }
+
+    // Right title
+    x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
+    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='center';
+    x.fillText('MERGED GLOBAL E-PROCESS',rightPlotX+rightPlotW*.5,padY-8);
+    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='center';
+    x.fillText('time',rightPlotX+rightPlotW*.5,padY+plotH+14);
+    x.save();x.translate(rightPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
+    x.fillText('log\u2081\u2080 M\u2096(t)',0,0);x.restore();
+
+    // Stats
+    if(upTo>5){
+      let nCrossed=0;
+      for(let k=0;k<K;k++){let c=false;for(let t=1;t<=upTo;t++){if(wealth[k][t]>=thresholdVal){c=true;break;}}if(c)nCrossed++;}
+      const globalCrossed=merged[upTo]>=thresholdVal;
+      x.font=`${Math.max(10,W*.011)}px 'EB Garamond',serif`;
+      x.fillStyle=R(GD[0],GD[1],GD[2],.5);x.textAlign='right';
+      x.fillText(`K = ${K}  \u00b7  Active: ${nActive}  \u00b7  Individual rejections: ${nCrossed}`,rightPlotX+rightPlotW,padY+plotH+28);
+      if(globalCrossed){
+        x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.65);x.textAlign='left';
+        x.fillText('GLOBAL REJECTION',rightPlotX,padY+plotH+28);
+      }
+    }
+
+    // Subtle dividers
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.5;x.setLineDash([2,6]);
+    x.beginPath();x.moveTo(funnelX,padY*.5);x.lineTo(funnelX,H-padY*.5);x.stroke();
+    x.beginPath();x.moveTo(funnelX+funnelW,padY*.5);x.lineTo(funnelX+funnelW,H-padY*.5);x.stroke();
+    x.setLineDash([]);
+
+    AF.merging=requestAnimationFrame(d);
+  }
+
+  stopAF('merging');start=0;AF.merging=requestAnimationFrame(d);
 }
 
 // ── BOOT ──
