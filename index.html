@@ -2278,19 +2278,23 @@ function initMerging(){
 
     // Threshold (left)
     const thY=toY(thresholdVal);
-    x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.lineWidth=0.5;x.setLineDash([4,5]);
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.3);x.lineWidth=0.5;x.setLineDash([4,5]);
     x.beginPath();x.moveTo(leftPlotX,thY);x.lineTo(leftPlotX+leftPlotW,thY);x.stroke();
     x.setLineDash([]);
-    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(RED[0],RED[1],RED[2],.55);x.textAlign='right';
+    x.font=`italic ${Math.max(10,W*.01)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.75);x.textAlign='right';
     x.fillText('1/\u03B1',leftPlotX-3,thY+3);
 
     // Grid (left)
-    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.3;
+    x.lineWidth=0.3;
     [0.1,1,10,100,1000].forEach(v=>{
       const lv=Math.log10(v);if(lv<logMin||lv>logMax)return;
       const yy=toY(v);
+      x.strokeStyle=R(GD[0],GD[1],GD[2],.08);
       x.beginPath();x.moveTo(leftPlotX,yy);x.lineTo(leftPlotX+leftPlotW,yy);x.stroke();
+      x.font=`${Math.max(9,W*.009)}px 'EB Garamond',serif`;
+      x.fillStyle=R(GD[0],GD[1],GD[2],.6);x.textAlign='right';
+      x.fillText(v>=1?v.toString():'0.1',leftPlotX-6,yy+3);
     });
 
     // Draw each e-process
@@ -2358,29 +2362,33 @@ function initMerging(){
     x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
     x.fillStyle=R(GD[0],GD[1],GD[2],.75);x.textAlign='center';
     x.fillText('INDEPENDENT E-PROCESSES',leftPlotX+leftPlotW*.5,padY-8);
-    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.65);x.textAlign='center';
-    x.fillText('time',leftPlotX+leftPlotW*.5,padY+plotH+14);
-    x.save();x.translate(leftPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
+    x.font=`italic ${Math.max(10,W*.011)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.9);x.textAlign='center';
+    x.fillText('time',leftPlotX+leftPlotW*.5,padY+plotH+16);
+    x.save();x.translate(leftPlotX-18,padY+plotH*.5);x.rotate(-Math.PI/2);
     x.fillText('log\u2081\u2080 E\u2096(t)',0,0);x.restore();
 
     // ═══ RIGHT: Merged e-process ═══
     const rightPlotX=rightX+rightW*.08, rightPlotW=rightW*.85;
 
     // Threshold (right)
-    x.strokeStyle=R(RED[0],RED[1],RED[2],.15);x.lineWidth=0.5;x.setLineDash([4,5]);
+    x.strokeStyle=R(RED[0],RED[1],RED[2],.3);x.lineWidth=0.5;x.setLineDash([4,5]);
     x.beginPath();x.moveTo(rightPlotX,thY);x.lineTo(rightPlotX+rightPlotW,thY);x.stroke();
     x.setLineDash([]);
-    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(RED[0],RED[1],RED[2],.55);x.textAlign='left';
+    x.font=`italic ${Math.max(10,W*.01)}px 'EB Garamond',serif`;
+    x.fillStyle=R(RED[0],RED[1],RED[2],.75);x.textAlign='left';
     x.fillText('1/\u03B1',rightPlotX+rightPlotW+4,thY+3);
 
     // Grid (right)
-    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.3;
+    x.lineWidth=0.3;
     [0.1,1,10,100,1000].forEach(v=>{
       const lv=Math.log10(v);if(lv<logMin||lv>logMax)return;
       const yy=toY(v);
+      x.strokeStyle=R(GD[0],GD[1],GD[2],.08);
       x.beginPath();x.moveTo(rightPlotX,yy);x.lineTo(rightPlotX+rightPlotW,yy);x.stroke();
+      x.font=`${Math.max(9,W*.009)}px 'EB Garamond',serif`;
+      x.fillStyle=R(GD[0],GD[1],GD[2],.6);x.textAlign='right';
+      x.fillText(v>=1?v.toString():'0.1',rightPlotX-6,yy+3);
     });
 
     // Ghost traces on right
@@ -2450,10 +2458,10 @@ function initMerging(){
     x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
     x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.75);x.textAlign='center';
     x.fillText('MERGED GLOBAL E-PROCESS',rightPlotX+rightPlotW*.5,padY-8);
-    x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.65);x.textAlign='center';
-    x.fillText('time',rightPlotX+rightPlotW*.5,padY+plotH+14);
-    x.save();x.translate(rightPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
+    x.font=`italic ${Math.max(10,W*.011)}px 'EB Garamond',serif`;
+    x.fillStyle=R(GD[0],GD[1],GD[2],.9);x.textAlign='center';
+    x.fillText('time',rightPlotX+rightPlotW*.5,padY+plotH+16);
+    x.save();x.translate(rightPlotX-18,padY+plotH*.5);x.rotate(-Math.PI/2);
     x.fillText('log\u2081\u2080 M\u2096(t)',0,0);x.restore();
 
     // Stats
@@ -2471,7 +2479,7 @@ function initMerging(){
     }
 
     // Subtle dividers
-    x.strokeStyle=R(GD[0],GD[1],GD[2],.04);x.lineWidth=0.5;x.setLineDash([2,6]);
+    x.strokeStyle=R(GD[0],GD[1],GD[2],.08);x.lineWidth=0.5;x.setLineDash([2,6]);
     x.beginPath();x.moveTo(funnelX,padY*.5);x.lineTo(funnelX,H-padY*.5);x.stroke();
     x.beginPath();x.moveTo(funnelX+funnelW,padY*.5);x.lineTo(funnelX+funnelW,H-padY*.5);x.stroke();
     x.setLineDash([]);
