@@ -2253,10 +2253,10 @@ function initMerging(){
 
     // Funnel label
     x.font=`600 ${Math.max(10,W*.012)}px 'Cinzel',serif`;
-    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.45);x.textAlign='center';
+    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.9);x.textAlign='center';
     x.fillText('M\u2096',fCx,H*.39);
     x.font=`italic ${Math.max(9,W*.009)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.4);
+    x.fillStyle=R(GD[0],GD[1],GD[2],.65);
     x.fillText('Arithmetic Mean',fCx,H*.39+14);
     x.fillText('e-Merging Function',fCx,H*.39+26);
 
@@ -2282,7 +2282,7 @@ function initMerging(){
     x.beginPath();x.moveTo(leftPlotX,thY);x.lineTo(leftPlotX+leftPlotW,thY);x.stroke();
     x.setLineDash([]);
     x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(RED[0],RED[1],RED[2],.35);x.textAlign='right';
+    x.fillStyle=R(RED[0],RED[1],RED[2],.55);x.textAlign='right';
     x.fillText('1/\u03B1',leftPlotX-3,thY+3);
 
     // Grid (left)
@@ -2356,10 +2356,10 @@ function initMerging(){
 
     // Left title
     x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.55);x.textAlign='center';
+    x.fillStyle=R(GD[0],GD[1],GD[2],.75);x.textAlign='center';
     x.fillText('INDEPENDENT E-PROCESSES',leftPlotX+leftPlotW*.5,padY-8);
     x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='center';
+    x.fillStyle=R(GD[0],GD[1],GD[2],.65);x.textAlign='center';
     x.fillText('time',leftPlotX+leftPlotW*.5,padY+plotH+14);
     x.save();x.translate(leftPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
     x.fillText('log\u2081\u2080 E\u2096(t)',0,0);x.restore();
@@ -2372,7 +2372,7 @@ function initMerging(){
     x.beginPath();x.moveTo(rightPlotX,thY);x.lineTo(rightPlotX+rightPlotW,thY);x.stroke();
     x.setLineDash([]);
     x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(RED[0],RED[1],RED[2],.35);x.textAlign='left';
+    x.fillStyle=R(RED[0],RED[1],RED[2],.55);x.textAlign='left';
     x.fillText('1/\u03B1',rightPlotX+rightPlotW+4,thY+3);
 
     // Grid (right)
@@ -2433,7 +2433,7 @@ function initMerging(){
 
       // Value label
       x.font=`${Math.max(11,W*.013)}px 'EB Garamond',serif`;
-      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.7);x.textAlign='left';
+      x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.9);x.textAlign='left';
       const valStr=merged[lastT]<100?merged[lastT].toFixed(2):merged[lastT].toFixed(0);
       x.fillText('M\u2096 = '+valStr,hx+10,hy-6);
 
@@ -2448,10 +2448,10 @@ function initMerging(){
 
     // Right title
     x.font=`${Math.max(9,W*.01)}px 'Cinzel',serif`;
-    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.55);x.textAlign='center';
+    x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.75);x.textAlign='center';
     x.fillText('MERGED GLOBAL E-PROCESS',rightPlotX+rightPlotW*.5,padY-8);
     x.font=`italic ${Math.max(8,W*.008)}px 'EB Garamond',serif`;
-    x.fillStyle=R(GD[0],GD[1],GD[2],.4);x.textAlign='center';
+    x.fillStyle=R(GD[0],GD[1],GD[2],.65);x.textAlign='center';
     x.fillText('time',rightPlotX+rightPlotW*.5,padY+plotH+14);
     x.save();x.translate(rightPlotX-16,padY+plotH*.5);x.rotate(-Math.PI/2);
     x.fillText('log\u2081\u2080 M\u2096(t)',0,0);x.restore();
@@ -2462,10 +2462,10 @@ function initMerging(){
       for(let k=0;k<K;k++){let c=false;for(let t=1;t<=upTo;t++){if(wealth[k][t]>=thresholdVal){c=true;break;}}if(c)nCrossed++;}
       const globalCrossed=merged[upTo]>=thresholdVal;
       x.font=`${Math.max(10,W*.011)}px 'EB Garamond',serif`;
-      x.fillStyle=R(GD[0],GD[1],GD[2],.5);x.textAlign='right';
+      x.fillStyle=R(GD[0],GD[1],GD[2],.7);x.textAlign='right';
       x.fillText(`K = ${K}  \u00b7  Active: ${nActive}  \u00b7  Individual rejections: ${nCrossed}`,rightPlotX+rightPlotW,padY+plotH+28);
       if(globalCrossed){
-        x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.65);x.textAlign='left';
+        x.fillStyle=R(GOLD[0],GOLD[1],GOLD[2],.85);x.textAlign='left';
         x.fillText('GLOBAL REJECTION',rightPlotX,padY+plotH+28);
       }
     }
